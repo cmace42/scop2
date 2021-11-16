@@ -9,12 +9,12 @@ extern int fragmentshader_glsl_len;
 void loop(GLuint vertexBuffer)
 {
 	int running = 1;
-	// GLuint programID = loadShaders(vertexshader_glsl, vertexshader_glsl_len, fragmentshader_glsl, fragmentshader_glsl_len);
+	GLuint programID = loadShaders(vertexshader_glsl, vertexshader_glsl_len, fragmentshader_glsl, fragmentshader_glsl_len);
 
-	// glUseProgram(programID);
-	glClearColor(0.0f, 0.0f, 0.4f, 0.0f);
 	while(event())
 	{
+		glUseProgram(programID);
+		glClearColor(0.0f, 0.0f, 0.4f, 0.0f);
 		// running = event();
 		// premier tampon d'attributs : les sommets
 		glEnableVertexAttribArray(0); 
@@ -30,8 +30,9 @@ void loop(GLuint vertexBuffer)
 		
 		// // Dessine le triangle ! 
 		glDrawArrays(GL_TRIANGLES, 0, 3); // Démarre à partir du sommet 0; 3 sommets au total -> 1 triangle 
-		// glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 		glDisableVertexAttribArray(0);
+		SDL_Delay(100);
 		//do some stuff
 	}
 }

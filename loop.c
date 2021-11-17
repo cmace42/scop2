@@ -32,7 +32,7 @@ void loop(GLuint vertexBuffer)
 		glDrawArrays(GL_TRIANGLES, 0, 3); // Démarre à partir du sommet 0; 3 sommets au total -> 1 triangle 
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 		glDisableVertexAttribArray(0);
-		SDL_Delay(100);
+		SDL_Delay(17); // 1000 ms / nombre de fps (ici 60) = ms par seconde entre chaque frame
 		//do some stuff
 	}
 }

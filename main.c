@@ -10,7 +10,7 @@ int main(int argc, char **argv)
         info.context = SDL_GL_CreateContext(info.window);
 		printf("%p\n",info.context);
         vertexBuffer = initOpenGL();
-        loop(vertexBuffer);
+        loop(vertexBuffer, info.window);
         //do some stuff
     }
     else

@@ -46,7 +46,7 @@ typedef struct s_info
 }				t_info;
 
 SDL_Window*		initWindow();
-void			loop(GLuint vertexBuffer);
+void			loop(GLuint vertexBuffer, SDL_Window *window);
 int				event();
 
 GLuint			initOpenGL();

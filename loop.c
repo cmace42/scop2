@@ -6,7 +6,7 @@ extern char fragmentshader_glsl[];
 extern int fragmentshader_glsl_len;
 
 
-void loop(GLuint vertexBuffer)
+void loop(GLuint vertexBuffer, SDL_Window* window)
 {
 	GLuint programID = loadShaders(vertexshader_glsl, vertexshader_glsl_len, fragmentshader_glsl, fragmentshader_glsl_len);
 
@@ -29,6 +29,7 @@ void loop(GLuint vertexBuffer)
 		// // Dessine le triangle ! 
 		glDrawArrays(GL_TRIANGLES, 0, 3); // Démarre à partir du sommet 0; 3 sommets au total -> 1 triangle 
 		glDisableVertexAttribArray(0);
+		SDL_GL_SwapWindow(window); // Sans ca pas d'image ?
 		SDL_Delay(17); // 1000 ms / nombre de fps (ici 60) = ms par seconde entre chaque frame
 		//do some stuff
 	}

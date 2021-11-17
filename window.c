@@ -10,4 +10,5 @@ bool initWindow(SDL_Window *window, SDL_GLContext *context)
 	window = SDL_CreateWindow("Scop", 0, 0, WIDTH, HEIGHT, SDL_WINDOW_OPENGL);
 	assert(window);
 	context = SDL_GL_CreateContext(window);
+	return (true);
 }

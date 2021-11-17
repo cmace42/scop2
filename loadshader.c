@@ -17,7 +17,9 @@ GLuint loadShaders(const char *vertexSource, int vertexLen, const char *fragment
 	if (!result)
 	{
 		glGetShaderInfoLog(vertexShaderID, 512, NULL, infoLog);
-		printf("ERROR::SHADER::VERTEX::COMPILATION_FAILED\n%s\n", infoLog);
+		glGetShaderInfoLog(vertexShaderID, sizeof(infoLog), NULL, infoLog);
+        write(STDERR_FILENO, "error shader compilation failed: ", sizeof("error shader compilation failed: "));
+        write(STDERR_FILENO, infoLog, strlen(infoLog));
 	}
 
 	// Compile le fragment shader

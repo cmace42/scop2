@@ -13,9 +13,8 @@ void loop(GLuint vertexBuffer)
 
 	while(event())
 	{
-		glUseProgram(programID);
+		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 		glClearColor(0.0f, 0.0f, 0.4f, 0.0f);
-		// running = event();
 		// premier tampon d'attributs : les sommets
 		glEnableVertexAttribArray(0); 
 		glBindBuffer(GL_ARRAY_BUFFER, vertexBuffer); 
@@ -27,10 +26,9 @@ void loop(GLuint vertexBuffer)
 		0,                  // nombre d'octets séparant deux sommets dans le tampon
 		(void*)0            // décalage du tableau de tampon
 		); 
-		
+		glUseProgram(programID);
 		// // Dessine le triangle ! 
 		glDrawArrays(GL_TRIANGLES, 0, 3); // Démarre à partir du sommet 0; 3 sommets au total -> 1 triangle 
-		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 		glDisableVertexAttribArray(0);
 		SDL_Delay(17); // 1000 ms / nombre de fps (ici 60) = ms par seconde entre chaque frame
 		//do some stuff

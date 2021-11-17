@@ -12,6 +12,7 @@
 # include <SDL2/SDL_opengl_glext.h>
 # include <assert.h>
 # include <stdbool.h>
+# include <unistd.h>
 
 # define WIDTH 800
 # define HEIGHT 600
@@ -44,7 +45,7 @@ typedef struct s_info
 	SDL_GLContext	context;
 }				t_info;
 
-bool			initWindow(SDL_Window *window, SDL_GLContext *context);
+bool		initWindow(SDL_Window * window);
 void			loop(GLuint vertexBuffer);
 int				event();
 

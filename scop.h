@@ -45,7 +45,7 @@ typedef struct s_info
 	SDL_GLContext	context;
 }				t_info;
 
-bool		initWindow(SDL_Window * window);
+SDL_Window*		initWindow();
 void			loop(GLuint vertexBuffer);
 int				event();
 

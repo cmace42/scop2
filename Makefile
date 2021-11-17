@@ -14,8 +14,8 @@
 NAME = scop
 
 # FLAGS DE COMPILE WOLLAH
-CC = gcc
-FLAGS =
+CC = gcc 
+FLAGS = -g
 OTHERFLAGS = -O3
 UNAME := $(shell uname)
 LDFLAGS = -lSDL2

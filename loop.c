@@ -8,7 +8,6 @@ extern int fragmentshader_glsl_len;
 
 void loop(GLuint vertexBuffer)
 {
-	int running = 1;
 	GLuint programID = loadShaders(vertexshader_glsl, vertexshader_glsl_len, fragmentshader_glsl, fragmentshader_glsl_len);
 
 	while(event())

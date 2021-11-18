@@ -1,8 +1,9 @@
-#version 330 core
-
-layout(location = 0) in vec3 vertexPostion_modelSpace;
-
-void main(){
-	gl_Position.xyz = vertexPostion_modelSpace;
-	gl_Position.w = 1.0;
+in vec3 vertexPosition_modelspace; 
+uniform mat4 MVP; 
+ 
+void main(){ 
+ 
+    // Obtient la position du sommet, dans l'espace de découpe : MVP * position
+    vec4 v = vec4(vertexPosition_modelspace,1); // Transforme un vecteur 4D homogène, vous vous souvenez ?
+    gl_Position = MVP * v; 
 }

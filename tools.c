@@ -1,5 +1,6 @@
 #include "scop.h"
 
+//Projection Matrice
 t_mat4 initPerspective ( float fov, float zNear, float zFar)
 {
 	const float ar =  4.0f / 3.0f;
@@ -16,7 +17,7 @@ t_mat4 initPerspective ( float fov, float zNear, float zFar)
 	});
 }
 
-
+// Camera Matrice
 t_mat4 lookAt(t_vec3 cameraPosition, t_vec3 cameraTarget, t_vec3 upVector)
 {
 	t_vec3 cameraDir = vec3_normalisation(vec3_sub(cameraPosition, cameraTarget));
@@ -31,4 +32,14 @@ t_mat4 lookAt(t_vec3 cameraPosition, t_vec3 cameraTarget, t_vec3 upVector)
 			{0.0f, 0.0f , 0.0f, 1.0f}
 		}
 	}, mat4_translation((t_vec3){-cameraPosition.x, -cameraPosition.y, -cameraPosition.z})));
+}
+
+//Model Matrice
+t_mat4 initModelMatrice(float xAngle, float yAngle)
+{
+	t_mat4 scale = mat4_identity();
+	t_mat4 rotate = mat4_mult(mat4_identity(), mat4_mult(mat4_rotation_y(xAngle), mat4_rotation_x(yAngle)));
+	t_mat4 translation = mat4_identity();
+	t_mat4 modelMatrice = mat4_mult(mat4_mult(scale, rotate), translation);
+	return (modelMatrice);
 }

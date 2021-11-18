@@ -8,9 +8,13 @@ extern int fragmentshader_glsl_len;
 
 void loop(GLuint vertexBuffer, SDL_Window* window)
 {
-	GLuint programID = loadShaders(vertexshader_glsl, vertexshader_glsl_len, fragmentshader_glsl, fragmentshader_glsl_len);
+	GLuint programId = loadShaders(vertexshader_glsl, vertexshader_glsl_len, fragmentshader_glsl, fragmentshader_glsl_len);
+	t_vec2 angleModel;
 
-	while(event())
+	angleModel.x = 0;
+	angleModel.y = 0;
+
+	while(event(&angleModel))
 	{
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 		glClearColor(0.0f, 0.0f, 0.4f, 0.0f);
@@ -25,7 +29,9 @@ void loop(GLuint vertexBuffer, SDL_Window* window)
 		0,                  // nombre d'octets séparant deux sommets dans le tampon
 		(void*)0            // décalage du tableau de tampon
 		); 
-		glUseProgram(programID);
+		glUseProgram(programId);
+		applyPerspective(programId, angleModel.x, angleModel.y);
+		
 		// // Dessine le triangle ! 
 		glDrawArrays(GL_TRIANGLES, 0, 3); // Démarre à partir du sommet 0; 3 sommets au total -> 1 triangle 
 		glDisableVertexAttribArray(0);

@@ -35,6 +35,7 @@ SRC = \
 			event.c\
 			init.c\
 			loadshader.c\
+			mvp.c\
 			tools.c\
 			mat4_identity.c\
 			mat4_mult.c\

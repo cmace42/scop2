@@ -3,14 +3,14 @@
 int main(int argc, char **argv)
 {
     t_info info;
-    GLuint vertexBuffer;
+    t_vao vao;
 
     if ((info.window = initWindow()) != NULL)
     {
         info.context = SDL_GL_CreateContext(info.window);
 		printf("%p\n",info.context);
-        vertexBuffer = initOpenGL();
-        loop(vertexBuffer, info.window);
+        vao = initOpenGL();
+        loop(vao, info.window);
         //do some stuff
     }
     else

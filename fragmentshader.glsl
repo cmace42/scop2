@@ -1,7 +1,11 @@
 #version 330 core
-out vec3 color;
-
-void main()
-{
-	color = vec3(1,0,0);
+// Valeurs interpolées à partir du vertex shader
+in vec3 fragmentColor;
+// Données de sortie
+out vec3 color; 
+ 
+void main(){ 
+    // Output color = color spécifié dans le vertex shader
+    // interpolé entre les trois sommets alentours
+    color = fragmentColor; 
 }

@@ -50,13 +50,19 @@ typedef struct s_info
 	SDL_GLContext	context;
 }				t_info;
 
+typedef struct s_vao
+{
+	GLuint vertexBuffer;
+	GLuint colorBuffer;
+}				t_vao;
+
 /* Init */
 SDL_Window*		initWindow();
-GLuint			initOpenGL();
+t_vao			initOpenGL();
 
 /* main prog */
 
-void			loop(GLuint vertexBuffer, SDL_Window *window);
+void			loop(t_vao vao, SDL_Window *window);
 int				event(t_vec2 *angleModel);
 void			applyPerspective(GLuint programId, float xAngModel, float yAngModel);
 

@@ -12,7 +12,7 @@ void applyPerspective(GLuint programId, float xAngModel, float yAngModel)
 	GLuint matrixId;
 
 	modelMatrice = initModelMatrice(xAngModel, yAngModel);
-	cameraPos = vec3_new(0.0f, -50.0f, -10.0f);
+	cameraPos = vec3_new(0.0f, -50.0f, 10.0f);
 	cameraTarget = vec3_new(0.0f, 0.0f, 0.0f);
 	up = vec3_new(0.0f, 1.0f, 5.0f);
 	cameraMat = lookAt(cameraPos, cameraTarget, up);

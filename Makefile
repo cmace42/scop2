@@ -35,21 +35,22 @@ SRC = \
 			event.c\
 			init.c\
 			loadshader.c\
-			# mat4_identity.c\
-			# mat4_mult.c\
-			# mat4_rotation.c\
-			# mat4_scaling.c\
-			# mat4_translation.c\
-			# vec3_add.c\
-			# vec3_cross.c\
-			# vec3_div.c\
-			# vec3_length.c\
-			# vec3_mult.c\
-			# vec3_new.c\
-			# vec3_normalisation.c\
-			# vec3_sub.c\
-			# toRadian.c\
-			# printMat4.c\
+			tools.c\
+			mat4_identity.c\
+			mat4_mult.c\
+			mat4_rotation.c\
+			mat4_scaling.c\
+			mat4_translation.c\
+			vec3_add.c\
+			vec3_cross.c\
+			vec3_div.c\
+			vec3_length.c\
+			vec3_mult.c\
+			vec3_new.c\
+			vec3_normalisation.c\
+			vec3_sub.c\
+			toRadian.c\
+			printMat4.c\
 
 GLSL = \
 			vertexshader.glsl\

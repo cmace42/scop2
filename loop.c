@@ -41,7 +41,7 @@ void loop(t_vao vao, SDL_Window* window)
 		(void*)0            // décalage du tableau de tampon
 		);
 		glEnableVertexAttribArray(2);
-		glBindBuffer(GL_ARRAY_BUFFER, vao.vertexBuffer);
+		glBindBuffer(GL_ARRAY_BUFFER, vao.vertexBuffer2);
 		glVertexAttribPointer(
 		0,                  //cela correspond au « layout » dans le shader 
 		5,                  // taille
@@ -52,7 +52,7 @@ void loop(t_vao vao, SDL_Window* window)
 		);
 		// premier tampon d'attributs : les couleurs
 		glEnableVertexAttribArray(3);
-		glBindBuffer(GL_ARRAY_BUFFER, vao.colorBuffer);
+		glBindBuffer(GL_ARRAY_BUFFER, vao.colorBuffer2);
 		glVertexAttribPointer(
 		1,                  //cela correspond au « layout » dans le shader 
 		5,                  // taille

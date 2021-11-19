@@ -109,13 +109,13 @@ t_vao initOpenGL()
 	glBindBuffer(GL_ARRAY_BUFFER, vao.colorBuffer);
 	glBufferData(GL_ARRAY_BUFFER, sizeof(g_color_buffer_data), g_color_buffer_data, GL_STATIC_DRAW);
 
-    glGenBuffers(2, &vao.vertexBuffer); 
+    glGenBuffers(1, &vao.vertexBuffer2); 
 	// Les commandes suivantes vont parler de notre tampon 'vertexBuffer'
-	glBindBuffer(GL_ARRAY_BUFFER, vao.vertexBuffer); 
+	glBindBuffer(GL_ARRAY_BUFFER, vao.vertexBuffer2); 
 	// Fournit les sommets à OpenGL.
 	glBufferData(GL_ARRAY_BUFFER, sizeof(g_vertex_buffer_data2), g_vertex_buffer_data2, GL_STATIC_DRAW);
-	glGenBuffers(3, &vao.colorBuffer);
-	glBindBuffer(GL_ARRAY_BUFFER, vao.colorBuffer);
+	glGenBuffers(1, &vao.colorBuffer2);
+	glBindBuffer(GL_ARRAY_BUFFER, vao.colorBuffer2);
 	glBufferData(GL_ARRAY_BUFFER, sizeof(g_color_buffer_data2), g_color_buffer_data2, GL_STATIC_DRAW);
     // Active le test de profondeur
     glEnable(GL_DEPTH_TEST); 

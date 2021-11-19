@@ -16,6 +16,4 @@ void main(){
 	vec4 v2 = vec4(vertexPostion_modelSpace2, 1); // Transforme un vecteur 4D homogène
 	gl_Position = MVP * v;
 	fragmentColor = vertexColor;
-	gl_Position = MVP2 * v2;
-	fragmentColor = vertexColor2;
 }

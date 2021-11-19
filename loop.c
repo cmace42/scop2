@@ -65,7 +65,7 @@ void loop(t_vao vao, SDL_Window* window)
 		t_vec3 model1 = vec3_new(0, 0, 0);
 		t_vec3 model2 = vec3_new(5, 5, 5);
 		applyPerspective(programId, angleModel.x, angleModel.y, "MVP" , model1);
-		applyPerspective(programId, angleModel.x, angleModel.y, "MVP2" ,model2);
+		applyPerspective(programId, angleModel.x, angleModel.y, "MVP" ,model2);
 
 		// // Dessine le triangle ! 
 		glDrawArrays(GL_TRIANGLES, 3, 13 * 3); // Démarre à partir du sommet 0; 3 sommets au total -> 1 triangle 

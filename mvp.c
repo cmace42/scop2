@@ -1,6 +1,6 @@
 #include "scop.h"
 
-void applyPerspective(GLuint programId, float xAngModel, float yAngModel)
+void applyPerspective(GLuint programId, float xAngModel, float yAngModel, const char *mvp, t_vec3 coord)
 {
 	t_mat4 modelMatrice;
 	t_mat4 mvpMatrice;
@@ -11,7 +11,7 @@ void applyPerspective(GLuint programId, float xAngModel, float yAngModel)
 	t_mat4 projectionMat;
 	GLuint matrixId;
 
-	modelMatrice = initModelMatrice(xAngModel, yAngModel);
+	modelMatrice = initModelMatrice(xAngModel, yAngModel, coord);
 	cameraPos = vec3_new(0.0f, 0.0f, 10.0f);
 	cameraTarget = vec3_new(0.0f, 0.0f, 0.0f);
 	up = vec3_new(0.0f, 1.0f, 5.0f);
@@ -20,7 +20,7 @@ void applyPerspective(GLuint programId, float xAngModel, float yAngModel)
 	mvpMatrice= mat4_mult(mat4_mult(projectionMat, cameraMat), modelMatrice);
 	// Obtient un identifiant pour notre variable uniforme "MVP". 
 	// Seulement au moment de l'initialisation. 
-	matrixId = glGetUniformLocation(programId, "MVP"); 
+	matrixId = glGetUniformLocation(programId, mvp); 
 	
 	// Envoie notre transformation au shader actuel dans la variable uniforme "mvpMatrice" 
 	// Pour chaque modèle affiché, comme la mvpMatrice sera différente (au moins pour la partie M)

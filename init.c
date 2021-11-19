@@ -38,8 +38,9 @@ static const GLfloat g_vertex_buffer_data[] = {
     -1.0f, 1.0f, 1.0f, 
     1.0f,-1.0f, 1.0f 
 };
-
 static const GLfloat g_color_buffer_data[] = { 
+
+
     0.583f,  0.771f,  0.014f, 
     0.609f,  0.115f,  0.436f, 
     0.327f,  0.483f,  0.844f, 
@@ -77,6 +78,17 @@ static const GLfloat g_color_buffer_data[] = {
     0.820f,  0.883f,  0.371f, 
     0.982f,  0.099f,  0.879f 
 };
+static const GLfloat g_vertex_buffer_data2[] = { 
+    -1.0f,-1.0f,-1.0f, // triangle 1 : début
+    -1.0f,-1.0f, 1.0f, 
+    -1.0f, 1.0f, 1.0f // triangle 1 : fin 
+};
+
+static const GLfloat g_color_buffer_data2[] = { 
+    0.583f,  0.771f,  0.014f, 
+    0.609f,  0.115f,  0.436f, 
+    0.327f,  0.483f,  0.844f,
+};
 
 t_vao initOpenGL()
 {
@@ -93,10 +105,18 @@ t_vao initOpenGL()
 	glBindBuffer(GL_ARRAY_BUFFER, vao.vertexBuffer); 
 	// Fournit les sommets à OpenGL.
 	glBufferData(GL_ARRAY_BUFFER, sizeof(g_vertex_buffer_data), g_vertex_buffer_data, GL_STATIC_DRAW);
-
 	glGenBuffers(1, &vao.colorBuffer);
 	glBindBuffer(GL_ARRAY_BUFFER, vao.colorBuffer);
 	glBufferData(GL_ARRAY_BUFFER, sizeof(g_color_buffer_data), g_color_buffer_data, GL_STATIC_DRAW);
+
+    glGenBuffers(2, &vao.vertexBuffer); 
+	// Les commandes suivantes vont parler de notre tampon 'vertexBuffer'
+	glBindBuffer(GL_ARRAY_BUFFER, vao.vertexBuffer); 
+	// Fournit les sommets à OpenGL.
+	glBufferData(GL_ARRAY_BUFFER, sizeof(g_vertex_buffer_data2), g_vertex_buffer_data2, GL_STATIC_DRAW);
+	glGenBuffers(3, &vao.colorBuffer);
+	glBindBuffer(GL_ARRAY_BUFFER, vao.colorBuffer);
+	glBufferData(GL_ARRAY_BUFFER, sizeof(g_color_buffer_data2), g_color_buffer_data2, GL_STATIC_DRAW);
     // Active le test de profondeur
     glEnable(GL_DEPTH_TEST); 
     // Accepte le fragment s'il est plus proche de la caméra que le précédent accepté

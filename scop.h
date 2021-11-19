@@ -54,6 +54,8 @@ typedef struct s_vao
 {
 	GLuint vertexBuffer;
 	GLuint colorBuffer;
+	GLuint vertexBuffer2;
+	GLuint colorBuffer2;
 }				t_vao;
 
 /* Init */
@@ -64,14 +66,14 @@ t_vao			initOpenGL();
 
 void			loop(t_vao vao, SDL_Window *window);
 int				event(t_vec2 *angleModel);
-void			applyPerspective(GLuint programId, float xAngModel, float yAngModel);
+void			applyPerspective(GLuint programId, float xAngModel, float yAngModel, const char *mvp, t_vec3 coord);
 
 /* Tools */
 GLuint			loadShaders(const char *vertexSource, int vertexLen, 
 					const char *fragmentSource, int fragmentLen);
 t_mat4			initPerspective (float fov, float zNear, float zFar);
 t_mat4			lookAt(t_vec3 cameraPosition, t_vec3 cameraTarget, t_vec3 upVector);
-t_mat4			initModelMatrice(float xAngle, float yAngle);
+t_mat4			initModelMatrice(float xAngle, float yAngle, t_vec3 coord);
 
 /* Math */
 

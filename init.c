@@ -97,6 +97,9 @@ t_vao initOpenGL()
 	glGenBuffers(1, &vao.colorBuffer);
 	glBindBuffer(GL_ARRAY_BUFFER, vao.colorBuffer);
 	glBufferData(GL_ARRAY_BUFFER, sizeof(g_color_buffer_data), g_color_buffer_data, GL_STATIC_DRAW);
-
+    // Active le test de profondeur
+    glEnable(GL_DEPTH_TEST); 
+    // Accepte le fragment s'il est plus proche de la caméra que le précédent accepté
+    glDepthFunc(GL_LESS);
 	return (vao);
 }

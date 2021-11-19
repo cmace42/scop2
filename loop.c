@@ -8,6 +8,7 @@ extern int fragmentshader_glsl_len;
 
 void loop(t_vao vao, SDL_Window* window)
 {
+	GLuint Texture = loadBMP_custom("texturetest.bmp");
 	GLuint programId = loadShaders(vertexshader_glsl, vertexshader_glsl_len, fragmentshader_glsl, fragmentshader_glsl_len);
 	t_vec2 angleModel;
 
@@ -31,10 +32,10 @@ void loop(t_vao vao, SDL_Window* window)
 		);
 		// premier tampon d'attributs : les couleurs
 		glEnableVertexAttribArray(1);
-		glBindBuffer(GL_ARRAY_BUFFER, vao.colorBuffer);
+		glBindBuffer(GL_ARRAY_BUFFER, vao.textureBuffer);
 		glVertexAttribPointer(
 		1,                  //cela correspond au « layout » dans le shader 
-		3,                  // taille
+		2,                  // taille
 		GL_FLOAT,           // type 
 		GL_FALSE,           // normalisé ? 
 		0,                  // nombre d'octets séparant deux sommets dans le tampon

@@ -54,6 +54,7 @@ typedef struct s_vao
 {
 	GLuint vertexBuffer;
 	GLuint colorBuffer;
+	GLuint textureBuffer;
 }				t_vao;
 
 /* Init */
@@ -72,6 +73,7 @@ GLuint			loadShaders(const char *vertexSource, int vertexLen,
 t_mat4			initPerspective (float fov, float zNear, float zFar);
 t_mat4			lookAt(t_vec3 cameraPosition, t_vec3 cameraTarget, t_vec3 upVector);
 t_mat4			initModelMatrice(float xAngle, float yAngle);
+GLuint			loadBMP_custom(const char *imagepath);
 
 /* Math */
 

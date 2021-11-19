@@ -1,11 +1,16 @@
-#version 330 core
+#version 330 core 
+ 
 // Valeurs interpolées à partir du vertex shader
-in vec3 fragmentColor;
-// Données de sortie
+in vec2 UV; 
+ 
+// Données en sortie
 out vec3 color; 
  
+// Valeurs qui sont constantes pour l'ensemble du modèle.
+uniform sampler2D myTextureSampler; 
+ 
 void main(){ 
-    // Output color = color spécifié dans le vertex shader
-    // interpolé entre les trois sommets alentours
-    color = fragmentColor; 
+ 
+    // Couleur de sortie = couleur de la texture pour les coordonnées UV spécifiées
+    color = texture(myTextureSampler, UV ).rgb; 
 }

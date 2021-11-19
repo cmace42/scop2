@@ -37,6 +37,7 @@ SRC = \
 			loadshader.c\
 			mvp.c\
 			tools.c\
+			loadbmp.c\
 			mat4_identity.c\
 			mat4_mult.c\
 			mat4_rotation.c\

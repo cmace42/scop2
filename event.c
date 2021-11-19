@@ -15,16 +15,16 @@ int event(t_vec2 *angleModel)
 			switch (event.key.keysym.sym)
             	{
 					 case SDLK_UP:
-						angleModel->x += 0.1f;
+						angleModel->y -= 0.1f;
 						break;
 					case SDLK_DOWN:
-						angleModel->x -= 0.1f;
-						break;
-					case SDLK_RIGHT:
 						angleModel->y += 0.1f;
 						break;
+					case SDLK_RIGHT:
+						angleModel->x += 0.1f;
+						break;
 					case SDLK_LEFT:
-						angleModel->y -= 0.1f;
+						angleModel->x -= 0.1f;
 						break;
 				}
 		}

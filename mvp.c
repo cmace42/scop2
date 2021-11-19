@@ -12,7 +12,7 @@ void applyPerspective(GLuint programId, float xAngModel, float yAngModel)
 	GLuint matrixId;
 
 	modelMatrice = initModelMatrice(xAngModel, yAngModel);
-	cameraPos = vec3_new(0.0f, -50.0f, 10.0f);
+	cameraPos = vec3_new(0.0f, 0.0f, 10.0f);
 	cameraTarget = vec3_new(0.0f, 0.0f, 0.0f);
 	up = vec3_new(0.0f, 1.0f, 5.0f);
 	cameraMat = lookAt(cameraPos, cameraTarget, up);
@@ -24,5 +24,5 @@ void applyPerspective(GLuint programId, float xAngModel, float yAngModel)
 	
 	// Envoie notre transformation au shader actuel dans la variable uniforme "mvpMatrice" 
 	// Pour chaque modèle affiché, comme la mvpMatrice sera différente (au moins pour la partie M)
-	glUniformMatrix4fv(matrixId, 1, GL_FALSE, &mvpMatrice.m[0][0]);
+	glUniformMatrix4fv(matrixId, 1, GL_TRUE, &mvpMatrice.m[0][0]);
 }

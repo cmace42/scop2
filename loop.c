@@ -32,9 +32,10 @@ void loop(t_vao vao, SDL_Window* window)
 	double currentTime;
 	double lastTime;
 	float deltaTime;
-	// SDL_SetRelativeMouseMode(false);
+	int running = 1;
+	SDL_SetRelativeMouseMode(false);
 
-	while(event(&angleModel))
+	while(running)
 	{
 		currentTime = SDL_GetTicks();
 		deltaTime = (float)(currentTime - lastTime);
@@ -42,14 +43,9 @@ void loop(t_vao vao, SDL_Window* window)
 		SDL_GetMouseState(&xMouse, &yMouse);
 		horizontalAngle += MOUSESPEED * deltaTime * (float)(lastxMouse - xMouse);
 		verticalAngle += MOUSESPEED * deltaTime * (float)(lastyMouse - yMouse);
-		// printf("================\n%d, %d\n", xMouse, yMouse);
-		// printf("%d, %d\n", lastxMouse, lastyMouse);
-		// printf("%d, %d\n", (lastxMouse - xMouse), (lastyMouse- yMouse));
-		// printf("%f, %f\n",MOUSESPEED * deltaTime * (float)(lastxMouse - xMouse), MOUSESPEED * deltaTime * (float)(lastyMouse- yMouse));
 		lastxMouse = xMouse;
 		lastyMouse = yMouse;
 
-		// SDL_Delay(1000);
 		dir = vec3_new(cosf(verticalAngle) * sinf(horizontalAngle),
 				sinf(verticalAngle),
 				cosf(verticalAngle) * cosf(horizontalAngle));
@@ -58,6 +54,7 @@ void loop(t_vao vao, SDL_Window* window)
 				cosf(horizontalAngle - 3.14f/2.0f));
 		camera.up = vec3_cross(right, dir);
 		camera.target = vec3_add(camera.position, dir);
+		running = event(&angleModel, &camera, right, deltaTime);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 		glClearColor(0.0f, 0.0f, 0.4f, 0.0f);
 		// premier tampon d'attributs : les sommets
@@ -97,5 +94,4 @@ void loop(t_vao vao, SDL_Window* window)
 	glDeleteVertexArrays(1, &vao.VertexArrayID);
 	glDeleteBuffers(1, &vao.vertexBuffer);
 	glDeleteBuffers(1, &vao.textureBuffer);
-	printf("wtf bro ? \n");
 }

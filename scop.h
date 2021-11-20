@@ -16,7 +16,7 @@
 
 # define WIDTH 800
 # define HEIGHT 600
-# define SPEED 3.0f
+# define SPEED 0.0009f
 # define MOUSESPEED 0.00005f
 # define INITIALFOV 45.0f
 
@@ -74,7 +74,7 @@ t_vao			initOpenGL();
 /* main prog */
 
 void			loop(t_vao vao, SDL_Window *window);
-int				event(t_vec2 *angleModel);
+int				event(t_vec2 *angleModel, t_camera *camera, t_vec3 right, float deltaTime);
 void			applyPerspective(GLuint programId, float xAngModel, float yAngModel, t_camera camera);
 
 /* Tools */

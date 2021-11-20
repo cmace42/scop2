@@ -8,7 +8,7 @@ int event(t_vec2 *angleModel)
 
 	while(SDL_PollEvent(&event))
 	{
-		if (event.type == SDL_QUIT || event.key.keysym.sym == SDLK_PRINTSCREEN)
+		if (event.type == SDL_QUIT || event.key.keysym.sym == SDLK_ESCAPE)
 		{
 			printf("Really men ?\n");
 			return(0);

@@ -13,11 +13,10 @@ int main(int argc, char **argv)
         loop(vao, info.window);
         //do some stuff
     }
-    else
-    {
+	else
         printf("Failed to init window\n");
-        SDL_GL_DeleteContext(info.context);
-        SDL_DestroyWindow(info.window);
-        SDL_Quit();
-    }
+    if (info.context)
+		SDL_GL_DeleteContext(info.context);
+	SDL_DestroyWindow(info.window);
+	SDL_Quit();
 }

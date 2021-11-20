@@ -52,7 +52,11 @@ GLuint loadBMP_custom(const char *imagepath)
 	// Donne l'image à OpenGL
 	glTexImage2D(GL_TEXTURE_2D, 0,GL_RGB, width, height, 0, GL_BGR, GL_UNSIGNED_BYTE, data); 
 	
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST); 
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+	// Lorsque l'on agrandit l'image (aucune MIP map plus grande n'est disponible), utiliser le filtrage LINÉAIRE
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR); 
+	// Lorsque l'on rétrécit l'image, utiliser un fondu linéaire entre deux MIP maps, chacune étant aussi filtrée linéairement
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR); 
+	// Générer les MIP maps. 
+	glGenerateMipmap(GL_TEXTURE_2D);
 	return (textureID);
 }

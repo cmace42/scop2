@@ -16,7 +16,9 @@
 
 # define WIDTH 800
 # define HEIGHT 600
-
+# define SPEED 3.0f
+# define MOUSESPEED 0.00005f
+# define INITIALFOV 45.0f
 
 typedef struct	s_vec2
 {
@@ -52,10 +54,18 @@ typedef struct s_info
 
 typedef struct s_vao
 {
+	GLuint VertexArrayID;
 	GLuint vertexBuffer;
 	GLuint colorBuffer;
 	GLuint textureBuffer;
 }				t_vao;
+
+typedef struct s_camera
+{
+	t_vec3 position;
+	t_vec3 target;
+	t_vec3 up;
+}				t_camera;
 
 /* Init */
 SDL_Window*		initWindow();
@@ -65,7 +75,7 @@ t_vao			initOpenGL();
 
 void			loop(t_vao vao, SDL_Window *window);
 int				event(t_vec2 *angleModel);
-void			applyPerspective(GLuint programId, float xAngModel, float yAngModel);
+void			applyPerspective(GLuint programId, float xAngModel, float yAngModel, t_camera camera);
 
 /* Tools */
 GLuint			loadShaders(const char *vertexSource, int vertexLen, 

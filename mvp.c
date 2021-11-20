@@ -1,21 +1,16 @@
 #include "scop.h"
 
-void applyPerspective(GLuint programId, float xAngModel, float yAngModel)
+void applyPerspective(GLuint programId, float xAngModel, float yAngModel, t_camera camera)
 {
 	t_mat4 modelMatrice;
 	t_mat4 mvpMatrice;
-	t_vec3 cameraPos;
-	t_vec3 cameraTarget;
-	t_vec3 up;
 	t_mat4 cameraMat;
 	t_mat4 projectionMat;
 	GLuint matrixId;
 
 	modelMatrice = initModelMatrice(xAngModel, yAngModel);
-	cameraPos = vec3_new(0.0f, 0.0f, 10.0f);
-	cameraTarget = vec3_new(0.0f, 0.0f, 0.0f);
-	up = vec3_new(0.0f, 1.0f, 5.0f);
-	cameraMat = lookAt(cameraPos, cameraTarget, up);
+
+	cameraMat = lookAt(camera.position, camera.target, camera.up);
 	projectionMat = initPerspective(45.0f, 0.1f, 100.0f);
 	mvpMatrice= mat4_mult(mat4_mult(projectionMat, cameraMat), modelMatrice);
 	// Obtient un identifiant pour notre variable uniforme "MVP". 

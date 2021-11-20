@@ -4,10 +4,13 @@ int event(t_vec2 *angleModel)
 {
 	SDL_Event event;
 
+
+
 	while(SDL_PollEvent(&event))
 	{
-		if (event.type == SDL_QUIT || event.key.keysym.sym == SDLK_ESCAPE)
+		if (event.type == SDL_QUIT || event.key.keysym.sym == SDLK_PRINTSCREEN)
 		{
+			printf("Really men ?\n");
 			return(0);
 		}
 		if (SDL_KEYDOWN)

@@ -82,9 +82,8 @@ t_vao initOpenGL()
 {
 	t_vao vao;
 	// see https://youtu.be/hrZbyd4qPnk for VAO et VBO
-	GLuint VertexArrayID;
-	glGenVertexArrays(1, &VertexArrayID);
-	glBindVertexArray(VertexArrayID);
+	glGenVertexArrays(1, &vao.VertexArrayID);
+	glBindVertexArray(vao.VertexArrayID);
 
 	// Ceci identifiera notre tampon de sommets
 	// Génère un tampon et place l'identifiant dans 'vertexBuffer'

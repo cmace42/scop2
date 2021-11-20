@@ -11,12 +11,53 @@ void loop(t_vao vao, SDL_Window* window)
 	GLuint Texture = loadBMP_custom("texturetest.bmp");
 	GLuint programId = loadShaders(vertexshader_glsl, vertexshader_glsl_len, fragmentshader_glsl, fragmentshader_glsl_len);
 	t_vec2 angleModel;
+	t_camera camera;
+	// angle horizontal : vers -Z 
+	float horizontalAngle = 3.14f; 
+	// angle vertical : 0, regarde l'horizon 
+	float verticalAngle = 0.0f; 
+	t_vec3 dir;
+	t_vec3 right;
 
 	angleModel.x = 0;
 	angleModel.y = 0;
+	camera.position= vec3_new(0.0f, 0.0f, 10.0f);
+	camera.target = vec3_new(0.0f, 0.0f, 0.0f);
+	camera.up = vec3_new(0.0f, 1.0f, 5.0f);
+	int xMouse;
+	int yMouse;
+	SDL_GetMouseState(&xMouse, &yMouse);
+	int lastxMouse = xMouse;
+	int lastyMouse = yMouse;
+	double currentTime;
+	double lastTime;
+	float deltaTime;
+	// SDL_SetRelativeMouseMode(false);
 
 	while(event(&angleModel))
 	{
+		currentTime = SDL_GetTicks();
+		deltaTime = (float)(currentTime - lastTime);
+		lastTime = currentTime;
+		SDL_GetMouseState(&xMouse, &yMouse);
+		horizontalAngle += MOUSESPEED * deltaTime * (float)(lastxMouse - xMouse);
+		verticalAngle += MOUSESPEED * deltaTime * (float)(lastyMouse - yMouse);
+		// printf("================\n%d, %d\n", xMouse, yMouse);
+		// printf("%d, %d\n", lastxMouse, lastyMouse);
+		// printf("%d, %d\n", (lastxMouse - xMouse), (lastyMouse- yMouse));
+		// printf("%f, %f\n",MOUSESPEED * deltaTime * (float)(lastxMouse - xMouse), MOUSESPEED * deltaTime * (float)(lastyMouse- yMouse));
+		lastxMouse = xMouse;
+		lastyMouse = yMouse;
+
+		// SDL_Delay(1000);
+		dir = vec3_new(cosf(verticalAngle) * sinf(horizontalAngle),
+				sinf(verticalAngle),
+				cosf(verticalAngle) * cosf(horizontalAngle));
+		right = vec3_new(sinf(horizontalAngle - 3.14f/2.0f),
+				0,
+				cosf(horizontalAngle - 3.14f/2.0f));
+		camera.up = vec3_cross(right, dir);
+		camera.target = vec3_add(camera.position, dir);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 		glClearColor(0.0f, 0.0f, 0.4f, 0.0f);
 		// premier tampon d'attributs : les sommets
@@ -42,13 +83,19 @@ void loop(t_vao vao, SDL_Window* window)
 		(void*)0            // décalage du tableau de tampon
 		);
 		glUseProgram(programId);
-		applyPerspective(programId, angleModel.x, angleModel.y);
+		applyPerspective(programId, angleModel.x, angleModel.y, camera);
 		
 		// // Dessine le triangle ! 
 		glDrawArrays(GL_TRIANGLES, 0, 12 * 3); // Démarre à partir du sommet 0; 3 sommets au total -> 1 triangle 
 		glDisableVertexAttribArray(0);
 		SDL_GL_SwapWindow(window); // Sans ca pas d'image ?
-		SDL_Delay(17); // 1000 ms / nombre de fps (ici 60) = ms par seconde entre chaque frame
+		SDL_Delay(17*2); // 1000 ms / nombre de fps (ici 60) = ms par seconde entre chaque frame
 		//do some stuff
 	}
+	glDeleteTextures(1, &Texture);
+	glDeleteProgram(programId);
+	glDeleteVertexArrays(1, &vao.VertexArrayID);
+	glDeleteBuffers(1, &vao.vertexBuffer);
+	glDeleteBuffers(1, &vao.textureBuffer);
+	printf("wtf bro ? \n");
 }

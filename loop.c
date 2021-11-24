@@ -26,7 +26,7 @@ void loop(t_vao vao, SDL_Window* window)
 	camera.up = vec3_new(0.0f, 1.0f, 5.0f);
 	int xMouse;
 	int yMouse;
-	SDL_GetMouseState(&xMouse, &yMouse);
+	SDL_GetRelativeMouseState(&xMouse, &yMouse);
 	int lastxMouse = xMouse;
 	int lastyMouse = yMouse;
 	double currentTime;
@@ -34,17 +34,21 @@ void loop(t_vao vao, SDL_Window* window)
 	float deltaTime;
 	int running = 1;
 	SDL_SetRelativeMouseMode(false);
+	// SDL_ShowCursor(false);
 
 	while(running)
 	{
 		currentTime = SDL_GetTicks();
 		deltaTime = (float)(currentTime - lastTime);
 		lastTime = currentTime;
-		SDL_GetMouseState(&xMouse, &yMouse);
-		horizontalAngle += MOUSESPEED * deltaTime * (float)(lastxMouse - xMouse);
-		verticalAngle += MOUSESPEED * deltaTime * (float)(lastyMouse - yMouse);
-		lastxMouse = xMouse;
-		lastyMouse = yMouse;
+		SDL_GetRelativeMouseState(&xMouse, &yMouse);
+		horizontalAngle += MOUSESPEED * deltaTime * (float)(xMouse);
+		verticalAngle += MOUSESPEED * deltaTime * (float)(yMouse);
+		printf("mouse X = %d, mouseY = %d\n", xMouse,yMouse);
+		// printf("horizontalAngle = %f, add = %f\n", horizontalAngle, MOUSESPEED * deltaTime * (float)(lastyMouse -xMouse / 100000));
+		// printf("verticalAngle = %f, add = %f\n", verticalAngle, MOUSESPEED * deltaTime * (float)(lastyMouse - yMouse));
+		lastxMouse = xMouse / 10000;
+		lastyMouse = yMouse / 10000;
 
 		dir = vec3_new(cosf(verticalAngle) * sinf(horizontalAngle),
 				sinf(verticalAngle),

@@ -4,12 +4,12 @@ static const GLfloat g_vertex_buffer_data[] = {
     -1.0f,-1.0f,-1.0f, // triangle 1 : début
     -1.0f,-1.0f, 1.0f, 
     -1.0f, 1.0f, 1.0f, // triangle 1 : fin 
-    1.0f, 1.0f,-1.0f, // triangle 2 : début 
-    -1.0f,-1.0f,-1.0f, 
-    -1.0f, 1.0f,-1.0f, // triangle 2 : fin 
     1.0f,-1.0f, 1.0f, 
     -1.0f,-1.0f,-1.0f, 
     1.0f,-1.0f,-1.0f, 
+    1.0f, 1.0f,-1.0f, // triangle 2 : début 
+    -1.0f,-1.0f,-1.0f, 
+    -1.0f, 1.0f,-1.0f, // triangle 2 : fin 
     1.0f, 1.0f,-1.0f, 
     1.0f,-1.0f,-1.0f, 
     -1.0f,-1.0f,-1.0f, 

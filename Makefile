@@ -15,7 +15,7 @@ NAME = scop
 
 # FLAGS DE COMPILE WOLLAH
 CC = gcc
-FLAGS = -g
+FLAGS = -g -fsanitize=address
 # OTHERFLAGS = -O3
 UNAME := $(shell uname)
 LDFLAGS = -lSDL2
@@ -26,6 +26,8 @@ endif
 ifeq ($(UNAME), Darwin)
 LDFLAGS += -framework OpenGl -framework GLUT
 endif
+
+LIBFTDIR = libft
 
 # SOURCES
 SRC = \
@@ -38,6 +40,8 @@ SRC = \
 			mvp.c\
 			tools.c\
 			loadbmp.c\
+			loadObj.c\
+			objReader.c\
 			mat4_identity.c\
 			mat4_mult.c\
 			mat4_rotation.c\
@@ -60,24 +64,29 @@ GLSL = \
 
 OBJ = $(SRC:.c=.o) $(GLSL:.glsl=.o)
 
-all: $(NAME)
+all: lib $(NAME)
 
 $(NAME): $(OBJ)
 	@echo "$(NAME) compilation : $(_CYAN)done$(_END)"
-	@$(CC) $(OBJ) $(FLAGS) $(ADDFLAGS) -o $(NAME)  $(LDFLAGS)
+	@$(CC) $(OBJ) $(FLAGS) $(ADDFLAGS) -o $(NAME) -L $(LIBFTDIR) -lft $(LDFLAGS)
 
 %.o: %.glsl
 	@xxd -i $< | $(CC) -c -xc - -o $@
 
 %.o: %.c
-	@$(CC) $(FLAGS) $(ADDFLAGS) -c $<
+	@$(CC) $(FLAGS) $(ADDFLAGS) -I $(LIBFTDIR) -c $<
+
+lib:
+	@make -C $(LIBFTDIR)
 
 clean:
 	@$(RM) -f $(OBJ)
+	@make clean -C $(LIBFTDIR)/
 	@echo "clean $(NAME): $(_CYAN)done$(_END)"
 
 fclean: clean
 	@$(RM) -f $(NAME)
+	@make fclean -C $(LIBFTDIR)
 	@echo "fclean $(NAME): $(_CYAN)done$(_END)"
 
 re: fclean all

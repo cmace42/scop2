@@ -42,8 +42,8 @@ int event(t_vec2 *angleModel, t_camera *camera, t_vec3 right, float deltaTime, t
 			}
 		}
 	}
-	printf("%f, %f, %f\n", right.x, right.y, right.z);
-	printf("camera = x : %f, y : %f, z : %f\n\n",camera->position.x,camera->position.y,camera->position.z);
+	// printf("%f, %f, %f\n", right.x, right.y, right.z);
+	// printf("camera = x : %f, y : %f, z : %f\n\n",camera->position.x,camera->position.y,camera->position.z);
 
 	return (1);
 }

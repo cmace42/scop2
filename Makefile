@@ -42,6 +42,7 @@ SRC = \
 			loadbmp.c\
 			loadObj.c\
 			objReader.c\
+			toolsParsing.c\
 			mat4_identity.c\
 			mat4_mult.c\
 			mat4_rotation.c\

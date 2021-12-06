@@ -9,7 +9,6 @@ void applyPerspective(GLuint programId, float xAngModel, float yAngModel, t_came
 	GLuint matrixId;
 
 	modelMatrice = initModelMatrice(xAngModel, yAngModel);
-
 	cameraMat = lookAt(camera.position, camera.target, camera.up);
 	projectionMat = initPerspective(45.0f, 0.1f, 100.0f);
 	mvpMatrice= mat4_mult(mat4_mult(projectionMat, cameraMat), modelMatrice);

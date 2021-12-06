@@ -21,11 +21,11 @@
 # include <limits.h>
 # include "libft/libft.h"
 
-# define WIDTH 800
-# define HEIGHT 600
-# define SPEED 0.0009f
+# define WIDTH 1600
+# define HEIGHT 1200
+# define SPEED 0.009f
 # define MOUSESPEED 0.00005f
-# define INITIALFOV 45.0f
+# define INITIALFOV 70.0f
 
 typedef struct	s_vec2
 {
@@ -87,30 +87,48 @@ typedef struct	s_obj_reader
 
 typedef struct s_model
 {
-	t_vec3 vertices;
-	t_vec2 uvs;
-	t_vec3 normals;
+	GLfloat *vertex_buffer_data;
+	size_t vertex_size_data;
+	// t_vec2 uvs;
+	// t_vec3 normals;
 }				t_model;
 
-// typedef struct	s_list
-// {
-// 	double			number;
-// 	size_t			content_size;
-// 	struct s_list	*next;
-// }				t_list;
+typedef struct	s_listParsing
+{
+	GLfloat			number;
+	struct s_listParsing	*next;
+	struct s_listParsing	*prev;
+}				t_listParsing;
+
+/*vUv = Vertex Uv*/
+typedef struct s_listData
+{
+	t_listParsing *vertices;
+	t_listParsing *vUv;
+	t_listParsing *vNormal;
+	t_listParsing *facesV;
+	t_listParsing *facesUv;
+	t_listParsing *facesNormal;
+	int nVertices;
+	int nUv;
+	int nNormal;
+	int nFacesV;
+	int nFacesUv;
+	int nFacesNormal;
+}				t_listData;
 
 /* Init */
 SDL_Window*		initWindow();
-t_vao			initOpenGL();
+t_vao initOpenGL(t_model obj);
 
 /* main prog */
 
-void			loop(t_vao vao, SDL_Window *window);
+void			loop(t_vao vao, SDL_Window *window, t_model obj);
 int event(t_vec2 *angleModel, t_camera *camera, t_vec3 right, float deltaTime, t_vec3 dir);
 void			applyPerspective(GLuint programId, float xAngModel, float yAngModel, t_camera camera);
 
 /* Tools */
-bool			loadObj(t_model *obj, char *filepath);
+t_model			loadObj(char *filepath);
 GLuint			loadShaders(const char *vertexSource, int vertexLen, 
 					const char *fragmentSource, int fragmentLen);
 t_mat4			initPerspective (float fov, float zNear, float zFar);
@@ -122,6 +140,13 @@ t_obj_reader	obj_create_reader(int fd, char *buffer, size_t buffer_size);
 int16_t			obj_reader_peek(t_obj_reader *self);
 void			obj_reader_next(t_obj_reader *self);
 
+/* Tools Parsing */
+void printList(t_listParsing* node);
+void printListR(t_listParsing* node);
+void append(t_listParsing** head_ref, GLfloat new_data);
+void insertAfter(t_listParsing *prev_node, GLfloat new_data);
+void push(t_listParsing** head_ref, GLfloat new_data);
+void freeList(t_listParsing **head_ref);
 
 /* Math */
 

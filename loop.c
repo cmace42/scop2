@@ -6,7 +6,7 @@ extern char fragmentshader_glsl[];
 extern int fragmentshader_glsl_len;
 
 
-void loop(t_vao vao, SDL_Window* window)
+void loop(t_vao vao, SDL_Window* window, t_model obj)
 {
 	GLuint Texture = loadBMP_custom("texturetest.bmp");
 	GLuint programId = loadShaders(vertexshader_glsl, vertexshader_glsl_len, fragmentshader_glsl, fragmentshader_glsl_len);
@@ -33,7 +33,11 @@ void loop(t_vao vao, SDL_Window* window)
 	double lastTime;
 	float deltaTime;
 	int running = 1;
-	glEnable(GL_CULL_FACE);
+	// glEnable(GL_CULL_FACE);
+	printf("Starting loop\n");
+	printf("size triangle to draw %ld\n", obj.vertex_size_data);
+	int i = 0;
+
 	while(running)
 	{
 		currentTime = SDL_GetTicks();
@@ -67,20 +71,20 @@ void loop(t_vao vao, SDL_Window* window)
 		);
 		// premier tampon d'attributs : les couleurs
 		glEnableVertexAttribArray(1);
-		glBindBuffer(GL_ARRAY_BUFFER, vao.textureBuffer);
+		glBindBuffer(GL_ARRAY_BUFFER, vao.colorBuffer);
 		glVertexAttribPointer(
 		1,                  //cela correspond au « layout » dans le shader 
-		2,                  // taille
+		3,                  // taille
 		GL_FLOAT,           // type 
 		GL_FALSE,           // normalisé ? 
 		0,                  // nombre d'octets séparant deux sommets dans le tampon
 		(void*)0            // décalage du tableau de tampon
 		);
 		glUseProgram(programId);
-		printf("camera = x : %f, y : %f, z : %f\n\n",camera.position.x,camera.position.y,camera.position.z);
+		// printf("camera = x : %f, y : %f, z : %f\n\n",camera.position.x,camera.position.y,camera.position.z);
 		applyPerspective(programId, angleModel.x, angleModel.y, camera);
 		// // Dessine le triangle ! 
-		glDrawArrays(GL_TRIANGLES, 0, 12 * 3); // Démarre à partir du sommet 0; 3 sommets au total -> 1 triangle 
+		glDrawArrays(GL_TRIANGLES, 0, obj.vertex_size_data * 3); // Démarre à partir du sommet 0; 3 sommets au total -> 1 triangle 
 		glDisableVertexAttribArray(0);
 		SDL_GL_SwapWindow(window); // Sans ca pas d'image ?
 		SDL_Delay(1000/60); // 1000 ms / nombre de fps (ici 60) = ms par seconde entre chaque frame

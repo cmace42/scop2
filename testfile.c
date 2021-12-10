@@ -120,12 +120,45 @@ void printList(struct Node* node)
         last = last->prev;
     }
 }
+
+void freetest(void *var)
+{
+    if (var != NULL)
+        free(var);
+    else
+        printf("no malloc\n");
+}
+
+enum {
+    TEST,
+    OK,
+    PASOK,
+    COUCOU,
+};
  
 /* Driver program to test above functions*/
 int main()
 {
     /* Start with the empty list */
     struct Node* head = NULL;
+
+    if (1)
+    {
+        if (1)
+        {
+            break;
+        }
+        else if (1)
+        {
+            return(1);
+        }
+        else if (1)
+        {
+            printf("coucou\n");
+        }
+    }
+
+    printf("%d\n", PASOK || OK);
  
     // Insert 6.  So linked list becomes 6->NULL
     append(&head, 6);
@@ -150,6 +183,7 @@ int main()
  
     printf("Created DLL is: ");
     printList(head);
+    freetest(head);
  
     getchar();
     return 0;

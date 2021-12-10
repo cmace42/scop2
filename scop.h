@@ -85,12 +85,23 @@ typedef struct	s_obj_reader
 	size_t	line;
 }				t_obj_reader;
 
+typedef struct	s_bufferData
+{
+	GLfloat *buffer_data;
+	size_t size_data;
+}				t_bufferData;
+
 typedef struct s_model
 {
+	t_bufferData vertex;
+	t_bufferData uv;
+	t_bufferData normal;
 	GLfloat *vertex_buffer_data;
 	size_t vertex_size_data;
-	// t_vec2 uvs;
-	// t_vec3 normals;
+	GLfloat *uv_buffer_data;
+	size_t uv_size_data;
+	GLfloat *normal_buffer_data;
+	size_t normal_size_data;
 }				t_model;
 
 typedef struct	s_listParsing
@@ -117,6 +128,21 @@ typedef struct s_listData
 	int nFacesNormal;
 }				t_listData;
 
+enum {
+	DONE,
+	WRONG_CHAR,
+	NO_RESULT,
+	GET_RESULT,
+	GET_FLOAT,
+	RIP_MALLOC,
+	RIP_OPEN,
+	RIP_READ,
+	PREVIOUS_NODE_CANT_BE_NULL,
+	FACE_ID_OVERFLOW,
+	FACE_ID_CANT_BE_ZERO,
+	NO_DATA,
+};
+
 /* Init */
 SDL_Window*		initWindow();
 t_vao initOpenGL(t_model obj);
@@ -128,24 +154,23 @@ int event(t_vec2 *angleModel, t_camera *camera, t_vec3 right, float deltaTime, t
 void			applyPerspective(GLuint programId, float xAngModel, float yAngModel, t_camera camera);
 
 /* Tools */
-t_model			loadObj(char *filepath);
+int				loadObj(char *filepath, t_model *model);
 GLuint			loadShaders(const char *vertexSource, int vertexLen, 
 					const char *fragmentSource, int fragmentLen);
 t_mat4			initPerspective (float fov, float zNear, float zFar);
 t_mat4			lookAt(t_vec3 cameraPosition, t_vec3 cameraTarget, t_vec3 upVector);
 t_mat4			initModelMatrice(float xAngle, float yAngle);
 GLuint			loadBMP_custom(const char *imagepath);
-int				get_next_line(const int fd, char **line);
 t_obj_reader	obj_create_reader(int fd, char *buffer, size_t buffer_size);
 int16_t			obj_reader_peek(t_obj_reader *self);
-void			obj_reader_next(t_obj_reader *self);
+int				obj_reader_next(t_obj_reader *self);
 
 /* Tools Parsing */
 void printList(t_listParsing* node);
 void printListR(t_listParsing* node);
-void append(t_listParsing** head_ref, GLfloat new_data);
-void insertAfter(t_listParsing *prev_node, GLfloat new_data);
-void push(t_listParsing** head_ref, GLfloat new_data);
+int append(t_listParsing** head_ref, GLfloat new_data);
+int insertAfter(t_listParsing *prev_node, GLfloat new_data);
+int push(t_listParsing** head_ref, GLfloat new_data);
 void freeList(t_listParsing **head_ref);
 
 /* Math */

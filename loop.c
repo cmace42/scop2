@@ -34,8 +34,8 @@ void loop(t_vao vao, SDL_Window* window, t_model obj)
 	float deltaTime;
 	int running = 1;
 	// glEnable(GL_CULL_FACE);
-	printf("Starting loop\n");
-	printf("size triangle to draw %ld\n", obj.vertex_size_data);
+	// printf("Starting loop\n");
+	// printf("size triangle to draw %ld\n", obj.vertex_size_data);
 	int i = 0;
 
 	while(running)

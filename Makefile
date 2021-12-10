@@ -65,7 +65,9 @@ GLSL = \
 
 OBJ = $(SRC:.c=.o) $(GLSL:.glsl=.o)
 
-all: lib $(NAME)
+.PHONY: all
+all: lib 
+	make $(NAME)
 
 $(NAME): $(OBJ)
 	@echo "$(NAME) compilation : $(_CYAN)done$(_END)"
@@ -77,22 +79,25 @@ $(NAME): $(OBJ)
 %.o: %.c
 	@$(CC) $(FLAGS) $(ADDFLAGS) -I $(LIBFTDIR) -c $<
 
+.PHONY: lib
 lib:
 	@make -C $(LIBFTDIR)
 
+.PHONY: clean
 clean:
 	@$(RM) -f $(OBJ)
 	@make clean -C $(LIBFTDIR)/
 	@echo "clean $(NAME): $(_CYAN)done$(_END)"
 
+.PHONY: fclean
 fclean: clean
 	@$(RM) -f $(NAME)
 	@make fclean -C $(LIBFTDIR)
 	@echo "fclean $(NAME): $(_CYAN)done$(_END)"
 
+.PHONY: re
 re: fclean all
 
-.PHONY: all clean fclean re
 
 
 

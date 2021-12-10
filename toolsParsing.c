@@ -1,10 +1,12 @@
 #include "scop.h"
 
-void push(t_listParsing** head_ref, GLfloat new_number)
+int push(t_listParsing** head_ref, GLfloat new_number)
 {
 	/* 1. allocate node */
-	t_listParsing* new_node
-		= (t_listParsing*)malloc(sizeof(t_listParsing));
+	t_listParsing* new_node;
+	if ((new_node
+		= (t_listParsing*)malloc(sizeof(t_listParsing))) == NULL)
+		return(RIP_MALLOC);
  
 	/* 2. put in the number  */
 	new_node->number = new_number;
@@ -20,19 +22,21 @@ void push(t_listParsing** head_ref, GLfloat new_number)
  
 	/* 5. move the head to point to the new node */
 	(*head_ref) = new_node;
+	return (GET_RESULT);
 }
 
-void insertAfter(t_listParsing *prev_node, GLfloat new_number)
+int insertAfter(t_listParsing *prev_node, GLfloat new_number)
 {
 	/*1. check if the given prev_node is NULL */
 	if (prev_node == NULL) {
 		printf("the given previous node cannot be NULL");
-		return;
+		return (PREVIOUS_NODE_CANT_BE_NULL);
 	}
  
 	/* 2. allocate new node */
-	t_listParsing* new_node
-		= (t_listParsing*)malloc(sizeof(t_listParsing));
+	t_listParsing* new_node;
+	if ((new_node = (t_listParsing*)malloc(sizeof(t_listParsing))) == NULL)
+		return (RIP_MALLOC);
  
 	/* 3. put in the number  */
 	new_node->number = new_number;
@@ -49,13 +53,16 @@ void insertAfter(t_listParsing *prev_node, GLfloat new_number)
 	/* 7. Change previous of new_node's next node */
 	if (new_node->next != NULL)
 		new_node->next->prev = new_node;
+	return (GET_RESULT);
 }
 
-void append(t_listParsing** head_ref, GLfloat new_number)
+int append(t_listParsing** head_ref, GLfloat new_number)
 {
 	/* 1. allocate node */
-	t_listParsing* new_node
-		= (t_listParsing*)malloc(sizeof(t_listParsing));
+	t_listParsing* new_node;
+	if ((new_node
+		= (t_listParsing*)malloc(sizeof(t_listParsing))) == NULL)
+		return(RIP_MALLOC);
  
 	t_listParsing* last = *head_ref; /* used in step 5*/
  
@@ -71,7 +78,7 @@ void append(t_listParsing** head_ref, GLfloat new_number)
 	if (*head_ref == NULL) {
 		new_node->prev = NULL;
 		*head_ref = new_node;
-		return;
+		return (GET_RESULT);
 	}
  
 	/* 5. Else traverse till the last node */
@@ -84,7 +91,7 @@ void append(t_listParsing** head_ref, GLfloat new_number)
 	/* 7. Make last node as previous of new node */
 	new_node->prev = last;
  
-	return;
+	return (GET_RESULT);
 }
 
 void printList(t_listParsing* node)

@@ -138,7 +138,7 @@ int printError(t_obj_reader *self, int error)
 	else if (error == PREVIOUS_NODE_CANT_BE_NULL)
 		write(2, "Previous node in chained list can't be null.\n", 46);
 	else if (error == NO_DATA)
-		write(2, "Need more data on file.\n", 26);
+		write(2, "Need more data on file.\n", 25);
 	else if (error == FACE_ID_OVERFLOW)
 		write(2, "Face ID can't be highter than number of vertex.\n", 48);
 	else if (error == FACE_ID_CANT_BE_ZERO)
@@ -481,53 +481,56 @@ int loadObj(char *filepath, t_model *model)
 
 
 	int fd = open(filepath, O_RDONLY);
-	if (fd < 0)
-		return (RIP_OPEN);
-	r = obj_create_reader(fd, buffer, 4096);
-	model->vertex_buffer_data = NULL;
-	temp.vertex_buffer_data = NULL;
-	temp.uv_buffer_data = NULL;
-	temp.normal_buffer_data = NULL;
-	if ((ret = getDataListOfFile(filepath, &data, &r)) == GET_RESULT)
+	if (fd > 0)
 	{
-		if (data.nVertices == 0 || data.nFacesV == 0)
-			ret = NO_DATA;
-		else
+		r = obj_create_reader(fd, buffer, 4096);
+		model->vertex_buffer_data = NULL;
+		temp.vertex_buffer_data = NULL;
+		temp.uv_buffer_data = NULL;
+		temp.normal_buffer_data = NULL;
+		if ((ret = getDataListOfFile(filepath, &data, &r)) == GET_RESULT)
 		{
-			if ((ret = getTempsBuffersData(&temp, data)) == GET_RESULT)
+			if (data.nVertices == 0 || data.nFacesV == 0)
+				ret = NO_DATA;
+			else
 			{
-				printf("sf%d\n", data.nFacesNormal);
-				ret = getBufferData(temp.vertex_buffer_data, data.nVertices, data.facesV, data.nFacesV, &model->vertex_buffer_data);
-				model->vertex_size_data = data.nFacesV;
-				if(temp.uv_buffer_data && data.vUv)
+				if ((ret = getTempsBuffersData(&temp, data)) == GET_RESULT)
 				{
-					ret = getBufferData(temp.uv_buffer_data, data.nUv, data.facesUv, data.nFacesUv, &model->uv_buffer_data);
-					model->uv_size_data = data.nFacesUv;
-				}
-				if (temp.normal_buffer_data && data.vNormal)
-				{
-					ret = getBufferData(temp.normal_buffer_data, data.nNormal, data.facesNormal, data.nFacesNormal, &model->normal_buffer_data);
-					model->normal_size_data = data.nFacesNormal;
-				}
-				else 
-				{
-					printf("hey\n");
+					printf("sf%d\n", data.nFacesNormal);
+					ret = getBufferData(temp.vertex_buffer_data, data.nVertices, data.facesV, data.nFacesV, &model->vertex_buffer_data);
+					model->vertex_size_data = data.nFacesV;
+					if(temp.uv_buffer_data && data.vUv)
+					{
+						ret = getBufferData(temp.uv_buffer_data, data.nUv, data.facesUv, data.nFacesUv, &model->uv_buffer_data);
+						model->uv_size_data = data.nFacesUv;
+					}
+					if (temp.normal_buffer_data && data.vNormal)
+					{
+						ret = getBufferData(temp.normal_buffer_data, data.nNormal, data.facesNormal, data.nFacesNormal, &model->normal_buffer_data);
+						model->normal_size_data = data.nFacesNormal;
+					}
+					else 
+					{
+						printf("hey\n");
+					}
 				}
 			}
 		}
+		if (temp.vertex_buffer_data)
+			free(temp.vertex_buffer_data);
+		if (temp.uv_buffer_data)
+			free(temp.uv_buffer_data);
+		if (temp.normal_buffer_data)
+			free(temp.normal_buffer_data);
+		freeList(&data.vertices);
+		freeList(&data.vUv);
+		freeList(&data.vNormal);
+		freeList(&data.facesV);
+		freeList(&data.facesUv);
+		freeList(&data.facesNormal);
 	}
+	else
+		ret = RIP_OPEN;
 	printError(&r, ret);
-	if (temp.vertex_buffer_data)
-		free(temp.vertex_buffer_data);
-	if (temp.uv_buffer_data)
-		free(temp.uv_buffer_data);
-	if (temp.normal_buffer_data)
-		free(temp.normal_buffer_data);
-	freeList(&data.vertices);
-	freeList(&data.vUv);
-	freeList(&data.vNormal);
-	freeList(&data.facesV);
-	freeList(&data.facesUv);
-	freeList(&data.facesNormal);
 	return (ret);
 }

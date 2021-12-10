@@ -11,6 +11,7 @@ int main(int argc, char **argv)
 	{
 		if ((ret = loadObj(argv[1], &obj)) != GET_RESULT)
 		{
+			printf("num de l'erreur = %d", ret);
 			if (obj.vertex_buffer_data)
 				free(obj.vertex_buffer_data);
 			return(1);

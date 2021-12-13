@@ -143,10 +143,12 @@ int printError(t_obj_reader *self, int error)
 		write(2, "Face ID can't be highter than number of vertex.\n", 48);
 	else if (error == FACE_ID_CANT_BE_ZERO)
 		write(2, "Face ID can't be equals to zero or smaller.\n", 45);
+	else if (error == UV_NORMAL_NOT_EQUAL_TO_VERTEX)
+		write(2, "Uv or Normal need to be equal to vertex.\n", 42);
 	return (error);
 }
 
-int reader_number(t_obj_reader *self, t_listParsing** vertices)
+int reader_number(t_obj_reader *self, t_listParsing** vertices, bool uv)
 {
 	int16_t c;
 	int num1;
@@ -158,7 +160,9 @@ int reader_number(t_obj_reader *self, t_listParsing** vertices)
 	i = 0;
 	num1 = 0;
 	num2 = 0;
-	while(i < 3)
+	int n;
+	n = uv ? 2 : 3;
+	while(i < n)
 	{
 		if (reader_skip_wt(self) == RIP_READ)
 			return (RIP_READ);
@@ -211,7 +215,12 @@ int reader_faces(t_obj_reader *self, t_listData *data)
 	int firstIndNormal;
 	int num;
 	int ret;
+	bool haveUv;
+
 	i = 0;
+	haveUv = false;
+	bool haveNormal;
+	haveNormal = false;
 	while(i < 3)
 	{
 		if (reader_skip_wt(self) == RIP_READ)
@@ -228,8 +237,9 @@ int reader_faces(t_obj_reader *self, t_listData *data)
 		{
 			if (obj_reader_next(self) == -1)
 				return (RIP_READ);
-			if (c = obj_reader_peek(self) != '/')
+			if ((c = obj_reader_peek(self)) != '/' && c > -1 && i == 0 || haveUv)
 			{
+				haveUv = true;
 				if ((ret = reader_numberInt(self, &num, true)) != GET_RESULT)
 					return(ret);
 				if (append(&data->facesUv, num) == RIP_MALLOC)
@@ -239,14 +249,20 @@ int reader_faces(t_obj_reader *self, t_listData *data)
 				if (i == 0)
 					firstIndUv = data->facesUv->number;
 			}
+			else if (c == '/')
+			{
+				haveNormal = true;
+			}
 			else if (c == -1)
 				return (RIP_READ);
+			else
+				return (WRONG_CHAR);
 		}
 		else if (c == -1)
 			return (RIP_READ);
-		if ((c = obj_reader_peek(self)) == '/')
+		if ((c = obj_reader_peek(self)) == '/' && (i == 0 || haveNormal))
 		{
-			printf("heysdfsdfsdfsdf\n");
+			haveNormal = true;
 			if (obj_reader_next(self) == -1)
 				return (RIP_READ);
 			if ((ret = reader_numberInt(self, &num, true)) != GET_RESULT)
@@ -258,6 +274,8 @@ int reader_faces(t_obj_reader *self, t_listData *data)
 			if (i == 0)
 				firstIndNormal = data->facesNormal->number;
 		}
+		else if (haveNormal)
+			return (WRONG_CHAR);
 		else if (c == -1)
 			return (RIP_READ);
 		i++;
@@ -280,10 +298,10 @@ int reader_faces(t_obj_reader *self, t_listData *data)
 			data->nFacesV += 3;
 			if ((c = obj_reader_peek(self)) == '/')
 			{
-				if (c = obj_reader_peek(self) != '/')
+				if (obj_reader_next(self) == -1)
+					return (RIP_READ);
+				if ((c = obj_reader_peek(self)) != '/' && c > -1 && haveUv)
 				{
-					if (obj_reader_next(self) == -1)
-						return (RIP_READ);
 					if (append(&data->facesUv, indUv[0]) == RIP_MALLOC)
 						return(RIP_MALLOC);
 					if (append(&data->facesUv, indUv[2]) == RIP_MALLOC)
@@ -294,12 +312,16 @@ int reader_faces(t_obj_reader *self, t_listData *data)
 						return(RIP_MALLOC);
 					data->nFacesUv+= 3;
 				}
+				else if (c == '/' && haveUv)
+				{
+					return (WRONG_CHAR);
+				}
 				else if (c == -1)
 					return (RIP_READ);
 			}
 			else if (c == -1)
 				return (RIP_READ);
-			if ((c = obj_reader_peek(self)) == '/')
+			if ((c = obj_reader_peek(self)) == '/' && (haveNormal))
 			{
 				if (obj_reader_next(self) == -1)
 					return (RIP_READ);
@@ -313,6 +335,13 @@ int reader_faces(t_obj_reader *self, t_listData *data)
 					return(RIP_MALLOC);
 				data->nFacesNormal+= 3;
 			}
+			else if (haveNormal)
+			{
+				printf("Coucou\n");
+				return (WRONG_CHAR);
+			}
+			else if (c == -1)
+				return (RIP_READ);
 		}
 	}
 	if (c == -1)
@@ -350,14 +379,14 @@ int getDataListOfFile(char *filepath, t_listData *data, t_obj_reader *r)
 			if (c == 't')
 			{
 				obj_reader_next(r);
-				if ((ret = reader_number(r, &data->vUv)) != GET_RESULT)
+				if ((ret = reader_number(r, &data->vUv, true)) != GET_RESULT)
 					return (ret);
 				data->nUv += 3;
 			}
 			else if (c == 'n')
 			{
 				obj_reader_next(r);
-				if ((ret = reader_number(r, &data->vNormal)) != GET_RESULT)
+				if ((ret = reader_number(r, &data->vNormal, false)) != GET_RESULT)
 					return (ret);
 				data->nNormal += 3;
 			}
@@ -367,7 +396,7 @@ int getDataListOfFile(char *filepath, t_listData *data, t_obj_reader *r)
 			}
 			else
 			{
-				if ((ret = reader_number(r, &data->vertices)) != GET_RESULT)
+				if ((ret = reader_number(r, &data->vertices, false)) != GET_RESULT)
 					return (ret);
 				data->nVertices += 3;
 			}
@@ -406,7 +435,7 @@ int getDataListOfFile(char *filepath, t_listData *data, t_obj_reader *r)
 GLfloat *getTempBufferData(t_listParsing *data, int dataSize)
 {
 	GLfloat *buffer;
-	printf("%d\n", dataSize);
+	// printf("%d\n", dataSize);
 	if ((buffer = (GLfloat*)malloc(sizeof(GLfloat) * dataSize)) == NULL)
 		return (NULL);
 	int i;
@@ -496,22 +525,27 @@ int loadObj(char *filepath, t_model *model)
 			{
 				if ((ret = getTempsBuffersData(&temp, data)) == GET_RESULT)
 				{
-					printf("sf%d\n", data.nFacesNormal);
+					// printf("sf%d\n", data.nFacesNormal);
 					ret = getBufferData(temp.vertex_buffer_data, data.nVertices, data.facesV, data.nFacesV, &model->vertex_buffer_data);
 					model->vertex_size_data = data.nFacesV;
-					if(temp.uv_buffer_data && data.vUv)
+					printf("%d == %d || %d == %d\n", data.nFacesV, data.nFacesNormal, data.nFacesV, data.nFacesUv);
+					if (data.nFacesUv > 0 || data.nFacesNormal > 0)
 					{
-						ret = getBufferData(temp.uv_buffer_data, data.nUv, data.facesUv, data.nFacesUv, &model->uv_buffer_data);
-						model->uv_size_data = data.nFacesUv;
-					}
-					if (temp.normal_buffer_data && data.vNormal)
-					{
-						ret = getBufferData(temp.normal_buffer_data, data.nNormal, data.facesNormal, data.nFacesNormal, &model->normal_buffer_data);
-						model->normal_size_data = data.nFacesNormal;
-					}
-					else 
-					{
-						printf("hey\n");
+						if (data.nFacesV == data.nFacesUv || data.nFacesV == data.nFacesNormal)
+						{
+							if(temp.uv_buffer_data && data.vUv)
+							{
+								ret = getBufferData(temp.uv_buffer_data, data.nUv, data.facesUv, data.nFacesUv, &model->uv_buffer_data);
+								model->uv_size_data = data.nFacesUv;
+							}
+							if (temp.normal_buffer_data && data.vNormal)
+							{
+								ret = getBufferData(temp.normal_buffer_data, data.nNormal, data.facesNormal, data.nFacesNormal, &model->normal_buffer_data);
+								model->normal_size_data = data.nFacesNormal;
+							}
+						}
+						else if (data.nFacesNormal != 0 || data.nFacesUv != 0)
+							ret = UV_NORMAL_NOT_EQUAL_TO_VERTEX;
 					}
 				}
 			}

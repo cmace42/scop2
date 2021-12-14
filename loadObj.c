@@ -500,6 +500,53 @@ int getTempsBuffersData(t_model *temp, t_listData data)
 	return (GET_RESULT);
 }
 
+int getStaticUv(GLfloat* vertex, int size, GLfloat **uv, size_t *uvSize)
+{
+	int i;
+	size_t y;
+	GLfloat xmin;
+	GLfloat xmax;
+	GLfloat ymin;
+	GLfloat ymax;
+
+	xmin = vertex[0];
+	xmax = vertex[0];
+	ymin = vertex[0 + 1];
+	ymax = vertex[0 + 1];
+	i = 3;
+	y = 0;
+	while(i < size)
+	{
+		xmin = vertex[i] > xmin ? xmin : vertex[i];
+		xmax = vertex[i] < xmax ? xmax : vertex[i];
+		ymin = vertex[i + 1] > ymin ? ymin : vertex[i + 1];
+		ymax = vertex[i + 1] < ymax ? ymax : vertex[i + 1];
+		i += 3;
+		y += 2;
+	}
+	*uvSize = y;
+	if((*uv = (GLfloat*)malloc(sizeof(GLfloat) * (*uvSize))) == NULL)
+	{
+		return (RIP_MALLOC);
+	}
+	i = 0;
+	while (i < *uvSize)
+	{
+		(*uv)[i] = (xmin - vertex[i]) / xmax;
+		(*uv)[i + 1] = (ymin - vertex[i + 1]) / ymax;
+		i+= 2;
+	}
+	i = 0;
+	while (i < *uvSize)
+	{
+		printf("%f ",(*uv)[i]);
+		printf("%f \n",(*uv)[i + 1]);
+		i += 2;
+	}
+	printf("xmin = %f xmax = %f\nymin = %f ymax = %f\n", xmin, xmax, ymin, ymax);
+	return (GET_RESULT);
+}
+
 int loadObj(char *filepath, t_model *model)
 {
 	t_obj_reader r;
@@ -547,6 +594,7 @@ int loadObj(char *filepath, t_model *model)
 						else if (data.nFacesNormal != 0 || data.nFacesUv != 0)
 							ret = UV_NORMAL_NOT_EQUAL_TO_VERTEX;
 					}
+					getStaticUv(model->vertex_buffer_data, model->vertex_size_data, &model->uv_static_buffer_data, &model->uv_static_size_data);
 				}
 			}
 		}

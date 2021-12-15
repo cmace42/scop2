@@ -503,7 +503,7 @@ int getTempsBuffersData(t_model *temp, t_listData data)
 int getStaticUv(GLfloat* vertex, int size, GLfloat **uv, size_t *uvSize)
 {
 	int i;
-	size_t y;
+	// size_t y;
 	GLfloat xmin;
 	GLfloat xmax;
 	GLfloat ymin;
@@ -511,20 +511,19 @@ int getStaticUv(GLfloat* vertex, int size, GLfloat **uv, size_t *uvSize)
 
 	xmin = vertex[0];
 	xmax = vertex[0];
-	ymin = vertex[0 + 1];
-	ymax = vertex[0 + 1];
+	ymin = vertex[0 + 3];
+	ymax = vertex[0 + 3];
 	i = 3;
-	y = 0;
+	*uvSize = 0;
 	while(i < size)
 	{
 		xmin = vertex[i] > xmin ? xmin : vertex[i];
 		xmax = vertex[i] < xmax ? xmax : vertex[i];
-		ymin = vertex[i + 1] > ymin ? ymin : vertex[i + 1];
-		ymax = vertex[i + 1] < ymax ? ymax : vertex[i + 1];
+		ymin = vertex[i + 3] > ymin ? ymin : vertex[i + 3];
+		ymax = vertex[i + 3] < ymax ? ymax : vertex[i + 3];
 		i += 3;
-		y += 2;
+		*uvSize += 2;
 	}
-	*uvSize = y;
 	if((*uv = (GLfloat*)malloc(sizeof(GLfloat) * (*uvSize))) == NULL)
 	{
 		return (RIP_MALLOC);
@@ -533,15 +532,8 @@ int getStaticUv(GLfloat* vertex, int size, GLfloat **uv, size_t *uvSize)
 	while (i < *uvSize)
 	{
 		(*uv)[i] = (xmin - vertex[i]) / xmax;
-		(*uv)[i + 1] = (ymin - vertex[i + 1]) / ymax;
+		(*uv)[i + 1] = (ymin - vertex[i + 3]) / ymax;
 		i+= 2;
-	}
-	i = 0;
-	while (i < *uvSize)
-	{
-		printf("%f ",(*uv)[i]);
-		printf("%f \n",(*uv)[i + 1]);
-		i += 2;
 	}
 	printf("xmin = %f xmax = %f\nymin = %f ymax = %f\n", xmin, xmax, ymin, ymax);
 	return (GET_RESULT);

@@ -13,6 +13,6 @@ uniform sampler2D myTextureSampler;
 void main(){ 
  
     // Couleur de sortie = couleur de la texture pour les coordonnées UV spécifiées
-    //color = texture(myTextureSampler, UV ).rgb; 
-    color = fragmentColor;
+    color = texture(myTextureSampler, UV ).rgb; 
+    //color = fragmentColor;
 }

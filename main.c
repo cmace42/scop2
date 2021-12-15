@@ -23,9 +23,14 @@ int main(int argc, char **argv)
 				SDL_SetRelativeMouseMode(true);
 				info.context = SDL_GL_CreateContext(info.window);
 				glViewport(0,0, WIDTH,HEIGHT);
+				printf("%ld\n", obj.uv_static_size_data);
 				vao = initOpenGL(obj);
 				free(obj.vertex_buffer_data);
 				loop(vao, info.window, obj);
+				if (obj.uv_static_buffer_data)
+				{
+					free(obj.uv_static_buffer_data);
+				}
 				//do some stuff
 			}
 			else

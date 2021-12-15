@@ -71,7 +71,7 @@ void loop(t_vao vao, SDL_Window* window, t_model obj)
 		);
 		// premier tampon d'attributs : les couleurs
 		glEnableVertexAttribArray(1);
-		glBindBuffer(GL_ARRAY_BUFFER, vao.colorBuffer);
+		glBindBuffer(GL_ARRAY_BUFFER, vao.textureBuffer);
 		glVertexAttribPointer(
 		1,                  //cela correspond au « layout » dans le shader 
 		3,                  // taille

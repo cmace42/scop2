@@ -529,11 +529,15 @@ int getStaticUv(GLfloat* vertex, int size, GLfloat **uv, size_t *uvSize)
 		return (RIP_MALLOC);
 	}
 	i = 0;
+	int y = 0;
 	while (i < *uvSize)
 	{
+		// (*uv)[i] = vertex[y + 2];
+		// (*uv)[i + 1] = vertex[y  +1];
 		(*uv)[i] = (xmin - vertex[i]) / xmax;
 		(*uv)[i + 1] = (ymin - vertex[i + 3]) / ymax;
 		i+= 2;
+		y+= 3;
 	}
 	printf("xmin = %f xmax = %f\nymin = %f ymax = %f\n", xmin, xmax, ymin, ymax);
 	return (GET_RESULT);

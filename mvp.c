@@ -1,6 +1,6 @@
 #include "scop.h"
 
-void applyPerspective(GLuint programId, float xAngModel, float yAngModel, t_camera camera)
+void applyPerspective(GLuint programId, t_objectInWorld model, t_objectInWorld camera)
 {
 	t_mat4 modelMatrice;
 	t_mat4 mvpMatrice;
@@ -8,7 +8,7 @@ void applyPerspective(GLuint programId, float xAngModel, float yAngModel, t_came
 	t_mat4 projectionMat;
 	GLuint matrixId;
 
-	modelMatrice = initModelMatrice(xAngModel, yAngModel);
+	modelMatrice = initModelMatrice(model.horizontalAngle, model.verticalAngle);
 	cameraMat = lookAt(camera.position, camera.target, camera.up);
 	projectionMat = initPerspective(45.0f, 0.1f, 100.0f);
 	mvpMatrice= mat4_mult(mat4_mult(projectionMat, cameraMat), modelMatrice);

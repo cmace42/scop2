@@ -53,12 +53,6 @@ typedef struct	s_mat4
 	float m[4][4];
 }				t_mat4;
 
-typedef struct s_info
-{
-	SDL_Window		*window;
-	SDL_GLContext	context;
-}				t_info;
-
 typedef struct s_vao
 {
 	GLuint VertexArrayID;
@@ -67,12 +61,16 @@ typedef struct s_vao
 	GLuint textureBuffer;
 }				t_vao;
 
-typedef struct s_camera
+typedef struct s_objectInWorld
 {
 	t_vec3 position;
 	t_vec3 target;
 	t_vec3 up;
-}				t_camera;
+	t_vec3 dir;
+	t_vec3 right;
+	float horizontalAngle;
+	float verticalAngle;
+}				t_objectInWorld;
 
 typedef struct	s_obj_reader
 {
@@ -130,6 +128,31 @@ typedef struct s_listData
 	int nFacesNormal;
 }				t_listData;
 
+typedef struct s_time
+{
+	float currentTime;
+	float deltaTime;
+	float lastTime;
+}				t_time;
+
+// typedef struct s_data
+// {
+// }				t_data;
+
+typedef struct s_env
+{
+	SDL_Window		*window;
+	t_time			time;
+	t_objectInWorld	camera;
+	t_objectInWorld	model;
+	t_model			modelData;
+	t_vao			vao;
+	GLuint			texture;
+	GLuint			programId;
+	// t_data			data;
+	SDL_GLContext	context;
+ }				t_env;
+
 enum {
 	DONE,
 	WRONG_CHAR,
@@ -149,12 +172,15 @@ enum {
 /* Init */
 SDL_Window*		initWindow();
 t_vao initOpenGL(t_model obj);
+t_objectInWorld initCamera();
+t_objectInWorld initModel();
+
 
 /* main prog */
 
-void			loop(t_vao vao, SDL_Window *window, t_model obj);
-int event(t_vec2 *angleModel, t_camera *camera, t_vec3 right, float deltaTime, t_vec3 dir);
-void			applyPerspective(GLuint programId, float xAngModel, float yAngModel, t_camera camera);
+void loop(t_env data);
+int event(t_objectInWorld *model, t_objectInWorld *camera, float deltaTime);
+void applyPerspective(GLuint programId, t_objectInWorld model, t_objectInWorld camera);
 
 /* Tools */
 int				loadObj(char *filepath, t_model *model);

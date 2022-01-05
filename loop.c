@@ -1,38 +1,22 @@
 #include "scop.h"
 
-extern char vertexshader_glsl[];
-extern int vertexshader_glsl_len;
-extern char fragmentshader_glsl[];
-extern int fragmentshader_glsl_len;
+
 
 
 void loop(t_env data)
 {
-	int xMouse, yMouse;
+	
 	int running = 1;
-	data.texture = loadBMP_custom("texturetest.bmp");
-	data.programId = loadShaders(vertexshader_glsl, vertexshader_glsl_len, fragmentshader_glsl, fragmentshader_glsl_len);
 	// glEnable(GL_CULL_FACE);
 	// printf("Starting loop\n");
 	// printf("size triangle to draw %ld\n", obj.vertex_size_data);
+	data.ok.colorTest = 0;
 	while(running)
 	{
 		data.time.currentTime = SDL_GetTicks();
 		data.time.deltaTime = (float)(data.time.currentTime - data.time.lastTime);
 		data.time.lastTime = data.time.currentTime;
-		SDL_GetRelativeMouseState(&xMouse, &yMouse);
-		data.camera.horizontalAngle += MOUSESPEED * data.time.deltaTime * (float)(xMouse);
-		data.camera.verticalAngle += MOUSESPEED * data.time.deltaTime * (float)(yMouse);
-
-		data.camera.dir = vec3_new(cosf(data.camera.verticalAngle) * sinf(data.camera.horizontalAngle),
-				sinf(data.camera.verticalAngle),
-				cosf(data.camera.verticalAngle) * cosf(data.camera.horizontalAngle));
-		data.camera.right = vec3_new(sinf(data.camera.horizontalAngle - 3.14f/2.0f),
-				0,
-				cosf(data.camera.horizontalAngle - 3.14f/2.0f));
-		data.camera.up = vec3_cross(data.camera.right, data.camera.dir);
-		data.camera.target = vec3_add(data.camera.position, data.camera.dir);
-		running = event(&data.model, &data.camera, data.time.deltaTime);
+		running = event(&data, data.time.deltaTime);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 		glClearColor(0.0f, 0.0f, 0.4f, 0.0f);
 		// premier tampon d'attributs : les sommets
@@ -46,9 +30,15 @@ void loop(t_env data)
 		0,                  // nombre d'octets séparant deux sommets dans le tampon
 		(void*)0            // décalage du tableau de tampon
 		);
-		// premier tampon d'attributs : les couleurs
+		data.ok.ShowTextureLoc = glGetUniformLocation(data.programId, "showTexture");
+		glUniform1i(data.ok.ShowTextureLoc, data.ok.showTexture);
+		data.ok.testLoc = glGetUniformLocation(data.programId, "test");
+		glUniform1i(data.ok.testLoc, data.ok.test);
+		data.ok.colorTestLoc = glGetUniformLocation(data.programId, "colortest");
+		glUniform1i(data.ok.colorTestLoc, data.ok.colorTest);
+		data.ok.colorTest++;
 		glEnableVertexAttribArray(1);
-		glBindBuffer(GL_ARRAY_BUFFER, data.vao.vertexBuffer);
+		glBindBuffer(GL_ARRAY_BUFFER, data.vao.colorBuffer);
 		glVertexAttribPointer(
 		1,                  //cela correspond au « layout » dans le shader 
 		3,                  // taille
@@ -57,7 +47,18 @@ void loop(t_env data)
 		0,                  // nombre d'octets séparant deux sommets dans le tampon
 		(void*)0            // décalage du tableau de tampon
 		);
+		glEnableVertexAttribArray(2);
+		glBindBuffer(GL_ARRAY_BUFFER, data.vao.vertexBuffer);
+		glVertexAttribPointer(
+		2,                  //cela correspond au « layout » dans le shader 
+		3,                  // taille
+		GL_FLOAT,           // type 
+		GL_FALSE,           // normalisé ? 
+		0,                  // nombre d'octets séparant deux sommets dans le tampon
+		(void*)0            // décalage du tableau de tampon
+		);
 		glUseProgram(data.programId);
+		// premier tampon d'attributs : les couleurs
 		// printf("camera = x : %f, y : %f, z : %f\n\n",camera.position.x,camera.position.y,camera.position.z);
 		applyPerspective(data.programId, data.model, data.camera);
 		// // Dessine le triangle ! 

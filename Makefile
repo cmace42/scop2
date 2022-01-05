@@ -62,6 +62,8 @@ SRC = \
 GLSL = \
 			vertexshader.glsl\
 			fragmentshader.glsl\
+			vertexshader2.glsl\
+			fragmentshader2.glsl\
 
 OBJ = $(SRC:.c=.o) $(GLSL:.glsl=.o)
 

@@ -135,9 +135,15 @@ typedef struct s_time
 	float lastTime;
 }				t_time;
 
-// typedef struct s_data
-// {
-// }				t_data;
+typedef struct s_okokok
+{
+	bool showTexture;
+	GLuint	ShowTextureLoc;
+	bool test;
+	GLuint	testLoc;
+	int colorTest;
+	GLuint colorTestLoc;
+}				t_okokok;
 
 typedef struct s_env
 {
@@ -149,7 +155,9 @@ typedef struct s_env
 	t_vao			vao;
 	GLuint			texture;
 	GLuint			programId;
+	GLuint			programId2;
 	// t_data			data;
+	t_okokok ok;
 	SDL_GLContext	context;
  }				t_env;
 
@@ -179,7 +187,7 @@ t_objectInWorld initModel();
 /* main prog */
 
 void loop(t_env data);
-int event(t_objectInWorld *model, t_objectInWorld *camera, float deltaTime);
+int event(t_env *data, float deltaTime);	
 void applyPerspective(GLuint programId, t_objectInWorld model, t_objectInWorld camera);
 
 /* Tools */

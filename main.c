@@ -1,5 +1,14 @@
 #include "scop.h"
 
+extern char vertexshader_glsl[];
+extern int vertexshader_glsl_len;
+extern char fragmentshader_glsl[];
+extern int fragmentshader_glsl_len;
+extern char vertexshader2_glsl[];
+extern int vertexshader2_glsl_len;
+extern char fragmentshader2_glsl[];
+extern int fragmentshader2_glsl_len;
+
 int main(int argc, char **argv)
 {
 	t_env env;
@@ -24,6 +33,12 @@ int main(int argc, char **argv)
 				free(env.modelData.vertex_buffer_data);
 				env.camera = initCamera();
 				env.model = initModel();
+				env.texture = loadBMP_custom("texturetest.bmp");
+				env.programId = loadShaders(vertexshader_glsl, vertexshader_glsl_len, fragmentshader_glsl, fragmentshader_glsl_len);
+				// env.programId2 = loadShaders(vertexshader2_glsl, vertexshader2_glsl_len, fragmentshader2_glsl, fragmentshader2_glsl_len);
+				env.ok.showTexture = true;
+				env.ok.test = false;
+				env.ok.colorTest = vec3_new(0.1f, 0.1f, 0.1f);
 				loop(env);
 				if (env.modelData.uv_static_buffer_data)
 				{
@@ -31,6 +46,10 @@ int main(int argc, char **argv)
 				}
 				if (env.modelData.normal_buffer_data)
 					free(env.modelData.normal_buffer_data);
+				if (env.modelData.normal_buffer_data)
+					free(env.modelData.normal_buffer_data);
+				if (env.modelData.uv_buffer_data)
+					free(env.modelData.uv_buffer_data);
 				//do some stuff
 			}
 			else

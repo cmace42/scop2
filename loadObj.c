@@ -500,7 +500,7 @@ int getTempsBuffersData(t_model *temp, t_listData data)
 	return (GET_RESULT);
 }
 
-int getStaticUv(GLfloat* vertex, int size, GLfloat **uv, size_t *uvSize)
+int getStaticUv(GLfloat* vertex, int size, GLfloat **uv, size_t *uvSize, t_vec3 *whl)
 {
 	int i;
 	// size_t y;
@@ -508,21 +508,27 @@ int getStaticUv(GLfloat* vertex, int size, GLfloat **uv, size_t *uvSize)
 	GLfloat xmax;
 	GLfloat ymin;
 	GLfloat ymax;
+	GLfloat zmin;
+	GLfloat zmax;
 
 	xmin = vertex[0];
 	xmax = vertex[0];
-	ymin = vertex[0 + 3];
-	ymax = vertex[0 + 3];
+	ymin = vertex[0 + 1];
+	ymax = vertex[0 + 1];
+	zmin = vertex[0 + 2];
+	zmax = vertex[0 + 2];
 	i = 3;
 	*uvSize = 0;
 	while(i < size)
 	{
 		xmin = vertex[i] > xmin ? xmin : vertex[i];
 		xmax = vertex[i] < xmax ? xmax : vertex[i];
-		ymin = vertex[i + 3] > ymin ? ymin : vertex[i + 3];
-		ymax = vertex[i + 3] < ymax ? ymax : vertex[i + 3];
+		ymin = vertex[i + 1] > ymin ? ymin : vertex[i + 1];
+		ymax = vertex[i + 1] < ymax ? ymax : vertex[i + 1];
+		zmin = vertex[i + 2] > zmin ? zmin : vertex[i + 2];
+		zmax = vertex[i + 2] < zmax ? zmax : vertex[i + 2];
 		i += 3;
-		*uvSize += 2;
+		*uvSize += 3;
 	}
 	if((*uv = (GLfloat*)malloc(sizeof(GLfloat) * (*uvSize))) == NULL)
 	{
@@ -535,15 +541,19 @@ int getStaticUv(GLfloat* vertex, int size, GLfloat **uv, size_t *uvSize)
 		// (*uv)[i] = vertex[y + 2];
 		// (*uv)[i + 1] = vertex[y  +1];
 		(*uv)[i] = (xmin - vertex[i]) / xmax;
-		(*uv)[i + 1] = (ymin - vertex[i + 3]) / ymax;
-		i+= 2;
+		(*uv)[i + 1] = (ymin - vertex[i + 1]) / ymax;
+		i+= 3;
 		y+= 3;
 	}
+	whl->x = (xmax - xmin) / 2 + xmin;
+	whl->y = (ymax - ymin) / 2 + ymin;
+	whl->z = (zmax - zmin) / 2 + zmin;
+	printf("========================%f %f %f \n", whl->x,whl->y,whl->z);
 	printf("xmin = %f xmax = %f\nymin = %f ymax = %f\n", xmin, xmax, ymin, ymax);
 	return (GET_RESULT);
 }
 
-int loadObj(char *filepath, t_model *model)
+int loadObj(char *filepath, t_model *model, t_vec3 *whl)
 {
 	t_obj_reader r;
 	t_listData data;
@@ -590,7 +600,8 @@ int loadObj(char *filepath, t_model *model)
 						else if (data.nFacesNormal != 0 || data.nFacesUv != 0)
 							ret = UV_NORMAL_NOT_EQUAL_TO_VERTEX;
 					}
-					getStaticUv(model->vertex_buffer_data, model->vertex_size_data, &model->uv_static_buffer_data, &model->uv_static_size_data);
+					getStaticUv(model->vertex_buffer_data, model->vertex_size_data, &model->uv_static_buffer_data, &model->uv_static_size_data, whl);
+					printf("========%f %f\n", whl->x, whl->y);
 				}
 			}
 		}

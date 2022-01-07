@@ -24,7 +24,7 @@ t_mat4  mat4_rotation_y(float angle)
     });
 }
 
-t_mat4  mat4_rotationz(float angle)
+t_mat4  mat4_rotation_z(float angle)
 {
     return ((t_mat4){
         .m = {

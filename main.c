@@ -15,7 +15,7 @@ int main(int argc, char **argv)
 	int ret;
 	if (argc == 2)
 	{
-		if ((ret = loadObj(argv[1], &env.modelData)) != GET_RESULT)
+		if ((ret = loadObj(argv[1], &env.modelData, &env.model.whl)) != GET_RESULT)
 		{
 			printf("num de l'erreur = %d", ret);
 			if (env.modelData.vertex_buffer_data)
@@ -26,19 +26,21 @@ int main(int argc, char **argv)
 		{
 			if ((env.window = initWindow()) != NULL)
 			{
+				printf("===============maindesfamilles=========%f\n", env.model.whl.x);
 				SDL_SetRelativeMouseMode(true);
 				env.context = SDL_GL_CreateContext(env.window);
 				printf("%ld\n", env.modelData.uv_static_size_data);
 				env.vao = initOpenGL(env.modelData);
 				free(env.modelData.vertex_buffer_data);
 				env.camera = initCamera();
-				env.model = initModel();
+				env.model = initModel(env.model.whl);
+								printf("===============maindesfamilles3=========%f\n", env.model.whl.x);
+
 				env.texture = loadBMP_custom("texturetest.bmp");
 				env.programId = loadShaders(vertexshader_glsl, vertexshader_glsl_len, fragmentshader_glsl, fragmentshader_glsl_len);
-				// env.programId2 = loadShaders(vertexshader2_glsl, vertexshader2_glsl_len, fragmentshader2_glsl, fragmentshader2_glsl_len);
 				env.ok.showTexture = true;
 				env.ok.test = false;
-				env.ok.colorTest = vec3_new(0.1f, 0.1f, 0.1f);
+				// env.ok.colorTest = vec3_new(0.1f, 0.1f, 0.1f);
 				loop(env);
 				if (env.modelData.uv_static_buffer_data)
 				{

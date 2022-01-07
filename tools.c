@@ -35,10 +35,13 @@ t_mat4 lookAt(t_vec3 cameraPosition, t_vec3 cameraTarget, t_vec3 upVector)
 }
 
 //Model Matrice
-t_mat4 initModelMatrice(float xAngle, float yAngle)
+t_mat4 initModelMatrice(t_vec3 angle, t_vec3 whl, t_mat4 mat)
 {
 	t_mat4 scale = mat4_identity();
-	t_mat4 rotate = mat4_mult(mat4_identity(), mat4_mult(mat4_rotation_y(xAngle), mat4_rotation_x(yAngle)));
+	t_mat4 rotate = mat4_mult(mat4_translation((t_vec3){-whl.x, -whl.y, -whl.z}), mat4_identity());
+	// printf("%f %f %f\n",whl.x, whl.y, whl.z);
+	rotate = mat4_mult(mat4_mult(mat4_mult(mat4_rotation_y(angle.y), mat4_rotation_x(angle.x)),mat4_rotation_z(angle.z)), rotate);
+	rotate = mat4_mult(mat4_translation((t_vec3){whl.x, whl.y , whl.z}),rotate);
 	t_mat4 translation = mat4_identity();
 	t_mat4 modelMatrice = mat4_mult(mat4_mult(scale, rotate), translation);
 	return (modelMatrice);

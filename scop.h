@@ -63,13 +63,17 @@ typedef struct s_vao
 
 typedef struct s_objectInWorld
 {
+	t_mat4 mod;
 	t_vec3 position;
 	t_vec3 target;
 	t_vec3 up;
 	t_vec3 dir;
 	t_vec3 right;
-	float horizontalAngle;
-	float verticalAngle;
+	t_vec3 angle;
+	t_vec3 whl;
+	float width;
+	float height;
+	float lenght;
 }				t_objectInWorld;
 
 typedef struct	s_obj_reader
@@ -143,6 +147,8 @@ typedef struct s_okokok
 	GLuint	testLoc;
 	int colorTest;
 	GLuint colorTestLoc;
+	t_vec3 bidouilleTest;
+	GLuint bidouilleTestLoc;
 }				t_okokok;
 
 typedef struct s_env
@@ -155,7 +161,6 @@ typedef struct s_env
 	t_vao			vao;
 	GLuint			texture;
 	GLuint			programId;
-	GLuint			programId2;
 	// t_data			data;
 	t_okokok ok;
 	SDL_GLContext	context;
@@ -181,26 +186,28 @@ enum {
 SDL_Window*		initWindow();
 t_vao initOpenGL(t_model obj);
 t_objectInWorld initCamera();
-t_objectInWorld initModel();
+t_objectInWorld initModel(t_vec3 whl);
 
 
 /* main prog */
 
 void loop(t_env data);
 int event(t_env *data, float deltaTime);	
-void applyPerspective(GLuint programId, t_objectInWorld model, t_objectInWorld camera);
+void applyPerspective(GLuint programId, t_objectInWorld *model, t_objectInWorld *camera);
+void render(t_env data);
 
 /* Tools */
-int				loadObj(char *filepath, t_model *model);
+int				loadObj(char *filepath, t_model *model, t_vec3 *whl);
 GLuint			loadShaders(const char *vertexSource, int vertexLen, 
 					const char *fragmentSource, int fragmentLen);
 t_mat4			initPerspective (float fov, float zNear, float zFar);
 t_mat4			lookAt(t_vec3 cameraPosition, t_vec3 cameraTarget, t_vec3 upVector);
-t_mat4			initModelMatrice(float xAngle, float yAngle);
+t_mat4			initModelMatrice(t_vec3 angle, t_vec3 whl, t_mat4 mat);
 GLuint			loadBMP_custom(const char *imagepath);
 t_obj_reader	obj_create_reader(int fd, char *buffer, size_t buffer_size);
 int16_t			obj_reader_peek(t_obj_reader *self);
 int				obj_reader_next(t_obj_reader *self);
+t_time			getDataTime(t_time last);
 
 /* Tools Parsing */
 void printList(t_listParsing* node);
@@ -216,7 +223,7 @@ t_mat4		mat4_identity(void);
 t_mat4		mat4_mult(t_mat4 m1, t_mat4 m2);
 t_mat4		mat4_rotation_x(float angle);
 t_mat4		mat4_rotation_y(float angle);
-t_mat4		mat4_rotationz(float angle);
+t_mat4		mat4_rotation_z(float angle);
 t_mat4		mat4_scaling(t_vec3 scale);
 t_mat4		mat4_translation(t_vec3 offset);
 t_vec3		vec3_new(float x, float y, float z);

@@ -41,6 +41,8 @@ SRC = \
 			tools.c\
 			loadbmp.c\
 			loadObj.c\
+			renderer.c\
+			time.c\
 			objReader.c\
 			toolsParsing.c\
 			mat4_identity.c\
@@ -62,8 +64,6 @@ SRC = \
 GLSL = \
 			vertexshader.glsl\
 			fragmentshader.glsl\
-			vertexshader2.glsl\
-			fragmentshader2.glsl\
 
 OBJ = $(SRC:.c=.o) $(GLSL:.glsl=.o)
 

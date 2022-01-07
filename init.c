@@ -78,18 +78,21 @@ t_objectInWorld initCamera()
 	camera.position = vec3_new(0.0f, 0.0f, 10.0f);
 	camera.target = vec3_new(0.0f, 0.0f, 0.0f);
 	camera.up = vec3_new(0.0f, 1.0f, 5.0f);
-	camera.verticalAngle = 0.0f;
-	camera.horizontalAngle = 3.14f;
+	camera.angle.y = 0.0f;
+	camera.angle.x = 3.14f;
 	return (camera);
 }
 
-t_objectInWorld initModel()
+t_objectInWorld initModel(t_vec3 whl)
 {
 	t_objectInWorld model;
+	model.mod = mat4_identity();
 	model.position = vec3_new(0.0f, 0.0f, 0.0f);
 	model.target = vec3_new(0.0f, 0.0f, 0.0f);
 	model.up = vec3_new(0.0f, 1.0f, 5.0f);
-	model.horizontalAngle = 0;
-	model.verticalAngle = 0;
+	model.angle.x = 0;
+	model.angle.y = 0;
+	model.angle.z = 0;
+	model.whl = whl;
 	return (model);
 }

@@ -143,6 +143,8 @@ typedef struct s_okokok
 {
 	bool showTexture;
 	GLuint	ShowTextureLoc;
+	float transition;
+	GLuint transitionLoc;
 	bool test;
 	GLuint	testLoc;
 	int colorTest;

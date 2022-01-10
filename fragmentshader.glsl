@@ -11,33 +11,33 @@ uniform bool showTexture;
 uniform bool test;
 uniform int colortest;
 uniform vec3 bidouille;
+uniform float transition;
  
 // Valeurs qui sont constantes pour l'ensemble du modèle.
 uniform sampler2D myTextureSampler; 
  
 void main(){ 
- 
 	if (showTexture)
 	{
 		if (test)
 		{
 			// Couleur de sortie = couleur de la texture pour les coordonnées UV spécifiées
-			color = (texture(myTextureSampler, UV ).rgb * bidouille);
+			color = mix(fragmentColor * bidouille,(texture(myTextureSampler, UV ).rgb * bidouille),transition);
 		}
 		else
 		{
-			color = texture(myTextureSampler, UV ).rgb;
+			color = mix(fragmentColor, texture(myTextureSampler, UV ).rgb,transition);
 		}
 	}
 	else
 	{
 		if (test)
 		{
-			color = fragmentColor * bidouille;
+			color = mix((texture(myTextureSampler, UV ).rgb * bidouille), fragmentColor * bidouille, transition);
 		}
 		else
 		{
-			color = fragmentColor;
+			color = mix(texture(myTextureSampler, UV ).rgb,fragmentColor, transition);
 		}
 	}
 }

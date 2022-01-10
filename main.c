@@ -26,21 +26,18 @@ int main(int argc, char **argv)
 		{
 			if ((env.window = initWindow()) != NULL)
 			{
-				printf("===============maindesfamilles=========%f\n", env.model.whl.x);
 				SDL_SetRelativeMouseMode(true);
 				env.context = SDL_GL_CreateContext(env.window);
-				printf("%ld\n", env.modelData.uv_static_size_data);
 				env.vao = initOpenGL(env.modelData);
 				free(env.modelData.vertex_buffer_data);
 				env.camera = initCamera();
 				env.model = initModel(env.model.whl);
-								printf("===============maindesfamilles3=========%f\n", env.model.whl.x);
-
 				env.texture = loadBMP_custom("texturetest.bmp");
 				env.programId = loadShaders(vertexshader_glsl, vertexshader_glsl_len, fragmentshader_glsl, fragmentshader_glsl_len);
 				env.ok.showTexture = true;
 				env.ok.test = false;
-				// env.ok.colorTest = vec3_new(0.1f, 0.1f, 0.1f);
+				env.ok.transition = 1;
+				env.time.lastTime = 0;
 				loop(env);
 				if (env.modelData.uv_static_buffer_data)
 				{

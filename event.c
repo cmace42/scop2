@@ -47,8 +47,11 @@ int event(t_env *data, float deltaTime)
 					data->camera.position = vec3_add(data->camera.position, vec3_mult_value(data->camera.right, deltaTime * SPEED));
 					break;
 				case SDLK_p:
+				{
+					data->ok.transition = 0;
 					data->ok.showTexture = !data->ok.showTexture;
 					break;
+				}
 				case SDLK_o:
 					data->ok.test = !data->ok.test;
 					break;

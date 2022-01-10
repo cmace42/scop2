@@ -11,7 +11,7 @@ void loop(t_env data)
 	// printf("Starting loop\n");
 	// printf("size triangle to draw %ld\n", obj.vertex_size_data);
 	data.ok.colorTest = 0;
-	printf("========================%f\n", data.model.whl.x);	
+	data.ok.transition = 1.0f;
 	while(running)
 	{
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -19,13 +19,16 @@ void loop(t_env data)
 		data.time = getDataTime(data.time);
 		running = event(&data, data.time.deltaTime);
 		applyPerspective(data.programId, &data.model, &data.camera);
-		// premier tampon d'attributs : les sommets
 		data.ok.ShowTextureLoc = glGetUniformLocation(data.programId, "showTexture");
 		glUniform1i(data.ok.ShowTextureLoc, data.ok.showTexture);
 		data.ok.testLoc = glGetUniformLocation(data.programId, "test");
 		glUniform1i(data.ok.testLoc, data.ok.test);
 		data.ok.colorTestLoc = glGetUniformLocation(data.programId, "colortest");
 		glUniform1i(data.ok.colorTestLoc, data.ok.colorTest);
+		data.ok.transition += data.time.deltaTime / 2000;
+		data.ok.transition = (data.ok.transition > 1) ? 1 : data.ok.transition;
+		data.ok.transitionLoc = glGetUniformLocation(data.programId, "transition");
+		glUniform1f(data.ok.transitionLoc, data.ok.transition);
 		data.ok.colorTest++;
 		data.ok.bidouilleTestLoc = glGetUniformLocation(data.programId, "bidouille");
 		data.ok.bidouilleTest.x = sinf((float)SDL_GetTicks()/1000.0f) / 2.0f;

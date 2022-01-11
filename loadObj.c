@@ -495,7 +495,7 @@ int getTempsBuffersData(t_model *temp, t_listData data)
 			if ((temp->normal_buffer_data = getTempBufferData(data.vNormal, data.nNormal)) == NULL)
 				return (RIP_MALLOC);
 	}
-	else 
+	else
 		return (RIP_MALLOC);
 	return (GET_RESULT);
 }
@@ -553,6 +553,46 @@ int getStaticUv(GLfloat* vertex, int size, GLfloat **uv, size_t *uvSize, t_vec3 
 	return (GET_RESULT);
 }
 
+void setColorBuffer(GLfloat *colorBuffer, float color)
+{
+	*(colorBuffer + 0) = color;
+	printf("%f ", *(colorBuffer + 0));
+	*(colorBuffer + 1) = color;
+	printf("%f ", *(colorBuffer + 1));
+	*(colorBuffer + 2) = color;
+	printf("%f\n", *(colorBuffer + 2));
+}
+
+int getColorBufferData(size_t sizeVertex, GLfloat **colorBuffer, size_t *colorBufferSize)
+{
+	int i = 0;
+	int y = 0;
+	float color;
+	color = 0.0f;
+
+	if((*colorBuffer = (GLfloat*)malloc(sizeof(GLfloat) * (sizeVertex + 3))) == NULL)
+	{
+		return (RIP_MALLOC);
+	}
+	printf("%ld\n", sizeVertex);
+	sizeVertex = sizeVertex;
+	while(i < sizeVertex)
+	{
+		// printf("%d %ld\n",i, sizeVertex);
+		while (y < 3)
+		{
+			printf("%d ", i);
+			setColorBuffer(&(*colorBuffer)[i], color);
+			y++;
+			i+=3;
+		}
+		color += 0.10f;
+		y = 0;
+	}
+	printf("%d\n", i);
+	return (GET_RESULT);
+}
+
 int loadObj(char *filepath, t_model *model, t_vec3 *whl)
 {
 	t_obj_reader r;
@@ -602,6 +642,8 @@ int loadObj(char *filepath, t_model *model, t_vec3 *whl)
 					}
 					getStaticUv(model->vertex_buffer_data, model->vertex_size_data, &model->uv_static_buffer_data, &model->uv_static_size_data, whl);
 					printf("========%f %f\n", whl->x, whl->y);
+
+					getColorBufferData(model->vertex_size_data, &model->color_buffer_data, &model->color_size_data);
 				}
 			}
 		}

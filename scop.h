@@ -106,6 +106,8 @@ typedef struct s_model
 	size_t normal_size_data;
 	GLfloat *uv_static_buffer_data;
 	size_t uv_static_size_data;
+	GLfloat *color_buffer_data;
+	size_t color_size_data;
 }				t_model;
 
 typedef struct	s_listParsing

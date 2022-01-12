@@ -37,7 +37,7 @@ void main(){
 		}
 		else
 		{
-			color = mix(texture(myTextureSampler, UV ).rgb,fragmentColor, transition);
+			color = mix(texture(myTextureSampler, UV ).rgb, fragmentColor, transition);
 		}
 	}
 }

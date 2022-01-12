@@ -57,9 +57,10 @@ t_vao initOpenGL(t_model model)
 	// glBufferData(GL_ARRAY_BUFFER, sizeof(g_vertex_buffer_data), g_vertex_buffer_data, GL_STATIC_DRAW);
 	printf("end init vertexbufferdata\n");
 	printf("start init colorbufferdata\n");
+	printf("%ld\n",model.color_size_data);
 	glGenBuffers(1, &vao.colorBuffer); 
 	glBindBuffer(GL_ARRAY_BUFFER, vao.colorBuffer); 
-	glBufferData(GL_ARRAY_BUFFER, sizeof(GLfloat) * model.vertex_size_data * 3, model.vertex_buffer_data, GL_STATIC_DRAW);
+	glBufferData(GL_ARRAY_BUFFER, sizeof(GLfloat) * model.color_size_data, model.color_buffer_data, GL_STATIC_DRAW);
 	printf("end init colorbufferdata\n");
 	glGenBuffers(1, &vao.textureBuffer);
 	glBindBuffer(GL_ARRAY_BUFFER, vao.textureBuffer);

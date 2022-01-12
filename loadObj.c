@@ -556,11 +556,16 @@ int getStaticUv(GLfloat* vertex, int size, GLfloat **uv, size_t *uvSize, t_vec3 
 void setColorBuffer(GLfloat *colorBuffer, float color)
 {
 	*(colorBuffer + 0) = color;
-	printf("%f ", *(colorBuffer + 0));
 	*(colorBuffer + 1) = color;
-	printf("%f ", *(colorBuffer + 1));
 	*(colorBuffer + 2) = color;
-	printf("%f\n", *(colorBuffer + 2));
+}
+
+unsigned int test()
+{
+	unsigned short lfsr = 0xACE1u;
+	unsigned bit;
+	bit = ((lfsr >> 0) ^ (lfsr >> 2) ^ (lfsr >> 3) ^ (lfsr >> 5) ) & 1;
+	return lfsr =  (lfsr >> 1) | (bit << 15);
 }
 
 int getColorBufferData(size_t sizeVertex, GLfloat **colorBuffer, size_t *colorBufferSize)
@@ -568,29 +573,37 @@ int getColorBufferData(size_t sizeVertex, GLfloat **colorBuffer, size_t *colorBu
 	int i = 0;
 	int y = 0;
 	float color;
-	color = 0.0f;
+	color = (float)(rand() % 256) / 1000.0f;
 
-	if((*colorBuffer = (GLfloat*)malloc(sizeof(GLfloat) * (sizeVertex + 3))) == NULL)
+	sizeVertex = sizeVertex * 3;
+	if((*colorBuffer = (GLfloat*)malloc(sizeof(GLfloat) * (sizeVertex))) == NULL)
 	{
 		return (RIP_MALLOC);
 	}
-	printf("%ld\n", sizeVertex);
-	sizeVertex = sizeVertex;
 	while(i < sizeVertex)
 	{
-		// printf("%d %ld\n",i, sizeVertex);
 		while (y < 3)
 		{
-			printf("%d ", i);
+			printf("%f\n",color);
 			setColorBuffer(&(*colorBuffer)[i], color);
 			y++;
 			i+=3;
 		}
-		color += 0.10f;
+		color = (float)(rand() % 256) / 1000.0f;
 		y = 0;
 	}
-	printf("%d\n", i);
+	*colorBufferSize = sizeVertex;
 	return (GET_RESULT);
+}
+
+void printBuffer(GLfloat *buffer, size_t sizebuffer)
+{
+	int i = 0;
+	while (i < sizebuffer * 3)
+	{
+		printf("buffer[%d] = %f\n",i, buffer[i] );
+		i++;
+	}
 }
 
 int loadObj(char *filepath, t_model *model, t_vec3 *whl)
@@ -621,7 +634,6 @@ int loadObj(char *filepath, t_model *model, t_vec3 *whl)
 					// printf("sf%d\n", data.nFacesNormal);
 					ret = getBufferData(temp.vertex_buffer_data, data.nVertices, data.facesV, data.nFacesV, &model->vertex_buffer_data);
 					model->vertex_size_data = data.nFacesV;
-					printf("%d == %d || %d == %d\n", data.nFacesV, data.nFacesNormal, data.nFacesV, data.nFacesUv);
 					if (data.nFacesUv > 0 || data.nFacesNormal > 0)
 					{
 						if (data.nFacesV == data.nFacesUv || data.nFacesV == data.nFacesNormal)
@@ -641,6 +653,7 @@ int loadObj(char *filepath, t_model *model, t_vec3 *whl)
 							ret = UV_NORMAL_NOT_EQUAL_TO_VERTEX;
 					}
 					getStaticUv(model->vertex_buffer_data, model->vertex_size_data, &model->uv_static_buffer_data, &model->uv_static_size_data, whl);
+					printf("%d == %d || %d == %d\n", data.nFacesV, data.nFacesNormal, data.nFacesV, data.nFacesUv);
 					printf("========%f %f\n", whl->x, whl->y);
 
 					getColorBufferData(model->vertex_size_data, &model->color_buffer_data, &model->color_size_data);

@@ -467,11 +467,11 @@ int getBufferData(GLfloat *tempBuffer, int sizeTempBuffer,t_listParsing *dataFac
 			return (FACE_ID_CANT_BE_ZERO);
 		else if (dataFaces->number * 3 <= sizeTempBuffer)
 		{
-			(*buffer)[i] = tempBuffer[(int)dataFaces->number  * 3 - 3];
+			(*buffer)[i] = tempBuffer[(int)dataFaces->number  * 3 - 1];
 			i++;
 			(*buffer)[i] = tempBuffer[(int)dataFaces->number * 3 - 2];
 			i++;
-			(*buffer)[i] = tempBuffer[(int)dataFaces->number * 3 - 1];
+			(*buffer)[i] = tempBuffer[(int)dataFaces->number * 3 - 3];
 			i++;
 		}
 		else
@@ -560,14 +560,6 @@ void setColorBuffer(GLfloat *colorBuffer, float color)
 	*(colorBuffer + 2) = color;
 }
 
-unsigned int test()
-{
-	unsigned short lfsr = 0xACE1u;
-	unsigned bit;
-	bit = ((lfsr >> 0) ^ (lfsr >> 2) ^ (lfsr >> 3) ^ (lfsr >> 5) ) & 1;
-	return lfsr =  (lfsr >> 1) | (bit << 15);
-}
-
 int getColorBufferData(size_t sizeVertex, GLfloat **colorBuffer, size_t *colorBufferSize)
 {
 	int i = 0;
@@ -584,7 +576,6 @@ int getColorBufferData(size_t sizeVertex, GLfloat **colorBuffer, size_t *colorBu
 	{
 		while (y < 3)
 		{
-			printf("%f\n",color);
 			setColorBuffer(&(*colorBuffer)[i], color);
 			y++;
 			i+=3;

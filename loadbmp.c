@@ -1,12 +1,11 @@
 #include "scop.h"
 
-GLuint loadBMP_custom(const char *imagepath)
+int loadBMP_custom(const char *imagepath, t_bmp *bmp)
 {
 	// Données lues à partir de l'en-tête du fichier BMP
 	unsigned char header[54]; // Chaque fichier BMP débute par un en-tête de 54 octets
 	unsigned int dataPos;     // Position dans le fichier où les données débutent
-	unsigned int width, height; 
-	unsigned int imageSize;   // = width*height*3 
+	unsigned int imageSize;   // = bmp.width*bmp.height*3 
 	// Ouverture du fichier
 	FILE * file = fopen(imagepath,"rb"); 
 	if (!file)
@@ -14,11 +13,14 @@ GLuint loadBMP_custom(const char *imagepath)
 		printf("Image could not be opened\n");
 		return 0;
 	}
-	if (fread(header, 1, 54, file)!=54 )
+	int ret;
+	if ((ret = fread(header, 1, 54, file))!=54 )
 	{ // S'il n'est pas possible de lire 54 octets : problème
-   		 printf("Not a correct BMP file\n"); 
+   		printf("%d\n",ret);
+		printf("Not a correct BMP file\n"); 
     	return 0; 
 	}
+	printf("%c\n",header[0]);
 	if ( header[0]!='B' || header[1]!='M' )
 	{ 
 		printf("Not a correct BMP file\n"); 
@@ -27,30 +29,39 @@ GLuint loadBMP_custom(const char *imagepath)
 	// Lit des entiers à partir du tableau d'octets
 	dataPos    = *(int*)&(header[0x0A]); 
 	imageSize  = *(int*)&(header[0x22]); 
-	width      = *(int*)&(header[0x12]); 
-	height     = *(int*)&(header[0x16]);
+	bmp->width      = *(int*)&(header[0x12]); 
+	bmp->height     = *(int*)&(header[0x16]);
 	// Certains fichiers BMP sont mal formés, on devine les informations manquantes
 	if (imageSize == 0)
-		imageSize = width * height * 3; // 3 : un octet pour chaque composante rouge, vert et bleu
+		imageSize = bmp->width * bmp->height * 3; // 3 : un octet pour chaque composante rouge, vert et bleu
 	if (dataPos == 0)
 		dataPos = 54; // l'en-tête BMP est fait de cette façon
 	// Crée un tampon
-	unsigned char data[imageSize]; 
+	if((bmp->data = (char*)malloc(sizeof(char) * (imageSize))) == NULL)
+	{
+		return (RIP_MALLOC);
+	}
 	
 	// Lit les données à partir du fichier pour les mettre dans le tampon
-	fread(data,1,imageSize,file); 
-	
-	// Tout est en mémoire maintenant, le fichier peut être fermé
+	fread(bmp->data,1,imageSize,file); 
 	fclose(file);
+	return (GET_RESULT);
+	// return (data);
+	// Tout est en mémoire maintenant, le fichier peut être fermé
+	
+}
+
+GLuint getTextureId(t_bmp bmp)
+{
 	// Crée une texture OpenGL
 	GLuint textureID; 
 	glGenTextures(1, &textureID); 
 	
 	// "Lie" la nouvelle texture : toutes les fonctions agissant sur les textures suivantes vont modifier cette texture
 	glBindTexture(GL_TEXTURE_2D, textureID); 
-	
+	printf("yolo : %d %d %s\n", bmp.width, bmp.height, bmp.data);
 	// Donne l'image à OpenGL
-	glTexImage2D(GL_TEXTURE_2D, 0,GL_RGB, width, height, 0, GL_BGR, GL_UNSIGNED_BYTE, data); 
+	glTexImage2D(GL_TEXTURE_2D, 0,GL_RGB, bmp.width, bmp.height, 0, GL_BGR, GL_UNSIGNED_BYTE, bmp.data); 
 	
 	// Lorsque l'on agrandit l'image (aucune MIP map plus grande n'est disponible), utiliser le filtrage LINÉAIRE
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR); 

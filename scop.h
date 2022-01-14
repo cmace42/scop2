@@ -24,6 +24,7 @@
 # define WIDTH 1600
 # define HEIGHT 1200
 # define SPEED 0.009f
+# define SPEEDBOOST 0.014f
 # define MOUSESPEED 0.00005f
 # define INITIALFOV 70.0f
 
@@ -141,7 +142,7 @@ typedef struct s_time
 	float lastTime;
 }				t_time;
 
-typedef struct s_okokok
+typedef struct s_action
 {
 	bool showTexture;
 	GLuint	ShowTextureLoc;
@@ -153,7 +154,18 @@ typedef struct s_okokok
 	GLuint colorTestLoc;
 	t_vec3 bidouilleTest;
 	GLuint bidouilleTestLoc;
-}				t_okokok;
+	bool rotate;
+	bool rotateKeyboardMode;
+	bool isBmp1;
+	bool haveSpeedBoost;
+}				t_action;
+
+typedef struct s_bmp
+{
+	char *data;
+	unsigned int width;
+	unsigned int height;
+}				t_bmp;
 
 typedef struct s_env
 {
@@ -163,10 +175,12 @@ typedef struct s_env
 	t_objectInWorld	model;
 	t_model			modelData;
 	t_vao			vao;
+	t_bmp			bmp1;
+	t_bmp			bmp2;
 	GLuint			texture;
 	GLuint			programId;
 	// t_data			data;
-	t_okokok ok;
+	t_action action;
 	SDL_GLContext	context;
  }				t_env;
 
@@ -206,12 +220,13 @@ GLuint			loadShaders(const char *vertexSource, int vertexLen,
 					const char *fragmentSource, int fragmentLen);
 t_mat4			initPerspective (float fov, float zNear, float zFar);
 t_mat4			lookAt(t_vec3 cameraPosition, t_vec3 cameraTarget, t_vec3 upVector);
-t_mat4			initModelMatrice(t_vec3 angle, t_vec3 whl, t_mat4 mat);
-GLuint			loadBMP_custom(const char *imagepath);
+t_mat4			initModelMatrice(t_vec3 angle, t_vec3 whl, t_vec3 pos);
+int				loadBMP_custom(const char *imagepath, t_bmp *bmp);
 t_obj_reader	obj_create_reader(int fd, char *buffer, size_t buffer_size);
 int16_t			obj_reader_peek(t_obj_reader *self);
 int				obj_reader_next(t_obj_reader *self);
 t_time			getDataTime(t_time last);
+GLuint			getTextureId(t_bmp bmp);
 
 /* Tools Parsing */
 void printList(t_listParsing* node);

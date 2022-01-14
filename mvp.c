@@ -6,7 +6,7 @@ void applyPerspective(GLuint programId, t_objectInWorld *model, t_objectInWorld 
 	t_mat4 projectionMat;
 	GLuint matrixId;
 
-	model->mod = initModelMatrice(model->angle, model->whl, model->mod);
+	model->mod = initModelMatrice(model->angle, model->whl, model->position);
 	camera->mod = lookAt(camera->position, camera->target, camera->up);
 	projectionMat = initPerspective(45.0f, 0.1f, 100.0f);
 	mvpMatrice= mat4_mult(mat4_mult(projectionMat, camera->mod), model->mod);

@@ -32,11 +32,18 @@ int main(int argc, char **argv)
 				free(env.modelData.vertex_buffer_data);
 				env.camera = initCamera();
 				env.model = initModel(env.model.whl);
-				env.texture = loadBMP_custom("texturetest.bmp");
+				loadBMP_custom("petit-poney.bmp", &env.bmp1);
+				loadBMP_custom("texturetest.bmp", &env.bmp2);
+				env.texture = getTextureId(env.bmp2);
+				printf("%d\n",env.texture);
 				env.programId = loadShaders(vertexshader_glsl, vertexshader_glsl_len, fragmentshader_glsl, fragmentshader_glsl_len);
-				env.ok.showTexture = true;
-				env.ok.test = false;
-				env.ok.transition = 1;
+				env.action.showTexture = false;
+				env.action.test = false;
+				env.action.transition = 1;
+				env.action.rotate = true;
+				env.action.rotateKeyboardMode = true;
+				env.action.isBmp1 = false;
+				env.action.haveSpeedBoost = false;
 				env.time.lastTime = 0;
 				loop(env);
 				if (env.modelData.uv_static_buffer_data)
@@ -45,11 +52,14 @@ int main(int argc, char **argv)
 				}
 				if (env.modelData.normal_buffer_data)
 					free(env.modelData.normal_buffer_data);
-				if (env.modelData.normal_buffer_data)
-					free(env.modelData.normal_buffer_data);
 				if (env.modelData.uv_buffer_data)
 					free(env.modelData.uv_buffer_data);
-				//do some stuff
+				if (env.modelData.color_buffer_data)
+					free(env.modelData.color_buffer_data);
+				if (env.bmp1.data)
+					free(env.bmp1.data);
+				if (env.bmp2.data)
+					free(env.bmp2.data);
 			}
 			else
 				printf("Failed to init window\n");

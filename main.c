@@ -35,7 +35,6 @@ int main(int argc, char **argv)
 				loadBMP_custom("petit-poney.bmp", &env.bmp1);
 				loadBMP_custom("texturetest.bmp", &env.bmp2);
 				env.texture = getTextureId(env.bmp2);
-				printf("%d\n",env.texture);
 				env.programId = loadShaders(vertexshader_glsl, vertexshader_glsl_len, fragmentshader_glsl, fragmentshader_glsl_len);
 				env.action.showTexture = false;
 				env.action.test = false;

@@ -337,7 +337,6 @@ int reader_faces(t_obj_reader *self, t_listData *data)
 			}
 			else if (haveNormal)
 			{
-				printf("Coucou\n");
 				return (WRONG_CHAR);
 			}
 			else if (c == -1)
@@ -370,8 +369,11 @@ int getDataListOfFile(char *filepath, t_listData *data, t_obj_reader *r)
 	data->facesNormal = NULL;
 	data->vUv = NULL;
 	data->vNormal = NULL;
+	printf("Reading file.....\n");
 	while((c = obj_reader_peek(r)) > 0)
 	{
+		// if (r->line % 10000 == 0)
+			printf("%ld lines read....\r", r->line);
 		if (c == 'v')
 		{
 			obj_reader_next(r);
@@ -429,6 +431,7 @@ int getDataListOfFile(char *filepath, t_listData *data, t_obj_reader *r)
 	// printList(data->facesV);
 	// printList(data->facesUv);
 	// printList(data->facesNormal);
+	printf("\nEnd\n");
 	return (GET_RESULT);
 }
 
@@ -452,9 +455,6 @@ GLfloat *getTempBufferData(t_listParsing *data, int dataSize)
 int getBufferData(GLfloat *tempBuffer, int sizeTempBuffer,t_listParsing *dataFaces, int faceSize, GLfloat** buffer)
 {
 	int i;
-
-	printf("%i\n", faceSize);
-
 	if((*buffer = (GLfloat*)malloc(sizeof(GLfloat) * faceSize * 3)) == NULL)
 	{
 		return (RIP_MALLOC);
@@ -476,7 +476,6 @@ int getBufferData(GLfloat *tempBuffer, int sizeTempBuffer,t_listParsing *dataFac
 		}
 		else
 		{
-			// printf("Wrong data id[%d] on face\n", (int)dataFaces->number);
 			return (FACE_ID_OVERFLOW);
 		}
 		dataFaces = dataFaces->next;
@@ -503,7 +502,6 @@ int getTempsBuffersData(t_model *temp, t_listData data)
 int getStaticUv(GLfloat* vertex, int size, GLfloat **uv, size_t *uvSize, t_vec3 *whl)
 {
 	int i;
-	// size_t y;
 	GLfloat xmin;
 	GLfloat xmax;
 	GLfloat ymin;
@@ -538,8 +536,6 @@ int getStaticUv(GLfloat* vertex, int size, GLfloat **uv, size_t *uvSize, t_vec3 
 	int y = 0;
 	while (i < *uvSize)
 	{
-		// (*uv)[i] = vertex[y + 2];
-		// (*uv)[i + 1] = vertex[y  +1];
 		(*uv)[i] = (xmin - vertex[i]) / xmax;
 		(*uv)[i + 1] = (ymin - vertex[i + 1]) / ymax;
 		i+= 3;
@@ -548,8 +544,6 @@ int getStaticUv(GLfloat* vertex, int size, GLfloat **uv, size_t *uvSize, t_vec3 
 	whl->x = (xmax - xmin) / 2 + xmin;
 	whl->y = (ymax - ymin) / 2 + ymin;
 	whl->z = (zmax - zmin) / 2 + zmin;
-	printf("========================%f %f %f \n", whl->x,whl->y,whl->z);
-	printf("xmin = %f xmax = %f\nymin = %f ymax = %f\n", xmin, xmax, ymin, ymax);
 	return (GET_RESULT);
 }
 
@@ -565,7 +559,7 @@ int getColorBufferData(size_t sizeVertex, GLfloat **colorBuffer, size_t *colorBu
 	int i = 0;
 	int y = 0;
 	float color;
-	color = (float)(rand() % 256) / 1000.0f;
+	color = (float)(rand() % 255) / 1000.0f;
 
 	sizeVertex = sizeVertex * 3;
 	if((*colorBuffer = (GLfloat*)malloc(sizeof(GLfloat) * (sizeVertex))) == NULL)
@@ -580,7 +574,7 @@ int getColorBufferData(size_t sizeVertex, GLfloat **colorBuffer, size_t *colorBu
 			y++;
 			i+=3;
 		}
-		color = (float)(rand() % 256) / 1000.0f;
+		color = (float)(rand() % 255) / 1000.0f;
 		y = 0;
 	}
 	*colorBufferSize = sizeVertex;
@@ -605,7 +599,7 @@ int loadObj(char *filepath, t_model *model, t_vec3 *whl)
 	int ret;
 	char buffer[4096];
 
-
+	printf("Initialisation obj....\n");
 	int fd = open(filepath, O_RDONLY);
 	if (fd > 0)
 	{
@@ -622,7 +616,6 @@ int loadObj(char *filepath, t_model *model, t_vec3 *whl)
 			{
 				if ((ret = getTempsBuffersData(&temp, data)) == GET_RESULT)
 				{
-					// printf("sf%d\n", data.nFacesNormal);
 					ret = getBufferData(temp.vertex_buffer_data, data.nVertices, data.facesV, data.nFacesV, &model->vertex_buffer_data);
 					model->vertex_size_data = data.nFacesV;
 					if (data.nFacesUv > 0 || data.nFacesNormal > 0)
@@ -644,9 +637,6 @@ int loadObj(char *filepath, t_model *model, t_vec3 *whl)
 							ret = UV_NORMAL_NOT_EQUAL_TO_VERTEX;
 					}
 					getStaticUv(model->vertex_buffer_data, model->vertex_size_data, &model->uv_static_buffer_data, &model->uv_static_size_data, whl);
-					printf("%d == %d || %d == %d\n", data.nFacesV, data.nFacesNormal, data.nFacesV, data.nFacesUv);
-					printf("========%f %f\n", whl->x, whl->y);
-
 					getColorBufferData(model->vertex_size_data, &model->color_buffer_data, &model->color_size_data);
 				}
 			}
@@ -667,5 +657,6 @@ int loadObj(char *filepath, t_model *model, t_vec3 *whl)
 	else
 		ret = RIP_OPEN;
 	printError(&r, ret);
+	printf("End\n");
 	return (ret);
 }

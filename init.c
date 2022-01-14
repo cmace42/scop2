@@ -48,28 +48,24 @@ t_vao initOpenGL(t_model model)
 
 	// Ceci identifiera notre tampon de sommets
 	// Génère un tampon et place l'identifiant dans 'vertexBuffer'
-	printf("start init vertexbufferdata\n");
+	printf("Initialisation OpenGL and VAO...\n");
 	glGenBuffers(1, &vao.vertexBuffer); 
 	// Les commandes suivantes vont parler de notre tampon 'vertexBuffer'
 	glBindBuffer(GL_ARRAY_BUFFER, vao.vertexBuffer); 
 	// Fournit les sommets à OpenGL.
 	glBufferData(GL_ARRAY_BUFFER, sizeof(GLfloat) * model.vertex_size_data * 3, model.vertex_buffer_data, GL_STATIC_DRAW);
 	// glBufferData(GL_ARRAY_BUFFER, sizeof(g_vertex_buffer_data), g_vertex_buffer_data, GL_STATIC_DRAW);
-	printf("end init vertexbufferdata\n");
-	printf("start init colorbufferdata\n");
-	printf("%ld\n",model.color_size_data);
 	glGenBuffers(1, &vao.colorBuffer); 
 	glBindBuffer(GL_ARRAY_BUFFER, vao.colorBuffer); 
 	glBufferData(GL_ARRAY_BUFFER, sizeof(GLfloat) * model.color_size_data, model.color_buffer_data, GL_STATIC_DRAW);
-	printf("end init colorbufferdata\n");
 	glGenBuffers(1, &vao.textureBuffer);
 	glBindBuffer(GL_ARRAY_BUFFER, vao.textureBuffer);
 	glBufferData(GL_ARRAY_BUFFER, sizeof(GLfloat) * model.uv_static_size_data, model.uv_static_buffer_data, GL_STATIC_DRAW);
-	printf("end init texturebufferdata\n");
 	// Active le test de profondeur
 	glEnable(GL_DEPTH_TEST); 
 	// Accepte le fragment s'il est plus proche de la caméra que le précédent accepté
 	glDepthFunc(GL_LESS);
+	printf("OpenGL and VAO initialised\n");
 	return (vao);
 }
 

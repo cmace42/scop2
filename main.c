@@ -4,10 +4,6 @@ extern char vertexshader_glsl[];
 extern int vertexshader_glsl_len;
 extern char fragmentshader_glsl[];
 extern int fragmentshader_glsl_len;
-extern char vertexshader2_glsl[];
-extern int vertexshader2_glsl_len;
-extern char fragmentshader2_glsl[];
-extern int fragmentshader2_glsl_len;
 
 int main(int argc, char **argv)
 {

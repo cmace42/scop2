@@ -536,7 +536,7 @@ int getStaticUv(GLfloat* vertex, int size, GLfloat **uv, size_t *uvSize, t_vec3 
 	int y = 0;
 	while (i < *uvSize)
 	{
-		(*uv)[i] = (xmin - vertex[i]) / xmax;
+		(*uv)[i] = (xmin - vertex[i]) / xmax; // voir si c'est po interverti suite a la modif du dessus
 		(*uv)[i + 1] = (ymin - vertex[i + 1]) / ymax;
 		i+= 3;
 		y+= 3;

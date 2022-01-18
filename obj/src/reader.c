@@ -20,10 +20,8 @@ int16_t			obj_reader_peek(t_obj_reader *self)
 	if (self->i >= self->len)
 	{
 		len = read(self->fd, self->buffer, self->buffer_size);
-		if (len < 0)
-			return (-1);
-		else if (len == 0)
-			return (0);
+		if (len <= 0)
+			return (len);
 		self->i = 0;
 		self->len = len;
 	}
@@ -40,9 +38,9 @@ int			obj_reader_next(t_obj_reader *self)
 		self->column = 0;
 	}
 	else if (c == -1)
-		return (-1);
+		return (RIP_READ);
 	else
 		self->column++;
 	self->i++;
-	return (1);
+	return (GET_RESULT);
 }

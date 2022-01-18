@@ -4,6 +4,7 @@
 # include <stddef.h>
 # include <stdbool.h>
 # include <stdint.h>
+# include <unistd.h>
 
 typedef struct	s_obj_reader
 {
@@ -88,18 +89,18 @@ typedef struct s_obj
 
 enum {
 	DONE,
-	WRONG_CHAR,
-	NO_RESULT,
 	GET_RESULT,
 	GET_FLOAT,
-	RIP_MALLOC,
-	RIP_OPEN,
-	RIP_READ,
-	PREVIOUS_NODE_CANT_BE_NULL,
-	FACE_ID_OVERFLOW,
-	FACE_ID_CANT_BE_ZERO,
-	NO_DATA,
-	UV_NORMAL_NOT_EQUAL_TO_VERTEX,
+	RIP_READ = -1,
+	NO_RESULT = -2,
+	RIP_MALLOC = -3,
+	RIP_OPEN = -4,
+	WRONG_CHAR = -5,
+	PREVIOUS_NODE_CANT_BE_NULL = -6,
+	FACE_ID_OVERFLOW = -7,
+	FACE_ID_CANT_BE_ZERO = -8,
+	NO_DATA = -9,
+	UV_NORMAL_NOT_EQUAL_TO_VERTEX = -10,
 };
 
 /*
@@ -121,6 +122,7 @@ int16_t			obj_reader_peek(t_obj_reader *self);
 *	*self : pointeur sur self
 *	update le char en cours ainsi que les characteres qui seront lu, augmente
 *	le nombre de colonne et ligne
+*	retourne -1 en cas d'erreur
 */
 int				obj_reader_next(t_obj_reader *self);
 
@@ -136,5 +138,13 @@ t_vertex_array	create_vertex_array(size_t size);
 **	retourn la structure uv_array
 */
 t_uv_array		create_uv_array(size_t size);
+
+/*
+*	int obj_skip_nl(t_obj_reader *self)
+*	*self : pointe sur le reader
+*	avance le reader jusqu'a la prochaine ligne
+*	retourne RIP_READ (-1) ou GET_RESULT (2)
+*/
+int obj_skip_nl(t_obj_reader *self);
 
 #endif

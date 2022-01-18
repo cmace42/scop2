@@ -12,7 +12,7 @@
 
 libobj.rootdir := $(dir $(lastword $(MAKEFILE_LIST)))
 
-libobj.objects := reader.o type.o append.o create.o obj.o
+libobj.objects := reader.o type.o append.o create.o obj.o tools.o
 libobj.objects := $(addprefix $(libobj.rootdir)src/, $(libobj.objects))
 
 $(libobj.objects): CFLAGS   ?= -Wall -Wextra -Werror

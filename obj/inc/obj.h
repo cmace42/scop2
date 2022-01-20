@@ -5,6 +5,11 @@
 # include <stdbool.h>
 # include <stdint.h>
 # include <unistd.h>
+# include <stdlib.h>
+# include <sys/types.h>
+# include <sys/stat.h>
+# include <fcntl.h>
+# include <stdio.h>
 
 typedef struct	s_obj_reader
 {
@@ -146,5 +151,37 @@ t_uv_array		create_uv_array(size_t size);
 *	retourne RIP_READ (-1) ou GET_RESULT (2)
 */
 int obj_skip_nl(t_obj_reader *self);
+/*
+*	int obj_get_vertex(t_vertex_array *vertex_array, t_obj_reader *reader)
+*	vertex_array : array de vertex (x y z)[]
+*	t_obj_reader : pointe sur le reader
+*	retourne un int contenant l'erreur
+*/
+int obj_get_vertex(t_vertex_array *vertex_array, t_obj_reader *reader);
+/*
+*	int obj_append_vertex(t_vertex_array *vertex_array, t_vertex vertex)
+*	vertex_array : array contenant tous les vertex
+*	vertex : nouveau vertex a ajouter;
+*	retourn un int en fonction de l'erreur
+*/
+int obj_append_vertex(t_vertex_array *vertex_array, t_vertex vertex);
+
+/*
+*	int obj_read(t_obj *obj, char *filepath)
+*	*obj : pointe sur le nouvel obj
+*	filepath : fichier a parser
+*	retourne un entier erreur;
+*/
+int obj_read(t_obj *obj, char *filepath);
+
+int obj_skip_whitespace(t_obj_reader *self);
+
+/*
+* 	void printvertex(t_vertex_array v_array);
+*	v_array : array de vertex
+*	print array
+*/
+void printvertex(t_vertex_array v_array);
+
 
 #endif

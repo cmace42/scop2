@@ -12,11 +12,13 @@
 
 libobj.rootdir := $(dir $(lastword $(MAKEFILE_LIST)))
 
-libobj.objects := reader.o type.o append.o create.o obj.o tools.o
+libobj.objects := reader.o type.o append.o create.o obj.o tools.o vertex.o triangle.o
 libobj.objects := $(addprefix $(libobj.rootdir)src/, $(libobj.objects))
 
 $(libobj.objects): CFLAGS   ?= -Wall -Wextra -Werror
 $(libobj.objects): CPPFLAGS += -MMD -MP -I$(libobj.rootdir)inc
+
+$(pointD) = reader.d type.d
 
 .PHONY: all
 all: libobj.a
@@ -25,11 +27,11 @@ libobj.a: libobj.a($(libobj.objects))
 
 .PHONY: clean
 clean::
-	$(RM) $(libobj.objects:.o=.{o,d,gcno,gcna})
+	@$(RM) $(libobj.objects:.o=.{o,d,gcno,gcna})
 
 .PHONY: fclean
 fclean:: clean
-	$(RM) libobj.a
+	@$(RM) libobj.a
 
 .PHNOY: re
 re: fclean all

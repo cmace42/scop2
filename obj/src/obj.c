@@ -88,7 +88,7 @@ static int	obj_read_type(t_obj *obj, t_obj_reader *reader)
 	}
 	else if (c == 'f')
 	{
-		ret = obj_get_triangle(obj, reader);
+		ret = GET_RESULT;
 		obj_skip_nl(reader);
 
 		//parse face

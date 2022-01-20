@@ -4,7 +4,7 @@
 t_mat4 initPerspective ( float fov, float zNear, float zFar)
 {
 	const float ar =  4.0f / 3.0f;
-    const float zRange = zNear - zFar;
+    // const float zRange = zNear - zFar;
     const float tanHalfFOV = tanf(ToRadian(fov / 2.0));
 
 	return ((t_mat4){

@@ -183,5 +183,6 @@ int obj_skip_whitespace(t_obj_reader *self);
 */
 void printvertex(t_vertex_array v_array);
 
+int obj_get_triangle(t_obj *obj, t_obj_reader *reader);
 
 #endif

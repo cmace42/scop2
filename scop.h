@@ -20,6 +20,7 @@
 # include <stdlib.h>
 # include <limits.h>
 # include "libft/libft.h"
+# include "obj/inc/obj.h"
 
 # define WIDTH 1600
 # define HEIGHT 1200
@@ -77,22 +78,22 @@ typedef struct s_objectInWorld
 	float lenght;
 }				t_objectInWorld;
 
-typedef struct	s_obj_reader
-{
-	int		fd;
-	char	*buffer;
-	size_t	buffer_size;
-	size_t	len;
-	size_t	i;
-	size_t	column;
-	size_t	line;
-}				t_obj_reader;
+// typedef struct	s_obj_reader
+// {
+// 	int		fd;
+// 	char	*buffer;
+// 	size_t	buffer_size;
+// 	size_t	len;
+// 	size_t	i;
+// 	size_t	column;
+// 	size_t	line;
+// }				t_obj_reader;
 
-typedef struct	s_bufferData
-{
-	GLfloat *buffer_data;
-	size_t size_data;
-}				t_bufferData;
+// typedef struct	s_bufferData
+// {
+// 	GLfloat *buffer_data;
+// 	size_t size_data;
+// }				t_bufferData;
 
 typedef struct s_model
 {
@@ -184,21 +185,21 @@ typedef struct s_env
 	SDL_GLContext	context;
  }				t_env;
 
-enum {
-	DONE,
-	WRONG_CHAR,
-	NO_RESULT,
-	GET_RESULT,
-	GET_FLOAT,
-	RIP_MALLOC,
-	RIP_OPEN,
-	RIP_READ,
-	PREVIOUS_NODE_CANT_BE_NULL,
-	FACE_ID_OVERFLOW,
-	FACE_ID_CANT_BE_ZERO,
-	NO_DATA,
-	UV_NORMAL_NOT_EQUAL_TO_VERTEX,
-};
+// enum {
+// 	DONE,
+// 	WRONG_CHAR,
+// 	NO_RESULT,
+// 	GET_RESULT,
+// 	GET_FLOAT,
+// 	RIP_MALLOC,
+// 	RIP_OPEN,
+// 	RIP_READ,
+// 	PREVIOUS_NODE_CANT_BE_NULL,
+// 	FACE_ID_OVERFLOW,
+// 	FACE_ID_CANT_BE_ZERO,
+// 	NO_DATA,
+// 	UV_NORMAL_NOT_EQUAL_TO_VERTEX,
+// };
 
 /* Init */
 SDL_Window*		initWindow();
@@ -222,9 +223,9 @@ t_mat4			initPerspective (float fov, float zNear, float zFar);
 t_mat4			lookAt(t_vec3 cameraPosition, t_vec3 cameraTarget, t_vec3 upVector);
 t_mat4			initModelMatrice(t_vec3 angle, t_vec3 whl, t_vec3 pos);
 int				loadBMP_custom(const char *imagepath, t_bmp *bmp);
-t_obj_reader	obj_create_reader(int fd, char *buffer, size_t buffer_size);
-int16_t			obj_reader_peek(t_obj_reader *self);
-int				obj_reader_next(t_obj_reader *self);
+// t_obj_reader	obj_create_reader(int fd, char *buffer, size_t buffer_size);
+// int16_t			obj_reader_peek(t_obj_reader *self);
+// int				obj_reader_next(t_obj_reader *self);
 t_time			getDataTime(t_time last);
 GLuint			getTextureId(t_bmp bmp);
 

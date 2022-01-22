@@ -90,7 +90,16 @@ typedef struct s_obj
 	t_vertex_array vn;
 	t_uv_array vt;
 	t_groupe	*groupe;
+	t_face_type	type;
 }				t_obj;
+
+typedef enum	e_face_type
+{
+	Obj_No_Type,
+	Obj_Vertex_Type,
+	Obj_Normal_Type,
+	Obj_Texture_Type,
+}				t_face_type;
 
 enum {
 	DONE,
@@ -106,6 +115,9 @@ enum {
 	FACE_ID_CANT_BE_ZERO = -8,
 	NO_DATA = -9,
 	UV_NORMAL_NOT_EQUAL_TO_VERTEX = -10,
+	WRONG_TYPE = -11,
+	WRONG_VERTEX_TYPE_IN_FACE = -12,
+	WRONG_NORMAL_TYPE_IN_FACE = - 13,
 };
 
 /*
@@ -159,13 +171,27 @@ int obj_skip_nl(t_obj_reader *self);
 */
 int obj_get_vertex(t_vertex_array *vertex_array, t_obj_reader *reader);
 /*
+*	int obj_get_uv(t_uv_array *vertex_array, t_obj_reader *reader)
+*	vertex_array : array de vertex (u v w)[]
+*	t_obj_reader : pointe sur le reader
+*	retourne un int contenant l'erreur
+*/
+int obj_get_uv(t_uv_array *uv_array, t_obj_reader *reader);
+
+/*
 *	int obj_append_vertex(t_vertex_array *vertex_array, t_vertex vertex)
 *	vertex_array : array contenant tous les vertex
 *	vertex : nouveau vertex a ajouter;
 *	retourn un int en fonction de l'erreur
 */
 int obj_append_vertex(t_vertex_array *vertex_array, t_vertex vertex);
-
+/*
+*	int obj_append_uv(t_uv_array *uv_array, t_uv uv)
+*	uv_array : array contenant tous les uv
+*	uv : nouveau vertex a ajouter;
+*	retourn un int en fonction de l'erreur
+*/
+int obj_append_uv(t_uv_array *uv_array, t_uv uv);
 /*
 *	int obj_read(t_obj *obj, char *filepath)
 *	*obj : pointe sur le nouvel obj
@@ -177,12 +203,24 @@ int obj_read(t_obj *obj, char *filepath);
 int obj_skip_whitespace(t_obj_reader *self);
 
 /*
-* 	void printvertex(t_vertex_array v_array);
-*	v_array : array de vertex
-*	print array
+* 	void printvertex(t_obj obj);
+*	obj : l'obj complet avec tous les vertex
+*	print les arrays
 */
-void printvertex(t_vertex_array v_array);
+void  printvertex(t_obj obj);
 
-int obj_get_triangle(t_obj *obj, t_obj_reader *reader);
+/*
+*	int obj_get_triangles_index(t_faces_array *faces, t_obj_reader *reader)
+*	
+*/
+int obj_get_triangles_index(t_faces_array *faces, t_face_type *type, t_obj_reader *reader);
+
+
+int obj_read_part_int(float *value, t_obj_reader *reader, int *sign);
+
+int	obj_vertex_type(size_t *vertex, t_face_type *type, t_obj_reader *reader);
+int	obj_uv_type(size_t *uv, t_face_type *type, t_obj_reader *reader);
+int obj_normal_type(size_t *normal, t_face_type *type, t_obj_reader *reader);
+
 
 #endif

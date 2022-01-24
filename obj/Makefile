@@ -18,7 +18,7 @@ libobj.objects := $(addprefix $(libobj.rootdir)src/, $(libobj.objects))
 $(libobj.objects): CFLAGS   ?= -Wall -Wextra -Werror
 $(libobj.objects): CPPFLAGS += -MMD -MP -I$(libobj.rootdir)inc
 
-$(pointD) = reader.d type.d
+# $(pointD) = reader.d type.d
 
 .PHONY: all
 all: libobj.a

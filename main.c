@@ -9,12 +9,13 @@ int main(int argc, char **argv)
 {
 	// t_env env;
 	t_obj obj;
-	// int ret;
+	int ret;
 	if (argc == 2)
 	{
-		printf("new obj parsing %d\n", obj_read(&obj,argv[1]));
+		printf("new obj parsing %d\n", (ret = obj_read(&obj,argv[1])));
 		printf("End parsing\n");
-		printvertex(obj.vertex);
+		if (ret == GET_RESULT)
+			printvertex(obj);
 		// if ((ret = loadObj(argv[1], &env.modelData, &env.model.whl)) != GET_RESULT)
 		// {
 		// 	printf("num de l'erreur = %d", ret);

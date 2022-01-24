@@ -8,6 +8,7 @@ int obj_read_part_int(float *value, t_obj_reader *reader, int *sign)
 
 	*value = 0;
 	*sign = 1;
+	ret = GET_RESULT;
 	c = obj_reader_peek(reader);
 	if (c == '-')
 	{
@@ -34,6 +35,7 @@ int obj_read_part_float(float *value, t_obj_reader *reader)
 
 	*value = 0;
 	i = 0;
+	ret = GET_RESULT;
 	while ((c = obj_reader_peek(reader)) >= '0' && c <= '9')
 	{
 		*value = (*value * 10.0) + (c - '0');
@@ -54,6 +56,7 @@ int obj_read_float(float *value, t_obj_reader *reader)
 	int16_t c;
 	float res;
 
+	ret = GET_RESULT;
 	sign = 1;
 	c = obj_reader_peek(reader);
 	if ((c < '0' && c > '9') && c != '-' && c != '+')
@@ -63,7 +66,7 @@ int obj_read_float(float *value, t_obj_reader *reader)
 		c = obj_reader_peek(reader);
 		if (c == '.')
 			ret = obj_reader_next(reader);
-		else if (c == ' ' || c == '\t' || c == '\r')
+		else if (c == ' ' || c == '\t' || c == '\r' || c == '\n')
 			return (GET_RESULT);
 		else
 			return (WRONG_CHAR);
@@ -74,6 +77,31 @@ int obj_read_float(float *value, t_obj_reader *reader)
 			return (WRONG_CHAR);
 	}
 	return (c == -1 ? RIP_READ : ret);
+}
+
+int obj_get_uv(t_uv_array *uv_array, t_obj_reader *reader)
+{
+	int ret;
+	t_uv uv;
+	ret = obj_skip_whitespace(reader);
+	if (ret != GET_RESULT)
+		return (ret);
+	ret = obj_read_float(&uv.u, reader);
+	if (ret != GET_RESULT)
+		return (ret);
+	ret = obj_skip_whitespace(reader);
+	if (ret != GET_RESULT)
+		return (ret);
+	ret = obj_read_float(&uv.v, reader);
+	if (ret != GET_RESULT)
+		return (ret);
+	ret = obj_skip_whitespace(reader);
+	if (ret != GET_RESULT)
+		return (ret);
+	ret = obj_read_float(&uv.w, reader);
+	if (ret != GET_RESULT)
+		return (ret);
+	return (obj_append_uv(uv_array, uv));
 }
 
 int obj_get_vertex(t_vertex_array *vertex_array, t_obj_reader *reader)

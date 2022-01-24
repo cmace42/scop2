@@ -61,16 +61,24 @@ static int	obj_get_vertex_type(t_obj *obj, t_obj_reader *reader)
 	}
 	else if (c == 'n')
 	{
-		ret = obj_get_vertex(&obj->vn, reader);	
+		if ((ret = obj_reader_next(reader)) != GET_RESULT)
+			return (ret);
+		ret = obj_get_vertex(&obj->vn, reader);
 		//parse vn
 	}
 	else if (c == 't')
 	{
-
+		if ((ret = obj_reader_next(reader)) != GET_RESULT)
+			return (ret);
+		ret = obj_get_uv(&obj->vt, reader);
 		//parse uv
 	}
 	else
 		ret = c == -1 ? RIP_READ : WRONG_CHAR;
+	if ((ret = obj_skip_nl(reader)) != GET_RESULT)
+	{
+		return (ret);
+	}
 	return (ret);
 }
 
@@ -88,9 +96,9 @@ static int	obj_read_type(t_obj *obj, t_obj_reader *reader)
 	}
 	else if (c == 'f')
 	{
-		ret = GET_RESULT;
+		printf("Hello\n");
+		ret = obj_get_triangles_index(&obj->groupe->faces, &obj->type, reader);
 		obj_skip_nl(reader);
-
 		//parse face
 	}
 	else if (c == 'g')
@@ -99,7 +107,7 @@ static int	obj_read_type(t_obj *obj, t_obj_reader *reader)
 		obj_skip_nl(reader);
 		// new groupe
 	}
-	else if (c == 's' || c == 'm' || c == 'u' || c == 'o' || c == '#')
+	else if (c == 's' || c == 'm' || c == 'u' || c == 'o' || c == '#' || c == '\n')
 	{
 		obj_skip_nl(reader);
 		ret = GET_RESULT;
@@ -116,6 +124,7 @@ int obj_read(t_obj *obj, char *filepath)
 	int16_t c;
 	int ret;
 	ret = 777;
+
 	if ((reader = obj_create_reader(open(filepath, O_RDONLY),buffer, 4096)).fd  <= 0)
 		return(RIP_OPEN);
 	if (!(obj->vertex = create_vertex_array(10)).this
@@ -124,7 +133,6 @@ int obj_read(t_obj *obj, char *filepath)
 	{
 		return(RIP_MALLOC);
 	}
-
 	while((c = obj_reader_peek(&reader)) > 0)
 	{
 		ret = obj_read_type(obj, &reader);

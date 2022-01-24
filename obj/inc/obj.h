@@ -83,6 +83,14 @@ typedef struct s_groupe
 	t_faces_array faces;
 }				t_groupe;
 
+typedef enum	e_face_type
+{
+	Obj_No_Type,
+	Obj_Vertex_Type,
+	Obj_Normal_Type,
+	Obj_Texture_Type,
+}				t_face_type;
+
 typedef struct s_obj
 {
 	size_t size;
@@ -93,13 +101,6 @@ typedef struct s_obj
 	t_face_type	type;
 }				t_obj;
 
-typedef enum	e_face_type
-{
-	Obj_No_Type,
-	Obj_Vertex_Type,
-	Obj_Normal_Type,
-	Obj_Texture_Type,
-}				t_face_type;
 
 enum {
 	DONE,
@@ -221,6 +222,7 @@ int obj_read_part_int(float *value, t_obj_reader *reader, int *sign);
 int	obj_vertex_type(size_t *vertex, t_face_type *type, t_obj_reader *reader);
 int	obj_uv_type(size_t *uv, t_face_type *type, t_obj_reader *reader);
 int obj_normal_type(size_t *normal, t_face_type *type, t_obj_reader *reader);
+int obj_append_triangle(t_faces_array *face, t_triangle triangle);
 
 
 #endif

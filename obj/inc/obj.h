@@ -89,6 +89,7 @@ typedef enum	e_face_type
 	Obj_Vertex_Type,
 	Obj_Normal_Type,
 	Obj_Texture_Type,
+	Obj_Vertex_Texture_Normal_Type,
 }				t_face_type;
 
 typedef struct s_obj
@@ -204,11 +205,11 @@ int obj_read(t_obj *obj, char *filepath);
 int obj_skip_whitespace(t_obj_reader *self);
 
 /*
-* 	void printvertex(t_obj obj);
-*	obj : l'obj complet avec tous les vertex
+* 	void printobj(t_obj obj);
+*	obj : l'obj complet avec tous les datas
 *	print les arrays
 */
-void  printvertex(t_obj obj);
+void  printobj(t_obj obj);
 
 /*
 *	int obj_get_triangles_index(t_faces_array *faces, t_obj_reader *reader)
@@ -224,5 +225,7 @@ int	obj_uv_type(size_t *uv, t_face_type *type, t_obj_reader *reader);
 int obj_normal_type(size_t *normal, t_face_type *type, t_obj_reader *reader);
 int obj_append_triangle(t_faces_array *face, t_triangle triangle);
 
+t_faces_array create_triangle_array(size_t size);
+t_obj create_groupe(size_t size, t_face_type type);
 
 #endif

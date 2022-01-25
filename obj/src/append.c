@@ -57,7 +57,7 @@ int obj_append_triangle(t_faces_array *faces, t_triangle triangle)
 	size_t new_size;
 	t_triangle *new;
 
-	printf("%ld %ld\n", faces->len, faces->size);
+	// printf("%ld %ld\n", faces->len, faces->size);
 	if (faces->len == faces->size)
 	{
 		new_size = faces->size + 10;

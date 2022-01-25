@@ -12,10 +12,11 @@ int main(int argc, char **argv)
 	int ret;
 	if (argc == 2)
 	{
+		printf("Start Parsing\n");
 		printf("new obj parsing %d\n", (ret = obj_read(&obj,argv[1])));
 		printf("End parsing\n");
 		if (ret == GET_RESULT)
-			printvertex(obj);
+			printobj(obj);
 		// if ((ret = loadObj(argv[1], &env.modelData, &env.model.whl)) != GET_RESULT)
 		// {
 		// 	printf("num de l'erreur = %d", ret);

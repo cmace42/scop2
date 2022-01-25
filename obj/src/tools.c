@@ -30,12 +30,12 @@ int obj_skip_whitespace(t_obj_reader *self)
 	return (ret);
 }
 
-void printvertex(t_obj obj)
+void printobj(t_obj obj)
 {
 	size_t i;
 
 	i = 0;
-	printf("v.len : %zu, uv.len %zu, vn.len : %zu\n",obj.vertex.len,obj.vt.len,obj.vn.len);
+	printf("v.len : %zu, uv.len %zu, vn.len : %zu, faces.len : %zu\n",obj.vertex.len,obj.vt.len,obj.vn.len,obj.groupe[0].faces.len);
 	if (obj.vertex.len > 0)
 	{
 		printf("Vertex %zu: \n\n",obj.vertex.len);
@@ -62,6 +62,20 @@ void printvertex(t_obj obj)
 		while (i < obj.vn.len)
 		{
 			printf("ligne %zu : %f %f %f\n",i, obj.vn.this[i].x, obj.vn.this[i].y, obj.vn.this[i].z);
+			i++;
+		}
+	}
+	if (obj.groupe[0].faces.len > 0)
+	{
+		printf("Faces : %zu\n\n", obj.groupe[0].faces.len );
+		i = 0;
+		while( i < obj.groupe[0].faces.len)
+		{
+			printf("ligne %zu : %zu %zu %zu\n", i, obj.groupe[0].faces.triangle[i].a.indexVertex,obj.groupe[0].faces.triangle[i].b.indexVertex,obj.groupe[0].faces.triangle[i].c.indexVertex);
+			if (obj.type == Obj_Texture_Type || obj.type == Obj_Vertex_Texture_Normal_Type)
+				printf("ligne %zu : %zu %zu %zu\n", i, obj.groupe[0].faces.triangle[i].a.indexUv,obj.groupe[0].faces.triangle[i].b.indexUv,obj.groupe[0].faces.triangle[i].c.indexUv);
+			if (obj.type == Obj_Normal_Type || obj.type == Obj_Vertex_Texture_Normal_Type)
+			printf("ligne %zu : %zu %zu %zu\n", i, obj.groupe[0].faces.triangle[i].a.indexNormal,obj.groupe[0].faces.triangle[i].b.indexNormal,obj.groupe[0].faces.triangle[i].c.indexNormal);
 			i++;
 		}
 	}

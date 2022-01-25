@@ -26,3 +26,12 @@ t_faces_array create_triangle_array(size_t size)
 		.triangle = (t_triangle*)malloc(sizeof(t_triangle) * size),
 	});
 }
+
+t_obj create_groupe(size_t size, t_face_type type)
+{
+	return((t_obj){
+		.size = size,
+		.type = type,
+		.groupe = (t_groupe*)malloc(sizeof(t_groupe) * size),
+	});
+}

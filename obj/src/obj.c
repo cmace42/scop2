@@ -96,7 +96,7 @@ static int	obj_read_type(t_obj *obj, t_obj_reader *reader)
 	}
 	else if (c == 'f')
 	{
-		printf("Hello\n");
+		ret = obj_reader_next(reader);
 		ret = obj_get_triangles_index(&obj->groupe->faces, &obj->type, reader);
 		obj_skip_nl(reader);
 		//parse face
@@ -127,9 +127,12 @@ int obj_read(t_obj *obj, char *filepath)
 
 	if ((reader = obj_create_reader(open(filepath, O_RDONLY),buffer, 4096)).fd  <= 0)
 		return(RIP_OPEN);
+	if (!(*obj = create_groupe(1, Obj_No_Type)).groupe)
+		return (RIP_MALLOC);
 	if (!(obj->vertex = create_vertex_array(10)).this
 		|| !(obj->vn = create_vertex_array(10)).this
-		|| !(obj->vt = create_uv_array(10)).this)
+		|| !(obj->vt = create_uv_array(10)).this || !(obj->groupe)
+		|| !(obj->groupe->faces = create_triangle_array(10)).triangle)
 	{
 		return(RIP_MALLOC);
 	}

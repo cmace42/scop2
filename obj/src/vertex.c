@@ -10,7 +10,6 @@ int obj_read_part_int(float *value, t_obj_reader *reader, int *sign)
 	*sign = 1;
 	ret = GET_RESULT;
 	c = obj_reader_peek(reader);
-	printf("'%c'\n",c);
 	if (c == '-')
 	{
 		*sign = -1;
@@ -18,6 +17,7 @@ int obj_read_part_int(float *value, t_obj_reader *reader, int *sign)
 	}
 	else if (c == '+')
 		ret = obj_reader_next(reader);
+	c = obj_reader_peek(reader);
 	while ((c = obj_reader_peek(reader)) >= '0' && c <= '9')
 	{
 		*value = *value * 10.0 + (c - '0');

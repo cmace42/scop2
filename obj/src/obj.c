@@ -98,7 +98,7 @@ static int	obj_read_type(t_obj *obj, t_obj_reader *reader)
 	{
 		ret = obj_reader_next(reader);
 		ret = obj_get_triangles_index(&obj->groupe->faces, &obj->type, reader);
-		obj_skip_nl(reader);
+		// obj_skip_nl(reader);
 		//parse face
 	}
 	else if (c == 'g')

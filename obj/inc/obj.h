@@ -10,6 +10,7 @@
 # include <sys/stat.h>
 # include <fcntl.h>
 # include <stdio.h>
+# include <string.h>
 
 typedef struct	s_obj_reader
 {

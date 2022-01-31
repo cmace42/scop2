@@ -86,6 +86,7 @@ static int	obj_read_type(t_obj *obj, t_obj_reader *reader)
 {
 	int16_t c;
 	int ret;
+	t_groupe currentGroupe;
 
 	ret = 666;
 	c = obj_reader_peek(reader);
@@ -97,13 +98,14 @@ static int	obj_read_type(t_obj *obj, t_obj_reader *reader)
 	else if (c == 'f')
 	{
 		ret = obj_reader_next(reader);
-		ret = obj_get_triangles_index(&obj->groupe->faces, &obj->type, reader);
+		ret = obj_get_triangles_index(&currentGroupe.faces, &obj->type, reader);
 		// obj_skip_nl(reader);
 		//parse face
 	}
 	else if (c == 'g')
 	{
-		ret = GET_RESULT;
+		ret = obj_reader_next(reader);
+		ret = obj_get_groupe(obj, currentGroupe, reader);
 		obj_skip_nl(reader);
 		// new groupe
 	}

@@ -71,4 +71,21 @@ int obj_append_triangle(t_faces_array *faces, t_triangle triangle)
 	return (GET_RESULT);
 }
 
+t_groupe *obj_append_groupe(t_obj *obj, t_groupe groupe)
+{
+	size_t new_size;
+	t_groupe *new;
 
+	if (obj->len == obj->size)
+	{
+		new_size = obj->size + 10;
+		if (!(new = (t_groupe*)malloc(sizeof(t_groupe) * new_size)))
+			return (RIP_MALLOC);
+		memcpy(new, obj->groupe, sizeof(t_groupe) * obj->size);
+		free(obj->groupe);
+		obj->groupe = new;
+		obj->size = new_size;
+	}
+	obj->groupe[obj->len] = groupe;
+	return (obj->groupe + obj->len++);
+}

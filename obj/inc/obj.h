@@ -96,6 +96,7 @@ typedef enum	e_face_type
 typedef struct s_obj
 {
 	size_t size;
+	size_t len;
 	t_vertex_array vertex;
 	t_vertex_array vn;
 	t_uv_array vt;
@@ -228,5 +229,6 @@ int obj_append_triangle(t_faces_array *face, t_triangle triangle);
 
 t_faces_array create_triangle_array(size_t size);
 t_obj create_groupe(size_t size, t_face_type type);
+t_groupe *obj_append_groupe(t_obj *obj, t_groupe groupe);
 
 #endif

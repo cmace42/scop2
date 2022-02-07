@@ -35,6 +35,7 @@ SRCS =	\
 			loop.c\
 			event.c\
 			init.c\
+			model.c\
 			loadshader.c\
 			mvp.c\
 			tools.c\
@@ -82,8 +83,7 @@ GLSLOBJ = $(GLSL:.glsl=.o)
 
 # --   Compilation flags  -- #
 CC			=	gcc
-CFLAGS	  =   -Wall -Wextra -Werror
-
+CFLAGS	  =   -Wall -Wextra -Werror #-fsanitize=address
 # --  Animation Calcul %  -- #
 T = $(words $(OBJS) 0)
 N = 0

@@ -7,16 +7,18 @@ extern int fragmentshader_glsl_len;
 
 int main(int argc, char **argv)
 {
-	// t_env env;
-	t_obj obj;
-	int ret;
-	if (argc == 2)
+	t_env env;
+	if (argc != 2)
 	{
-		printf("Start Parsing\n");
-		printf("new obj parsing %d\n", (ret = obj_read(&obj,argv[1])));
-		printf("End parsing\n");
-		if (ret == GET_RESULT)
-			printobj(obj);
+		printf("fais l'usage\n");
+		return (0);
+	}
+	if (!getModel(argv[1], &env.modelData))
+	{
+		return (0);
+	}
+		// if (ret == GET_RESULT)
+		// 	printobj(obj);
 		// if ((ret = loadObj(argv[1], &env.modelData, &env.model.whl)) != GET_RESULT)
 		// {
 		// 	printf("num de l'erreur = %d", ret);
@@ -69,5 +71,4 @@ int main(int argc, char **argv)
 		// 	SDL_DestroyWindow(env.window);
 		// 	SDL_Quit();
 		// }
-	}
 }

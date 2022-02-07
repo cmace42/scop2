@@ -206,6 +206,7 @@ SDL_Window*		initWindow();
 t_vao initOpenGL(t_model obj);
 t_objectInWorld initCamera();
 t_objectInWorld initModel(t_vec3 whl);
+bool getModel(char *filename, t_model *model);
 
 
 /* main prog */

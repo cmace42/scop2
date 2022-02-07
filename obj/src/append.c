@@ -76,11 +76,12 @@ t_groupe *obj_append_groupe(t_obj *obj, t_groupe groupe)
 	size_t new_size;
 	t_groupe *new;
 
+	// printf("in append groupe %ld\n", obj->len);
 	if (obj->len == obj->size)
 	{
 		new_size = obj->size + 10;
 		if (!(new = (t_groupe*)malloc(sizeof(t_groupe) * new_size)))
-			return (RIP_MALLOC);
+			return (NULL);
 		memcpy(new, obj->groupe, sizeof(t_groupe) * obj->size);
 		free(obj->groupe);
 		obj->groupe = new;

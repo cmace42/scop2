@@ -1,16 +1,16 @@
 #include "obj.h"
 
-int printError(t_obj_reader *self, int error)
+int printError(t_obj_reader self, int error)
 {
 	int ret;
 	if (error == WRONG_CHAR || error == NO_RESULT)
 	{
 		write(2, "Error line ", 11);
-		printf("%zu\n",self->line);
+		printf("%zu\n",self.line);
 		write(2, ", col ", 6);
-		printf("%zu\n",self->column);
+		printf("%zu\n",self.column);
 		write(2, " char : ", 8);
-		if ((ret = obj_reader_peek(self)) == -1)
+		if ((ret = obj_reader_peek(&self)) == -1)
 		{
 			// printf("\n%d\n", ret);
 			error = RIP_READ;
@@ -82,11 +82,10 @@ static int	obj_get_vertex_type(t_obj *obj, t_obj_reader *reader)
 	return (ret);
 }
 
-static int	obj_read_type(t_obj *obj, t_obj_reader *reader)
+static int	obj_read_type(t_obj *obj, t_groupe **currentGroupe, t_obj_reader *reader)
 {
 	int16_t c;
 	int ret;
-	t_groupe currentGroupe;
 
 	ret = 666;
 	c = obj_reader_peek(reader);
@@ -98,7 +97,7 @@ static int	obj_read_type(t_obj *obj, t_obj_reader *reader)
 	else if (c == 'f')
 	{
 		ret = obj_reader_next(reader);
-		ret = obj_get_triangles_index(&currentGroupe.faces, &obj->type, reader);
+		ret = obj_get_triangles_index(&(*currentGroupe)->faces, &obj->type, reader);
 		// obj_skip_nl(reader);
 		//parse face
 	}
@@ -106,7 +105,7 @@ static int	obj_read_type(t_obj *obj, t_obj_reader *reader)
 	{
 		ret = obj_reader_next(reader);
 		ret = obj_get_groupe(obj, currentGroupe, reader);
-		obj_skip_nl(reader);
+		// obj_skip_nl(reader);
 		// new groupe
 	}
 	else if (c == 's' || c == 'm' || c == 'u' || c == 'o' || c == '#' || c == '\n')
@@ -119,32 +118,34 @@ static int	obj_read_type(t_obj *obj, t_obj_reader *reader)
 	return (ret);
 }
 
-int obj_read(t_obj *obj, char *filepath)
+int obj_read(t_obj *obj, char *filepath, t_obj_reader *reader)
 {
-	t_obj_reader reader;
 	char buffer[4096];
 	int16_t c;
 	int ret;
-	ret = 777;
+	t_groupe *currentGroupe;
 
-	if ((reader = obj_create_reader(open(filepath, O_RDONLY),buffer, 4096)).fd  <= 0)
+	ret = GET_RESULT;
+	if ((*reader = obj_create_reader(open(filepath, O_RDONLY),buffer, 4096)).fd  <= 0)
 		return(RIP_OPEN);
 	if (!(*obj = create_groupe(1, Obj_No_Type)).groupe)
 		return (RIP_MALLOC);
 	if (!(obj->vertex = create_vertex_array(10)).this
 		|| !(obj->vn = create_vertex_array(10)).this
-		|| !(obj->vt = create_uv_array(10)).this || !(obj->groupe)
-		|| !(obj->groupe->faces = create_triangle_array(10)).triangle)
+		|| !(obj->vt = create_uv_array(10)).this
+		|| !(currentGroupe = obj_append_groupe(obj, (t_groupe) {
+			.name = NULL,
+			.faces = create_triangle_array(10)
+	})))
 	{
 		return(RIP_MALLOC);
 	}
-	while((c = obj_reader_peek(&reader)) > 0)
+	while((c = obj_reader_peek(reader)) > 0)
 	{
-		ret = obj_read_type(obj, &reader);
-		printError(&reader, ret);
+		ret = obj_read_type(obj, &currentGroupe, reader);
 		if (ret != GET_RESULT)
-			break;
-		c = obj_reader_next(&reader);
+			return (ret);
+		c = obj_reader_next(reader);
 	}
 	if (c == -1)
 		return (RIP_READ);

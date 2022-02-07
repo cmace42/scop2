@@ -11,6 +11,7 @@
 # include <fcntl.h>
 # include <stdio.h>
 # include <string.h>
+# include "../../libft/libft.h"
 
 typedef struct	s_obj_reader
 {
@@ -202,7 +203,7 @@ int obj_append_uv(t_uv_array *uv_array, t_uv uv);
 *	filepath : fichier a parser
 *	retourne un entier erreur;
 */
-int obj_read(t_obj *obj, char *filepath);
+int obj_read(t_obj *obj, char *filepath, t_obj_reader *reader);
 
 int obj_skip_whitespace(t_obj_reader *self);
 
@@ -230,5 +231,6 @@ int obj_append_triangle(t_faces_array *face, t_triangle triangle);
 t_faces_array create_triangle_array(size_t size);
 t_obj create_groupe(size_t size, t_face_type type);
 t_groupe *obj_append_groupe(t_obj *obj, t_groupe groupe);
-
+int obj_get_groupe(t_obj *obj, t_groupe **currentGroupe, t_obj_reader *reader);
+int printError(t_obj_reader self, int error);
 #endif

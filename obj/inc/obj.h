@@ -24,12 +24,6 @@ typedef struct	s_obj_reader
 	size_t	line;
 }				t_obj_reader;
 
-typedef struct	s_bufferData
-{
-	
-	size_t size_data;
-}				t_bufferData;
-
 typedef struct	s_vertex
 {
 	float x;

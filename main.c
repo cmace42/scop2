@@ -15,6 +15,7 @@ int main(int argc, char **argv)
 	}
 	if (!getModel(argv[1], &env.modelData))
 	{
+		printf("Hey\n");
 		return (0);
 	}
 		// if (ret == GET_RESULT)

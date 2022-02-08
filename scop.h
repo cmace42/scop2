@@ -89,17 +89,18 @@ typedef struct s_objectInWorld
 // 	size_t	line;
 // }				t_obj_reader;
 
-// typedef struct	s_bufferData
-// {
-// 	GLfloat *buffer_data;
-// 	size_t size_data;
-// }				t_bufferData;
+typedef struct	s_bufferData
+{
+	char *name;
+	GLfloat *buffer_data;
+	size_t size_data;
+}				t_bufferData;
 
 typedef struct s_model
 {
-	t_bufferData vertex;
-	t_bufferData uv;
-	t_bufferData normal;
+	t_bufferData* vertex;
+	t_bufferData* uv;
+	t_bufferData* normal;
 	GLfloat *vertex_buffer_data;
 	size_t vertex_size_data;
 	GLfloat *uv_buffer_data;

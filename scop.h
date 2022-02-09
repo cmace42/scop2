@@ -98,6 +98,7 @@ typedef struct	s_bufferData
 
 typedef struct s_model
 {
+	size_t size_groupe;
 	t_bufferData* vertex;
 	t_bufferData* uv;
 	t_bufferData* normal;

@@ -87,35 +87,44 @@ static int	obj_read_type(t_obj *obj, t_groupe **currentGroupe, t_obj_reader *rea
 	int16_t c;
 	int ret;
 
-	ret = 666;
+	ret = GET_RESULT;
 	c = obj_reader_peek(reader);
 	if (c == 'v')
 	{
 		ret = obj_get_vertex_type(obj, reader);
-		//parse vertex, vt, vn
+		if (ret != GET_RESULT && ret != DONE)
+		{
+			return (ret);
+		}
 	}
 	else if (c == 'f')
 	{
-		ret = obj_reader_next(reader);
-		ret = obj_get_triangles_index(&(*currentGroupe)->faces, &obj->type, reader);
-		// obj_skip_nl(reader);
-		//parse face
+		if ((ret = obj_reader_next(reader) != GET_RESULT)
+			|| (ret = obj_get_triangles_index(&(*currentGroupe)->faces, &obj->type, reader)) != GET_RESULT)
+		{
+			return (ret);
+		}
 	}
 	else if (c == 'g')
 	{
-		ret = obj_reader_next(reader);
-		ret = obj_get_groupe(obj, currentGroupe, reader);
-		// obj_skip_nl(reader);
-		// new groupe
+		if ((ret = obj_reader_next(reader) != GET_RESULT)
+			|| (ret = obj_get_groupe(obj, currentGroupe, reader) != GET_RESULT))
+		{
+			return (ret);
+		}
 	}
 	else if (c == 's' || c == 'm' || c == 'u' || c == 'o' || c == '#' || c == '\n')
 	{
-		obj_skip_nl(reader);
-		ret = GET_RESULT;
+		// close(reader->fd);
+		// printf("%zd\n",read(reader->fd, reader->buffer, reader->buffer_size));
+		if ((ret = obj_skip_nl(reader)) != GET_RESULT && ret != DONE)
+		{
+			return (ret);
+		}
 	}
 	else
 		ret = c == -1 ? RIP_READ : WRONG_CHAR;
-	return (ret);
+	return (GET_RESULT);
 }
 
 int obj_read(t_obj *obj, char *filepath, t_obj_reader *reader)

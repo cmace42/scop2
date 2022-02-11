@@ -59,7 +59,7 @@ int obj_append_triangle(t_faces_array *faces, t_triangle triangle)
 	// printf("%ld %ld\n", faces->len, faces->size);
 	if (faces->len == faces->size)
 	{
-		new_size = faces->size + 10;
+		new_size = faces->size * 2;
 		if (!(new = (t_triangle*)malloc(sizeof(t_triangle) * new_size)))
 			return (RIP_MALLOC);
 		memcpy(new, faces->triangle, sizeof(t_triangle) * faces->size);
@@ -79,7 +79,7 @@ t_groupe *obj_append_groupe(t_obj *obj, t_groupe groupe)
 	// printf("in append groupe %ld\n", obj->len);
 	if (obj->len == obj->size)
 	{
-		new_size = obj->size + 10;
+		new_size = obj->size * 2;
 		if (!(new = (t_groupe*)malloc(sizeof(t_groupe) * new_size)))
 			return (NULL);
 		memcpy(new, obj->groupe, sizeof(t_groupe) * obj->size);

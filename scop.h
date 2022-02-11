@@ -65,7 +65,7 @@ typedef struct s_vao
 
 typedef struct s_objectInWorld
 {
-	t_mat4 mod;
+	t_mat4 this;
 	t_vec3 position;
 	t_vec3 target;
 	t_vec3 up;
@@ -175,9 +175,9 @@ typedef struct s_env
 	SDL_Window		*window;
 	t_time			time;
 	t_objectInWorld	camera;
-	t_objectInWorld	model;
+	t_objectInWorld	*model;
 	t_model			modelData;
-	t_vao			vao;
+	t_vao			*vao;
 	t_bmp			bmp1;
 	t_bmp			bmp2;
 	GLuint			texture;
@@ -205,15 +205,16 @@ typedef struct s_env
 
 /* Init */
 SDL_Window*		initWindow();
-t_vao initOpenGL(t_model obj);
+t_vao *initOpenGL(t_model obj);
 t_objectInWorld initCamera();
-t_objectInWorld initModel(t_vec3 whl);
+t_objectInWorld *initModel(t_model modelData);
 bool getModel(char *filename, t_model *model);
 
 
 /* main prog */
 
 void loop(t_env data);
+int eventTemp();
 int event(t_env *data, float deltaTime);	
 void applyPerspective(GLuint programId, t_objectInWorld *model, t_objectInWorld *camera);
 void render(t_env data);
@@ -231,6 +232,8 @@ int				loadBMP_custom(const char *imagepath, t_bmp *bmp);
 // int				obj_reader_next(t_obj_reader *self);
 t_time			getDataTime(t_time last);
 GLuint			getTextureId(t_bmp bmp);
+
+void printModel(t_model model, t_face_type type);
 
 /* Tools Parsing */
 void printList(t_listParsing* node);

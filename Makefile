@@ -76,14 +76,14 @@ GLSL = \
 
 # --  Redirection in OBJS  -- #
 OBJS = $(addprefix $(OBJ_DIR)/, $(SRCS:%.c=%.o))
-GLSLOBJ = $(GLSL:.glsl=.o)
+GLSLOBJ = $(addprefix $(OBJ_DIR)/,$(GLSL:.glsl=.o))
 # OBJ = $(SRC:.c=.o) $(GLSL:.glsl=.o)
 
 # addprefix permet de rediriger a la creation dans le dossier garbage
 
 # --   Compilation flags  -- #
 CC			=	gcc
-CFLAGS	  =   -Wall -Wextra -Werror #-fsanitize=address
+CFLAGS	  =   -Wall -Wextra -Werror -fsanitize=address
 # --  Animation Calcul %  -- #
 T = $(words $(OBJS) 0)
 N = 0
@@ -126,8 +126,8 @@ lib:
 # No print directory c'est pour ne pas afficher les deplacement de dossier entre les different Makefile
 # ( pour mute certaine lignes )
 
-$(NAME): $(OBJS) $(GLSLOBJ) $(INC_OBJLIB_DIR)/*.h $(INC_DIR)/*.h $(LIBOBJ_A) $(LIBFT_A)
-	$(CC) $(CFLAGS) -o $(NAME) $(OBJS) $(OSFLAG) $(LDFLAGS)
+$(NAME): $(GLSLOBJ) $(OBJS)  $(INC_OBJLIB_DIR)/*.h $(INC_DIR)/*.h $(LIBOBJ_A) $(LIBFT_A)
+	$(CC) $(CFLAGS) -o $(NAME) $(OBJS) $(GLSLOBJ)  $(OSFLAG) $(LDFLAGS)
 	echo "$(_GREEN)[100%] $(NAME) Compilation Success$(_ENDL)"
 
 # J'ajoute en dependance les .h pour ne pas avec a faire make re quand je les change
@@ -137,7 +137,7 @@ $(OBJ_DIR)/%.o : %.c | $(OBJ_DIR)
 	$(CC) $(CFLAGS) -o $@ -c $< -I $(INC_DIR)  -I $(INC_LIB_DIR) -I $(INC_OBJLIB_DIR) $(CPPFLAGS)
 	@printf "%-65b\r" "$(_GREEN)$(ECHO)$(_CYAN) Compilation $(notdir $@)"
 
-%.o: %.glsl
+$(OBJ_DIR)/%.o: %.glsl | $(OBJ_DIR)
 	@xxd -i $< | $(CC) -c -xc - -o $@
 
 # dependance indirecte de la regle OBJ_DIR pour que l'appelle a la regle ce fasse uniquement dans le cas ou elle n'existe pas

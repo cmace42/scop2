@@ -2,8 +2,8 @@
 
 void loop(t_env data)
 {
-	
 	int running = 1;
+	size_t i;
 	// glEnable(GL_CULL_FACE);
 	// printf("Starting loop\n");
 	// printf("size triangle to draw %ld\n", obj.vertex_size_data);
@@ -16,10 +16,11 @@ void loop(t_env data)
 		data.time = getDataTime(data.time);
 		if (data.action.rotate)
 		{
-			data.model.angle.y += 0.02f;
+			data.model[0].angle.y += 0.02f;
 		}
+		// running = eventTemp();
 		running = event(&data, data.time.deltaTime);
-		applyPerspective(data.programId, &data.model, &data.camera);
+		applyPerspective(data.programId, data.model, &data.camera);
 		data.action.ShowTextureLoc = glGetUniformLocation(data.programId, "showTexture");
 		glUniform1i(data.action.ShowTextureLoc, data.action.showTexture);
 		data.action.testLoc = glGetUniformLocation(data.programId, "test");
@@ -41,7 +42,11 @@ void loop(t_env data)
 	}
 	glDeleteTextures(1, &data.texture);
 	glDeleteProgram(data.programId);
-	glDeleteVertexArrays(1, &data.vao.VertexArrayID);
-	glDeleteBuffers(1, &data.vao.vertexBuffer);
-	glDeleteBuffers(1, &data.vao.textureBuffer);
+	while(i < data.modelData.size_groupe)
+	{
+		glDeleteVertexArrays(1, &data.vao[i].VertexArrayID);
+		glDeleteBuffers(1, &data.vao[i].vertexBuffer);
+		glDeleteBuffers(1, &data.vao[i].textureBuffer);
+		i++;
+	}
 }

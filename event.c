@@ -1,7 +1,26 @@
 #include "scop.h"
 
+int eventTemp()
+{
+	SDL_Event event;
+
+	while(SDL_PollEvent(&event))
+	{
+		if (event.type == SDL_QUIT)
+			return(0);
+		switch (event.key.keysym.sym)
+		{
+			case SDLK_ESCAPE:
+				return (0);
+				break;
+		}
+	}
+	return (1);
+}
+
 int event(t_env *data, float deltaTime)
 {
+	
 	SDL_Event event;
 	int xMouse, yMouse;
 
@@ -16,49 +35,49 @@ int event(t_env *data, float deltaTime)
 				case SDLK_KP_4:
 				{
 					if (data->action.rotateKeyboardMode)
-						data->model.angle.y += 0.1f;
+						data->model[0].angle.y += 0.1f;
 					else
-						data->model.position = vec3_add(data->model.position, (t_vec3){0.1f,0.0f,0.0f});
+						data->model[0].position = vec3_add(data->model[0].position, (t_vec3){0.1f,0.0f,0.0f});
 					break;
 				}
 				case SDLK_KP_6:
 				{
 					if (data->action.rotateKeyboardMode)
-						data->model.angle.y -= 0.1f;
+						data->model[0].angle.y -= 0.1f;
 					else
-						data->model.position = vec3_add(data->model.position,(t_vec3){-0.1f,0.0f,0.0f});
+						data->model[0].position = vec3_add(data->model[0].position,(t_vec3){-0.1f,0.0f,0.0f});
 					break;
 				}
 				case SDLK_KP_8:
 				{
 					if (data->action.rotateKeyboardMode)
-						data->model.angle.x -= 0.1f;
+						data->model[0].angle.x -= 0.1f;
 					else
-						data->model.position = vec3_add(data->model.position,(t_vec3){0.0f,0.1f,0.0f});
+						data->model[0].position = vec3_add(data->model[0].position,(t_vec3){0.0f,0.1f,0.0f});
 					break;
 				}
 				case SDLK_KP_2:
 				{
 					if (data->action.rotateKeyboardMode)
-						data->model.angle.x += 0.1f;
+						data->model[0].angle.x += 0.1f;
 					else
-						data->model.position = vec3_add(data->model.position,(t_vec3){0.0f,-0.1f,0.0f});
+						data->model[0].position = vec3_add(data->model[0].position,(t_vec3){0.0f,-0.1f,0.0f});
 					break;
 				}
 				case SDLK_KP_7:
 				{
 					if (data->action.rotateKeyboardMode)
-						data->model.angle.z += 0.1f;
+						data->model[0].angle.z += 0.1f;
 					else
-						data->model.position = vec3_add(data->model.position,(t_vec3){0.0f,0.0f,0.1f});
+						data->model[0].position = vec3_add(data->model[0].position,(t_vec3){0.0f,0.0f,0.1f});
 					break;
 				}
 				case SDLK_KP_9:
 				{
 					if (data->action.rotateKeyboardMode)
-						data->model.angle.z -= 0.1f;
+						data->model[0].angle.z -= 0.1f;
 					else
-						data->model.position = vec3_add(data->model.position,(t_vec3){0.0f,0.0f,-0.1f});
+						data->model[0].position = vec3_add(data->model[0].position,(t_vec3){0.0f,0.0f,-0.1f});
 					break;
 				}
 				case SDLK_ESCAPE:

@@ -218,8 +218,8 @@ int obj_get_triangles_index(t_faces_array *faces, t_face_type *type, t_obj_reade
 int obj_read_part_int(float *value, t_obj_reader *reader, int *sign);
 
 int	obj_vertex_type(size_t *vertex, t_face_type *type, t_obj_reader *reader);
-int	obj_uv_type(size_t *uv, t_face_type *type, t_obj_reader *reader);
-int obj_normal_type(size_t *normal, t_face_type *type, t_obj_reader *reader);
+int	obj_uv_type(size_t *uv, t_face_type *type, t_obj_reader *reader, bool *haveNormal);
+int obj_normal_type(size_t *normal, t_face_type *type, t_obj_reader *reader, bool *haveNormal);
 int obj_append_triangle(t_faces_array *face, t_triangle triangle);
 
 t_faces_array create_triangle_array(size_t size);

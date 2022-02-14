@@ -16,11 +16,9 @@ void loop(t_env data)
 		data.time = getDataTime(data.time);
 		if (data.action.rotate)
 		{
-			data.model[0].angle.y += 0.02f;
+			doRotate(&data.model, (t_vec3){.y = 0.02f}, data.modelData.size_groupe);
 		}
-		// running = eventTemp();
 		running = event(&data, data.time.deltaTime);
-		applyPerspective(data.programId, data.model, &data.camera);
 		data.action.ShowTextureLoc = glGetUniformLocation(data.programId, "showTexture");
 		glUniform1i(data.action.ShowTextureLoc, data.action.showTexture);
 		data.action.testLoc = glGetUniformLocation(data.programId, "test");

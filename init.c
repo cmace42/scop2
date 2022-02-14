@@ -107,15 +107,15 @@ t_vec3 getWidthHeighLengh(t_bufferData data)
 			whlMax.y = data.buffer_data[i + 1];
 		if (data.buffer_data[i + 2] > whlMax.z)
 			whlMax.z = data.buffer_data[i + 2];
-		if (data.buffer_data[i] > whlMin.x)
+		if (data.buffer_data[i] < whlMin.x)
 			whlMin.x = data.buffer_data[i];
-		if (data.buffer_data[i + 1] > whlMin.y)
+		if (data.buffer_data[i + 1] < whlMin.y)
 			whlMin.y = data.buffer_data[i + 1];
-		if (data.buffer_data[i + 2] > whlMin.z)
+		if (data.buffer_data[i + 2] < whlMin.z)
 			whlMin.z = data.buffer_data[i + 2];
 		i += 3;
 	}
-	return (vec3_add(vec3_div_value(vec3_sub(whlMax, whlMin), 2), whlMin));
+	return (vec3_add(whlMin, vec3_div_value(vec3_sub(whlMax, whlMin), 2)));
 }
 
 t_objectInWorld *initModel(t_model modelData)

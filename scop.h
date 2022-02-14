@@ -232,6 +232,7 @@ int				loadBMP_custom(const char *imagepath, t_bmp *bmp);
 // int				obj_reader_next(t_obj_reader *self);
 t_time			getDataTime(t_time last);
 GLuint			getTextureId(t_bmp bmp);
+void doRotate(t_objectInWorld **model, t_vec3 rotate, size_t size);
 
 void printModel(t_model model, t_face_type type);
 

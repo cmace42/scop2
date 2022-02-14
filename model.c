@@ -214,13 +214,25 @@ bool getModel(char *filename, t_model *model)
 	t_obj_reader reader;
 	t_obj obj;
 	int ret;
+	size_t i;
 
 	if ((ret = obj_read(&obj, filename, &reader)) != GET_RESULT)
 	{
 		printError(reader, ret);
 		return (false);
 	}
-	printobj(obj);
+	if (obj.vertex.len < 1)
+		return (false);
+	i = 0;
+	if (obj.groupe[0].name == NULL && obj.len > 1)
+		i = 1;
+	while (i < obj.len)
+	{
+		if (obj.groupe[i].faces.len < 1)
+			return (false);
+		i++;
+	}
+	// printobj(obj);
 	if (!initBuffer(obj, model))
 		return (false);
 	if (!readBuffers(obj, model))

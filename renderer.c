@@ -7,6 +7,7 @@ void render(t_env data)
 	i = 0;
 	while (i < data.modelData.size_groupe)
 	{
+		applyPerspective(data.programId, &data.model[i], &data.camera);
 		glEnableVertexAttribArray(0);
 		glBindBuffer(GL_ARRAY_BUFFER, data.vao[i].vertexBuffer);
 		glVertexAttribPointer(

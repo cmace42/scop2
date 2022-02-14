@@ -18,6 +18,30 @@ int eventTemp()
 	return (1);
 }
 
+void doRotate(t_objectInWorld **model, t_vec3 rotate, size_t size)
+{
+	size_t i;
+
+	i = 0;
+	while (i < size)
+	{
+		(*model)[i].angle = vec3_add((*model)[i].angle, rotate);
+		i++;
+	}
+}
+
+void doTranslate(t_objectInWorld **model, t_vec3 translate, size_t size)
+{
+	size_t i;
+
+	i = 0;
+	while (i < size)
+	{
+		(*model)[i].position = vec3_add((*model)[i].position, translate);
+		i++;
+	}
+}
+
 int event(t_env *data, float deltaTime)
 {
 	
@@ -35,49 +59,67 @@ int event(t_env *data, float deltaTime)
 				case SDLK_KP_4:
 				{
 					if (data->action.rotateKeyboardMode)
-						data->model[0].angle.y += 0.1f;
+					{
+						doRotate(&data->model, (t_vec3){.y = 0.1f}, data->modelData.size_groupe);
+					}
 					else
-						data->model[0].position = vec3_add(data->model[0].position, (t_vec3){0.1f,0.0f,0.0f});
+					{
+						doTranslate(&data->model, (t_vec3){.x = 0.1f}, data->modelData.size_groupe);
+					}
 					break;
 				}
 				case SDLK_KP_6:
 				{
 					if (data->action.rotateKeyboardMode)
-						data->model[0].angle.y -= 0.1f;
+					{
+						doRotate(&data->model, (t_vec3){.y = -0.1f}, data->modelData.size_groupe);
+					}
 					else
-						data->model[0].position = vec3_add(data->model[0].position,(t_vec3){-0.1f,0.0f,0.0f});
+					{
+						doTranslate(&data->model, (t_vec3){.x = -0.1f}, data->modelData.size_groupe);
+					}
 					break;
 				}
 				case SDLK_KP_8:
 				{
 					if (data->action.rotateKeyboardMode)
-						data->model[0].angle.x -= 0.1f;
+					{
+						doRotate(&data->model, (t_vec3){.x= -0.1f}, data->modelData.size_groupe);
+					}
 					else
-						data->model[0].position = vec3_add(data->model[0].position,(t_vec3){0.0f,0.1f,0.0f});
+					{
+						doTranslate(&data->model, (t_vec3){.y = 0.1f}, data->modelData.size_groupe);
+					}
 					break;
 				}
 				case SDLK_KP_2:
 				{
 					if (data->action.rotateKeyboardMode)
-						data->model[0].angle.x += 0.1f;
+					{
+						doRotate(&data->model, (t_vec3){.x= 0.1f}, data->modelData.size_groupe);
+					}
 					else
-						data->model[0].position = vec3_add(data->model[0].position,(t_vec3){0.0f,-0.1f,0.0f});
+					{
+						doTranslate(&data->model, (t_vec3){.y = -0.1f}, data->modelData.size_groupe);
+					}
 					break;
 				}
 				case SDLK_KP_7:
 				{
 					if (data->action.rotateKeyboardMode)
-						data->model[0].angle.z += 0.1f;
+					{
+						doRotate(&data->model, (t_vec3){.z= 0.1f}, data->modelData.size_groupe);
+					}
 					else
-						data->model[0].position = vec3_add(data->model[0].position,(t_vec3){0.0f,0.0f,0.1f});
+						doTranslate(&data->model, (t_vec3){.z = 0.1f}, data->modelData.size_groupe);
 					break;
 				}
 				case SDLK_KP_9:
 				{
 					if (data->action.rotateKeyboardMode)
-						data->model[0].angle.z -= 0.1f;
+						doRotate(&data->model, (t_vec3){.z= -0.1f}, data->modelData.size_groupe);
 					else
-						data->model[0].position = vec3_add(data->model[0].position,(t_vec3){0.0f,0.0f,-0.1f});
+						doTranslate(&data->model, (t_vec3){.z = -0.1f}, data->modelData.size_groupe);
 					break;
 				}
 				case SDLK_ESCAPE:

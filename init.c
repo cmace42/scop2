@@ -66,9 +66,9 @@ t_vao *initOpenGL(t_model model)
 		glGenBuffers(1, &vao[i].colorBuffer); 
 		glBindBuffer(GL_ARRAY_BUFFER, vao[i].colorBuffer); 
 		glBufferData(GL_ARRAY_BUFFER, sizeof(GLfloat) * model.vertex[i].size_data, model.vertex[i].buffer_data, GL_STATIC_DRAW);
-		// glGenBuffers(1, &vao[i].textureBuffer);
-		// glBindBuffer(GL_ARRAY_BUFFER, vao[i].textureBuffer);
-		// glBufferData(GL_ARRAY_BUFFER, sizeof(GLfloat) * model.uv_static_size_data, model.uv_static_buffer_data, GL_STATIC_DRAW);
+		glGenBuffers(1, &vao[i].textureBuffer);
+		glBindBuffer(GL_ARRAY_BUFFER, vao[i].textureBuffer);
+		glBufferData(GL_ARRAY_BUFFER, sizeof(GLfloat) * model.vertex[i].size_data, model.vertex[i].buffer_data, GL_STATIC_DRAW);
 		i++;
 	}
 	// Active le test de profondeur

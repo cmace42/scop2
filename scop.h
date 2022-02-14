@@ -161,6 +161,8 @@ typedef struct s_action
 	bool rotateKeyboardMode;
 	bool isBmp1;
 	bool haveSpeedBoost;
+	int8_t showFace;
+	bool showDept;
 }				t_action;
 
 typedef struct s_bmp

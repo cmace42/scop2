@@ -16,30 +16,21 @@ bool initBuffer(t_obj obj, t_model *model)
 		model->size_groupe = obj.len;
 	if (!(model->vertex = malloc(sizeof(t_bufferData) * model->size_groupe)))
 		return (false);
-	if ((obj.type == Obj_Vertex_Texture_Normal_Type || obj.type == Obj_Texture_Type))
-		if (!(model->uv = malloc(sizeof(t_bufferData) * model->size_groupe)))
-			return (false);
-	if ((obj.type == Obj_Vertex_Texture_Normal_Type || obj.type == Obj_Normal_Type))
-		if (!(model->normal = malloc(sizeof(t_bufferData) * model->size_groupe)))
-			return (false);
+	if (!(model->uv = malloc(sizeof(t_bufferData) * model->size_groupe)))
+		return (false);
+	if (!(model->normal = malloc(sizeof(t_bufferData) * model->size_groupe)))
+		return (false);
 	while (iGroupe < obj.len)
 	{
 		model->vertex[z].size_data = obj.groupe[iGroupe].faces.len * 3 * 3;
 		if  (!(model->vertex[z].buffer_data = malloc(sizeof(GLfloat) * model->vertex[z].size_data)))
 			return (false);
-		if (obj.type == Obj_Vertex_Texture_Normal_Type || obj.type == Obj_Texture_Type)
-		{
-			model->uv[z].size_data = obj.groupe[iGroupe].faces.len * 2 * 3;
-			if (!(model->uv[z].buffer_data = malloc(sizeof(GLfloat) * model->uv[z].size_data)))
-				return (false);
-		}
-		if (obj.type == Obj_Vertex_Texture_Normal_Type || obj.type == Obj_Normal_Type)
-		{
-			model->normal[z].size_data = obj.groupe[iGroupe].faces.len * 3 * 3;
-			if (!(model->normal[z].buffer_data = malloc(sizeof(GLfloat) * model->normal[z].size_data)))
-				return (false);
-			
-		}
+		model->uv[z].size_data = obj.groupe[iGroupe].faces.len * 2 * 3;
+		if (!(model->uv[z].buffer_data = malloc(sizeof(GLfloat) * model->uv[z].size_data)))
+			return (false);
+		model->normal[z].size_data = obj.groupe[iGroupe].faces.len * 3 * 3;
+		if (!(model->normal[z].buffer_data = malloc(sizeof(GLfloat) * model->normal[z].size_data)))
+			return (false);
 		iGroupe++;
 		z++;
 	}
@@ -93,6 +84,44 @@ bool getNormalBuffer(t_triangle triangle, t_vertex_array normal, t_bufferData *n
 	return true;
 }
 
+void getStaticUv(t_bufferData *uvBuffer, t_bufferData vertexBuffer)
+{
+	t_vec3 maxVec;
+	t_vec3 minVec;
+	size_t i;
+	size_t j;
+
+	minVec = (t_vec3){vertexBuffer.buffer_data[0], vertexBuffer.buffer_data[1], vertexBuffer.buffer_data[2]};
+	maxVec = (t_vec3){vertexBuffer.buffer_data[0], vertexBuffer.buffer_data[1], vertexBuffer.buffer_data[2]};
+	i = 3;
+	while (i < vertexBuffer.size_data)
+	{
+		if (vertexBuffer.buffer_data[i + 1] > maxVec.x)
+			maxVec.x = vertexBuffer.buffer_data[i + 1];
+		if (vertexBuffer.buffer_data[i + 1] < minVec.x)
+			minVec.x = vertexBuffer.buffer_data[i + 1];
+		if (vertexBuffer.buffer_data[i + 2] > maxVec.y)
+			maxVec.y = vertexBuffer.buffer_data[i + 2];
+		if (vertexBuffer.buffer_data[i + 2] < minVec.y)
+			minVec.y = vertexBuffer.buffer_data[i + 2];
+		i += 3;
+	}
+	i = 0;
+	j = 0;
+	while(i < uvBuffer->size_data)
+	{
+		if (minVec.x == maxVec.x)
+            uvBuffer->buffer_data[i] = 0;
+        else
+			uvBuffer->buffer_data[i] = (vertexBuffer.buffer_data[j + 2] - minVec.x) / (maxVec.x - minVec.x);
+		if (minVec.y == maxVec.y)
+            uvBuffer->buffer_data[i + 1] = 0;
+        else
+			uvBuffer->buffer_data[i + 1] = (vertexBuffer.buffer_data[j + 1] - minVec.y) / (maxVec.y - minVec.y);
+		i+=2;
+		j+=3;
+	}
+}
 
 bool readBuffers(t_obj obj, t_model *model)
 {
@@ -132,6 +161,10 @@ bool readBuffers(t_obj obj, t_model *model)
 			}
 			y++;
 			t++;
+		}
+		if (obj.type != Obj_Vertex_Texture_Normal_Type && obj.type != Obj_Texture_Type)
+		{
+			getStaticUv(&(model->uv[z]), model->vertex[z]);
 		}
 		z++;
 		i++;

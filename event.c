@@ -181,6 +181,34 @@ int event(t_env *data, float deltaTime)
 					data->action.haveSpeedBoost = true;
 					break;
 				}
+				case SDLK_DELETE:
+				{
+					if (data->action.showFace == 0)
+					{
+						data->action.showFace = 1;
+						glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+					}
+					else if (data->action.showFace == 1)
+					{
+						data->action.showFace = 2;
+						glPolygonMode(GL_FRONT_AND_BACK, GL_POINT);
+					}
+					else if (data->action.showFace == 2)
+					{
+						data->action.showFace = 0;
+						glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+					}
+					break;
+				}
+				case SDLK_INSERT:
+				{
+					data->action.showDept = !data->action.showDept;
+					if (!data->action.showDept)
+						glEnable(GL_DEPTH_TEST);
+					else
+						glDisable(GL_DEPTH_TEST);
+					break;
+				}
 			}
 		}
 		else if (event.type == SDL_KEYUP)

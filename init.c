@@ -68,11 +68,11 @@ t_vao *initOpenGL(t_model model)
 		glBufferData(GL_ARRAY_BUFFER, sizeof(GLfloat) * model.vertex[i].size_data, model.vertex[i].buffer_data, GL_STATIC_DRAW);
 		glGenBuffers(1, &vao[i].textureBuffer);
 		glBindBuffer(GL_ARRAY_BUFFER, vao[i].textureBuffer);
-		glBufferData(GL_ARRAY_BUFFER, sizeof(GLfloat) * model.vertex[i].size_data, model.vertex[i].buffer_data, GL_STATIC_DRAW);
+		glBufferData(GL_ARRAY_BUFFER, sizeof(GLfloat) * model.uv[i].size_data, model.uv[i].buffer_data, GL_STATIC_DRAW);
 		i++;
 	}
 	// Active le test de profondeur
-	glEnable(GL_DEPTH_TEST); 
+	glEnable(GL_DEPTH_TEST);
 	// Accepte le fragment s'il est plus proche de la caméra que le précédent accepté
 	glDepthFunc(GL_LESS);
 	printf("OpenGL and VAO initialised\n");

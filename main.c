@@ -41,6 +41,8 @@ int
 			env.action.rotateKeyboardMode = true;
 			env.action.isBmp1 = false;
 			env.action.haveSpeedBoost = false;
+			env.action.showFace = 1;
+			env.action.showDept = false;
 			env.time.lastTime = 0;
 			loop(env);
 			if (env.bmp1.data)

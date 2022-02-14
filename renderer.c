@@ -29,10 +29,10 @@ void render(t_env data)
 		(void*)0            // décalage du tableau de tampon
 		);
 		glEnableVertexAttribArray(2);
-		glBindBuffer(GL_ARRAY_BUFFER, data.vao[i].vertexBuffer);
+		glBindBuffer(GL_ARRAY_BUFFER, data.vao[i].textureBuffer);
 		glVertexAttribPointer(
 		2,                  //cela correspond au « layout » dans le shader 
-		3,                  // taille
+		2,                  // taille
 		GL_FLOAT,           // type 
 		GL_FALSE,           // normalisé ? 
 		0,                  // nombre d'octets séparant deux sommets dans le tampon

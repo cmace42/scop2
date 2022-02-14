@@ -63,13 +63,8 @@ void readUv(t_uv uv, t_bufferData *buffer, size_t i)
 
 bool getUvBuffer(t_triangle triangle, t_uv_array uv, t_bufferData *uvBuffer, size_t i)
 {
-	if ((triangle.a.indexUv < 1 || triangle.a.indexUv > uv.len)
-		|| (triangle.b.indexUv < 1 || triangle.b.indexUv > uv.len)
-		|| (triangle.c.indexUv < 1 || triangle.c.indexUv > uv.len))
-	{
-		printf("hello\n");
+	if (triangle.a.indexUv > uv.len || triangle.b.indexUv > uv.len ||  triangle.c.indexUv > uv.len)
 		return false;
-	}
 	readUv(uv.this[triangle.a.indexUv], uvBuffer, i);
 	readUv(uv.this[triangle.b.indexUv], uvBuffer, i + 2);
 	readUv(uv.this[triangle.c.indexUv], uvBuffer, i + 4);
@@ -78,13 +73,9 @@ bool getUvBuffer(t_triangle triangle, t_uv_array uv, t_bufferData *uvBuffer, siz
 
 bool getVerticesBuffer(t_triangle triangle, t_vertex_array vertices, t_bufferData *vertexBuffer, size_t i)
 {
-	if ((triangle.a.indexVertex < 1 || triangle.a.indexVertex > vertices.len)
-		|| (triangle.b.indexVertex < 1 || triangle.b.indexVertex > vertices.len)
-		|| (triangle.c.indexVertex < 1 || triangle.c.indexVertex > vertices.len))
-	{
-		printf("yoyo\n");
+	if (triangle.a.indexVertex > vertices.len || triangle.b.indexVertex > vertices.len
+		|| triangle.c.indexVertex > vertices.len)
 		return false;
-	}
 	readVertex(vertices.this[triangle.a.indexVertex], vertexBuffer, i);
 	readVertex(vertices.this[triangle.b.indexVertex], vertexBuffer, i + 3);
 	readVertex(vertices.this[triangle.c.indexVertex], vertexBuffer, i + 6);
@@ -93,13 +84,9 @@ bool getVerticesBuffer(t_triangle triangle, t_vertex_array vertices, t_bufferDat
 
 bool getNormalBuffer(t_triangle triangle, t_vertex_array normal, t_bufferData *normalBuffer, size_t i)
 {
-	if ((triangle.a.indexNormal < 1 || triangle.a.indexNormal > normal.len)
-		|| (triangle.b.indexNormal < 1 || triangle.b.indexNormal > normal.len)
-		|| (triangle.c.indexNormal < 1 || triangle.c.indexNormal > normal.len))
-	{
-		printf("%zu %zu %zu\n",triangle.a.indexNormal, triangle.b.indexNormal, triangle.c.indexNormal);
+	if ( triangle.a.indexNormal > normal.len || triangle.b.indexNormal > normal.len
+		|| triangle.c.indexNormal > normal.len)
 		return false;
-	}
 	readVertex(normal.this[triangle.a.indexNormal], normalBuffer, i);
 	readVertex(normal.this[triangle.b.indexNormal], normalBuffer, i + 3);
 	readVertex(normal.this[triangle.c.indexNormal], normalBuffer, i + 6);
@@ -117,7 +104,7 @@ bool readBuffers(t_obj obj, t_model *model)
 	i = 0;
 	t = 0;
 	z = 0;
-	printobj(obj);
+	// printobj(obj);
 	if (obj.len > 1)
 		i = 1;
 	while (i < obj.len)
@@ -131,7 +118,6 @@ bool readBuffers(t_obj obj, t_model *model)
 		}
 		while(y < obj.groupe[i].faces.len)
 		{
-			printf("%d\n",obj.type);
 			if (!getVerticesBuffer(obj.groupe[i].faces.triangle[y], obj.vertex, &(model->vertex[z]), y * 9))
 				return (false);
 			if (obj.type == Obj_Vertex_Texture_Normal_Type || obj.type == Obj_Normal_Type)
@@ -234,11 +220,11 @@ bool getModel(char *filename, t_model *model)
 		printError(reader, ret);
 		return (false);
 	}
+	printobj(obj);
 	if (!initBuffer(obj, model))
 		return (false);
 	if (!readBuffers(obj, model))
 	{
-		printf("yo\n");
 		return (false);
 	}
 	freeObj(&obj);

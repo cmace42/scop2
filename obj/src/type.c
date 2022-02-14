@@ -46,6 +46,7 @@ int	obj_uv_type(size_t *uv, t_face_type *type, t_obj_reader *reader, bool *haveN
 	int ret;
 	float res;
 
+	*haveNormal = false;
 	obj_reader_next(reader);
 	c = obj_reader_peek(reader);
 	if (c == '/')

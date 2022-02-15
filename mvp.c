@@ -8,7 +8,7 @@ void applyPerspective(GLuint programId, t_objectInWorld *model, t_objectInWorld 
 
 	model->this = initModelMatrice(model->angle, model->whl, model->position);
 	camera->this = lookAt(camera->position, camera->target, camera->up);
-	projectionMat = initPerspective(45.0f, 0.1f, 1000.0f);
+	projectionMat = initPerspective(INITIALFOV, 0.1f, MAXDIST);
 	mvpMatrice= mat4_mult(mat4_mult(projectionMat, camera->this), model->this);
 	// Obtient un identifiant pour notre variable uniforme "MVP". 
 	// Seulement au moment de l'initialisation. 

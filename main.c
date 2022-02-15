@@ -21,12 +21,12 @@ int
 			SDL_SetRelativeMouseMode(true);
 			env.context = SDL_GL_CreateContext(env.window);
 			env.vao = initOpenGL(env.modelData);
-			env.camera = initCamera();
 			if (!(env.model = initModel(env.modelData)))
 			{
 				printf("merde\n");
 				return (0);
 			}
+			env.camera = initCamera(env.model[0]);
 			printf("%f\t",env.model[0].whl.x);
 			printf("%f\t",env.model[0].whl.y);
 			printf("%f\n",env.model[0].whl.z);
@@ -44,6 +44,7 @@ int
 			env.action.showFace = 1;
 			env.action.showDept = false;
 			env.time.lastTime = 0;
+			env.speed = fabs(env.model[0].whl.y) / 20.0f;
 			loop(env);
 			if (env.bmp1.data)
 				free(env.bmp1.data);

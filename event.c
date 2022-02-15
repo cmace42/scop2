@@ -126,16 +126,16 @@ int event(t_env *data, float deltaTime)
 					return (0);
 					break;
 				case SDLK_s:
-					data->camera.position = vec3_sub(data->camera.position, vec3_mult_value(data->camera.dir, deltaTime * (SPEED + (SPEEDBOOST * (float)data->action.haveSpeedBoost))));
+					data->camera.position = vec3_sub(data->camera.position, vec3_mult_value(data->camera.dir, deltaTime * (SPEED + (data->speed * (float)data->action.haveSpeedBoost))));
 					break;
 				case SDLK_w:
-					data->camera.position = vec3_add(data->camera.position, vec3_mult_value(data->camera.dir, deltaTime * (SPEED + (SPEEDBOOST * (float)data->action.haveSpeedBoost))));
+					data->camera.position = vec3_add(data->camera.position, vec3_mult_value(data->camera.dir, deltaTime * (SPEED + (data->speed * (float)data->action.haveSpeedBoost))));
 					break;
 				case SDLK_a:
-					data->camera.position = vec3_sub(data->camera.position, vec3_mult_value(data->camera.right, deltaTime * (SPEED + (SPEEDBOOST * (float)data->action.haveSpeedBoost))));
+					data->camera.position = vec3_sub(data->camera.position, vec3_mult_value(data->camera.right, deltaTime * (SPEED + (data->speed * (float)data->action.haveSpeedBoost))));
 					break;
 				case SDLK_d:
-					data->camera.position = vec3_add(data->camera.position, vec3_mult_value(data->camera.right, deltaTime * (SPEED + (SPEEDBOOST * (float)data->action.haveSpeedBoost))));
+					data->camera.position = vec3_add(data->camera.position, vec3_mult_value(data->camera.right, deltaTime * (SPEED + (data->speed * (float)data->action.haveSpeedBoost))));
 					break;
 				case SDLK_SPACE:
 					data->camera.position = vec3_add(data->camera.position, vec3_mult_value(data->camera.up, deltaTime * SPEED));
@@ -200,7 +200,7 @@ int event(t_env *data, float deltaTime)
 					}
 					break;
 				}
-				case SDLK_INSERT:
+				case SDLK_PAGEUP:
 				{
 					data->action.showDept = !data->action.showDept;
 					if (!data->action.showDept)

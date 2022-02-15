@@ -28,6 +28,7 @@
 # define SPEEDBOOST 0.014f
 # define MOUSESPEED 0.00005f
 # define INITIALFOV 70.0f
+# define MAXDIST 1000.0f
 
 typedef struct	s_vec2
 {
@@ -102,6 +103,7 @@ typedef struct s_model
 	t_bufferData* vertex;
 	t_bufferData* uv;
 	t_bufferData* normal;
+	t_bufferData* color;
 	GLfloat *vertex_buffer_data;
 	size_t vertex_size_data;
 	GLfloat *uv_buffer_data;
@@ -187,6 +189,7 @@ typedef struct s_env
 	// t_data			data;
 	t_action action;
 	SDL_GLContext	context;
+	float speed;
  }				t_env;
 
 // enum {
@@ -265,6 +268,9 @@ t_vec3		vec3_mult(t_vec3 a, t_vec3 b);
 t_vec3		vec3_mult_value(t_vec3 a, float value);
 t_vec3		vec3_normalisation(t_vec3 vec);
 t_vec3		vec3_cross(t_vec3 a, t_vec3 b);
+float		vec3_dot(t_vec3 a, t_vec3 b);
+t_vec3		vec3_add_value(t_vec3 a, float value);
+t_vec3		vec3_sub_value(t_vec3 a, float value);
 
 void		printMat4(t_mat4 mat);
 

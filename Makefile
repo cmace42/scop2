@@ -55,6 +55,7 @@ SRCS =	\
 			vec3_new.c\
 			vec3_normalisation.c\
 			vec3_sub.c\
+			vec3_dot.c\
 			toRadian.c\
 			printMat4.c\
 #		etc.. 

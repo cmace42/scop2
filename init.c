@@ -65,7 +65,7 @@ t_vao *initOpenGL(t_model model)
 		// glBufferData(GL_ARRAY_BUFFER, sizeof(g_vertex_buffer_data), g_vertex_buffer_data, GL_STATIC_DRAW);
 		glGenBuffers(1, &vao[i].colorBuffer); 
 		glBindBuffer(GL_ARRAY_BUFFER, vao[i].colorBuffer); 
-		glBufferData(GL_ARRAY_BUFFER, sizeof(GLfloat) * model.vertex[i].size_data, model.vertex[i].buffer_data, GL_STATIC_DRAW);
+		glBufferData(GL_ARRAY_BUFFER, sizeof(GLfloat) * model.color[i].size_data, model.color[i].buffer_data, GL_STATIC_DRAW);
 		glGenBuffers(1, &vao[i].textureBuffer);
 		glBindBuffer(GL_ARRAY_BUFFER, vao[i].textureBuffer);
 		glBufferData(GL_ARRAY_BUFFER, sizeof(GLfloat) * model.uv[i].size_data, model.uv[i].buffer_data, GL_STATIC_DRAW);
@@ -79,11 +79,129 @@ t_vao *initOpenGL(t_model model)
 	return (vao);
 }
 
+bool isPointOnCone(t_vec3 coord, t_vec3 targetCoord, t_vec3 camCoord)
+{
+	float cone_dist; 
+	cone_dist = vec3_dot(vec3_sub(vec3_add_value(camCoord,1),vec3_add_value(coord,1)), vec3_normalisation(vec3_add_value(targetCoord,1)));
+	printf("ispointoncone : %f\n",cone_dist);
+	if (cone_dist <= 0 || cone_dist >= MAXDIST)
+		return (false);
+	float cone_radius;
+	cone_radius = (cone_dist / MAXDIST) * INITIALFOV;
+	float orth_dist;
+	// lenght(((coord - camCoord) - (dir * cone_dist)))
+	orth_dist = vec3_length
+	(
+		vec3_sub
+		(
+			vec3_sub
+			(
+				vec3_add_value
+				(
+					coord,
+					1
+				),
+				vec3_add_value
+				(
+					camCoord,
+					1
+				)
+			),
+			vec3_mult_value
+			(
+				vec3_normalisation
+				(
+					vec3_add_value
+					(
+						targetCoord,
+						1
+					)
+				),
+				cone_dist
+			)
+		)
+	);
+	printf("ispointoncone : %f > %f = %d\n ", orth_dist, cone_radius,orth_dist > cone_radius);
+	return (orth_dist > cone_radius);
+}
+
+bool isObjectOnCone(t_objectInWorld model, t_vec3 targetCoord, t_vec3 camCoord)
+{
+	if (!isPointOnCone(model.position, targetCoord, camCoord))
+		return (false);
+	if (!isPointOnCone((t_vec3) 
+		{
+			.x = model.position.x,
+			.y = model.position.y + model.whl.y,
+			.z = model.position.z,
+		}, targetCoord, camCoord))
+		return (false);
+	if (!isPointOnCone((t_vec3) 
+		{
+			.x = model.position.x + model.whl.x,
+			.y = model.position.y,
+			.z = model.position.z,
+		}, targetCoord, camCoord))
+		return (false);
+	if (!isPointOnCone((t_vec3) 
+		{
+			.x = model.position.x + model.whl.x,
+			.y = model.position.y + model.whl.y,
+			.z = model.position.z,
+		}, targetCoord, camCoord))
+		return (false);
+	if (!isPointOnCone((t_vec3) 
+		{
+			.x = model.position.x,
+			.y = model.position.y,
+			.z = model.position.z + model.whl.z,
+		}, targetCoord, camCoord))
+		return (false);
+	if (!isPointOnCone((t_vec3) 
+		{
+			.x = model.position.x,
+			.y = model.position.y + model.whl.y,
+			.z = model.position.z + model.whl.z,
+		}, targetCoord, camCoord))
+		return (false);
+	if (!isPointOnCone((t_vec3) 
+		{
+			.x = model.position.x + model.whl.x,
+			.y = model.position.y,
+			.z = model.position.z + model.whl.z,
+		}, targetCoord, camCoord))
+		return (false);
+	if (!isPointOnCone((t_vec3) 
+		{
+			.x = model.position.x + model.whl.x,
+			.y = model.position.y + model.whl.y,
+			.z = model.position.z + model.whl.z
+		}, targetCoord, camCoord))
+		return (false);
+	return (true);
+}
+
+float getZAxis(t_objectInWorld model, t_vec3 targetCoord, t_vec3 camCoord)
+{
+	int i;
+
+	i = 0;
+	printf("yo\n");
+	while (!isObjectOnCone(model, targetCoord, camCoord) && i < 200)
+	{
+		printf("wsh bordel %f\n",camCoord.z);
+		camCoord.z += vec3_length(vec3_sub(model.position, camCoord));
+		i++;
+	}
+	return camCoord.z;
+}
+
 t_objectInWorld initCamera()
 {
 	t_objectInWorld camera;
-	camera.position = vec3_new(0.0f, 0.0f, 10.0f);
 	camera.target = vec3_new(0.0f, 0.0f, 0.0f);
+	camera.position = vec3_new(0.0f, 0.0f, 10.0f);
+	// camera.position = vec3_new(0.0f, 0.0f, getZAxis(model, camera.target, (t_vec3){0.0f, 0.0f, 0.1f}));
 	camera.up = vec3_new(0.0f, 1.0f, 5.0f);
 	camera.angle.y = 0.0f;
 	camera.angle.x = 3.14f;

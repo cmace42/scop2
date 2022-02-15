@@ -8,3 +8,12 @@ t_vec3		vec3_add(t_vec3 a, t_vec3 b)
 		a.z + b.z
 	});
 }
+
+t_vec3	vec3_add_value(t_vec3 a, float value)
+{
+	return ((t_vec3){
+		a.x + value,
+		a.y + value,
+		a.z + value
+	});
+}

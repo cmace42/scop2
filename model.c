@@ -160,7 +160,6 @@ void getColorBuffer(t_bufferData *colorBuffer)
 	z = 0;
 	while (i < colorBuffer->size_data)
 	{
-		printf("color[%ld] = %f %f %f\n",z,(color[z % 19]).x, (color[z % 19]).y, (color[z % 19]).z);
 		colorBuffer->buffer_data[i] = (color[z % 19]).x / 255;
 		colorBuffer->buffer_data[i + 1] = (color[z % 19]).y / 255;
 		colorBuffer->buffer_data[i + 2] = (color[z % 19]).z / 255;
@@ -217,6 +216,7 @@ bool readBuffers(t_obj obj, t_model *model)
 		getColorBuffer(&(model->color[z]));
 		if (obj.type != Obj_Vertex_Texture_Normal_Type && obj.type != Obj_Texture_Type)
 		{
+			printf("yo\n");
 			getStaticUv(&(model->uv[z]), model->vertex[z]);
 		}
 		z++;

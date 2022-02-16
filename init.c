@@ -1,43 +1,49 @@
 #include "scop.h"
 
-// static const GLfloat g_uv_buffer_data[] = { 
-// 	0.000059f, 1.0f-0.000004f, 
-// 	0.000103f, 1.0f-0.336048f, 
-// 	0.335973f, 1.0f-0.335903f, 
-// 	1.000023f, 1.0f-0.000013f, 
-// 	0.667979f, 1.0f-0.335851f, 
-// 	0.999958f, 1.0f-0.336064f, 
-// 	0.667979f, 1.0f-0.335851f, 
-// 	0.336024f, 1.0f-0.671877f, 
-// 	0.667969f, 1.0f-0.671889f, 
-// 	1.000023f, 1.0f-0.000013f, 
-// 	0.668104f, 1.0f-0.000013f, 
-// 	0.667979f, 1.0f-0.335851f, 
-// 	0.000059f, 1.0f-0.000004f, 
-// 	0.335973f, 1.0f-0.335903f, 
-// 	0.336098f, 1.0f-0.000071f, 
-// 	0.667979f, 1.0f-0.335851f, 
-// 	0.335973f, 1.0f-0.335903f, 
-// 	0.336024f, 1.0f-0.671877f, 
-// 	1.000004f, 1.0f-0.671847f, 
-// 	0.999958f, 1.0f-0.336064f, 
-// 	0.667979f, 1.0f-0.335851f, 
-// 	0.668104f, 1.0f-0.000013f, 
-// 	0.335973f, 1.0f-0.335903f, 
-// 	0.667979f, 1.0f-0.335851f, 
-// 	0.335973f, 1.0f-0.335903f, 
-// 	0.668104f, 1.0f-0.000013f, 
-// 	0.336098f, 1.0f-0.000071f, 
-// 	0.000103f, 1.0f-0.336048f, 
-// 	0.000004f, 1.0f-0.671870f, 
-// 	0.336024f, 1.0f-0.671877f, 
-// 	0.000103f, 1.0f-0.336048f, 
-// 	0.336024f, 1.0f-0.671877f, 
-// 	0.335973f, 1.0f-0.335903f, 
-// 	0.667969f, 1.0f-0.671889f, 
-// 	1.000004f, 1.0f-0.671847f, 
-// 	0.667979f, 1.0f-0.335851f 
-// };
+float skyboxVertices[] = {
+	// positions          
+	-1.0f,  1.0f, -1.0f,
+	-1.0f, -1.0f, -1.0f,
+		1.0f, -1.0f, -1.0f,
+		1.0f, -1.0f, -1.0f,
+		1.0f,  1.0f, -1.0f,
+	-1.0f,  1.0f, -1.0f,
+
+	-1.0f, -1.0f,  1.0f,
+	-1.0f, -1.0f, -1.0f,
+	-1.0f,  1.0f, -1.0f,
+	-1.0f,  1.0f, -1.0f,
+	-1.0f,  1.0f,  1.0f,
+	-1.0f, -1.0f,  1.0f,
+
+		1.0f, -1.0f, -1.0f,
+		1.0f, -1.0f,  1.0f,
+		1.0f,  1.0f,  1.0f,
+		1.0f,  1.0f,  1.0f,
+		1.0f,  1.0f, -1.0f,
+		1.0f, -1.0f, -1.0f,
+
+	-1.0f, -1.0f,  1.0f,
+	-1.0f,  1.0f,  1.0f,
+		1.0f,  1.0f,  1.0f,
+		1.0f,  1.0f,  1.0f,
+		1.0f, -1.0f,  1.0f,
+	-1.0f, -1.0f,  1.0f,
+
+	-1.0f,  1.0f, -1.0f,
+		1.0f,  1.0f, -1.0f,
+		1.0f,  1.0f,  1.0f,
+		1.0f,  1.0f,  1.0f,
+	-1.0f,  1.0f,  1.0f,
+	-1.0f,  1.0f, -1.0f,
+
+	-1.0f, -1.0f, -1.0f,
+	-1.0f, -1.0f,  1.0f,
+		1.0f, -1.0f, -1.0f,
+		1.0f, -1.0f, -1.0f,
+	-1.0f, -1.0f,  1.0f,
+		1.0f, -1.0f,  1.0f
+};
 
 t_vao *initOpenGL(t_model model)
 {
@@ -71,6 +77,13 @@ t_vao *initOpenGL(t_model model)
 		glBufferData(GL_ARRAY_BUFFER, sizeof(GLfloat) * model.uv[i].size_data, model.uv[i].buffer_data, GL_STATIC_DRAW);
 		i++;
 	}
+    glGenVertexArrays(1, &vao[0].skyboxVAO);
+    glGenBuffers(1, &vao[0].skyboxVBO);
+    glBindVertexArray(vao[0].skyboxVAO);
+    glBindBuffer(GL_ARRAY_BUFFER, vao[0].skyboxVBO);
+    glBufferData(GL_ARRAY_BUFFER, sizeof(skyboxVertices), &skyboxVertices, GL_STATIC_DRAW);
+    glEnableVertexAttribArray(0);
+    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
 	// Active le test de profondeur
 	glEnable(GL_DEPTH_TEST);
 	// Accepte le fragment s'il est plus proche de la caméra que le précédent accepté
@@ -79,129 +92,11 @@ t_vao *initOpenGL(t_model model)
 	return (vao);
 }
 
-bool isPointOnCone(t_vec3 coord, t_vec3 targetCoord, t_vec3 camCoord)
-{
-	float cone_dist; 
-	cone_dist = vec3_dot(vec3_sub(vec3_add_value(camCoord,1),vec3_add_value(coord,1)), vec3_normalisation(vec3_add_value(targetCoord,1)));
-	printf("ispointoncone : %f\n",cone_dist);
-	if (cone_dist <= 0 || cone_dist >= MAXDIST)
-		return (false);
-	float cone_radius;
-	cone_radius = (cone_dist / MAXDIST) * INITIALFOV;
-	float orth_dist;
-	// lenght(((coord - camCoord) - (dir * cone_dist)))
-	orth_dist = vec3_length
-	(
-		vec3_sub
-		(
-			vec3_sub
-			(
-				vec3_add_value
-				(
-					coord,
-					1
-				),
-				vec3_add_value
-				(
-					camCoord,
-					1
-				)
-			),
-			vec3_mult_value
-			(
-				vec3_normalisation
-				(
-					vec3_add_value
-					(
-						targetCoord,
-						1
-					)
-				),
-				cone_dist
-			)
-		)
-	);
-	printf("ispointoncone : %f > %f = %d\n ", orth_dist, cone_radius,orth_dist > cone_radius);
-	return (orth_dist > cone_radius);
-}
-
-bool isObjectOnCone(t_objectInWorld model, t_vec3 targetCoord, t_vec3 camCoord)
-{
-	if (!isPointOnCone(model.position, targetCoord, camCoord))
-		return (false);
-	if (!isPointOnCone((t_vec3) 
-		{
-			.x = model.position.x,
-			.y = model.position.y + model.whl.y,
-			.z = model.position.z,
-		}, targetCoord, camCoord))
-		return (false);
-	if (!isPointOnCone((t_vec3) 
-		{
-			.x = model.position.x + model.whl.x,
-			.y = model.position.y,
-			.z = model.position.z,
-		}, targetCoord, camCoord))
-		return (false);
-	if (!isPointOnCone((t_vec3) 
-		{
-			.x = model.position.x + model.whl.x,
-			.y = model.position.y + model.whl.y,
-			.z = model.position.z,
-		}, targetCoord, camCoord))
-		return (false);
-	if (!isPointOnCone((t_vec3) 
-		{
-			.x = model.position.x,
-			.y = model.position.y,
-			.z = model.position.z + model.whl.z,
-		}, targetCoord, camCoord))
-		return (false);
-	if (!isPointOnCone((t_vec3) 
-		{
-			.x = model.position.x,
-			.y = model.position.y + model.whl.y,
-			.z = model.position.z + model.whl.z,
-		}, targetCoord, camCoord))
-		return (false);
-	if (!isPointOnCone((t_vec3) 
-		{
-			.x = model.position.x + model.whl.x,
-			.y = model.position.y,
-			.z = model.position.z + model.whl.z,
-		}, targetCoord, camCoord))
-		return (false);
-	if (!isPointOnCone((t_vec3) 
-		{
-			.x = model.position.x + model.whl.x,
-			.y = model.position.y + model.whl.y,
-			.z = model.position.z + model.whl.z
-		}, targetCoord, camCoord))
-		return (false);
-	return (true);
-}
-
-float getZAxis(t_objectInWorld model, t_vec3 targetCoord, t_vec3 camCoord)
-{
-	int i;
-
-	i = 0;
-	printf("yo\n");
-	while (!isObjectOnCone(model, targetCoord, camCoord) && i < 200)
-	{
-		printf("wsh bordel %f\n",camCoord.z);
-		camCoord.z += vec3_length(vec3_sub(model.position, camCoord));
-		i++;
-	}
-	return camCoord.z;
-}
-
-t_objectInWorld initCamera()
+t_objectInWorld initCamera(t_vec3 whl)
 {
 	t_objectInWorld camera;
 	camera.target = vec3_new(0.0f, 0.0f, 0.0f);
-	camera.position = vec3_new(0.0f, 0.0f, 10.0f);
-	// camera.position = vec3_new(0.0f, 0.0f, getZAxis(model, camera.target, (t_vec3){0.0f, 0.0f, 0.1f}));
+	camera.position = vec3_new(whl.x, whl.y, whl.z * 5 + 10);
 	camera.up = vec3_new(0.0f, 1.0f, 5.0f);
 	camera.angle.y = 0.0f;
 	camera.angle.x = 3.14f;

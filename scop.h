@@ -62,6 +62,8 @@ typedef struct s_vao
 	GLuint vertexBuffer;
 	GLuint colorBuffer;
 	GLuint textureBuffer;
+	GLuint skyboxVAO;
+	GLuint skyboxVBO;
 }				t_vao;
 
 typedef struct s_objectInWorld
@@ -104,16 +106,16 @@ typedef struct s_model
 	t_bufferData* uv;
 	t_bufferData* normal;
 	t_bufferData* color;
-	GLfloat *vertex_buffer_data;
-	size_t vertex_size_data;
-	GLfloat *uv_buffer_data;
-	size_t uv_size_data;
-	GLfloat *normal_buffer_data;
-	size_t normal_size_data;
-	GLfloat *uv_static_buffer_data;
-	size_t uv_static_size_data;
-	GLfloat *color_buffer_data;
-	size_t color_size_data;
+	// GLfloat *vertex_buffer_data;
+	// size_t vertex_size_data;
+	// GLfloat *uv_buffer_data;
+	// size_t uv_size_data;
+	// GLfloat *normal_buffer_data;
+	// size_t normal_size_data;
+	// GLfloat *uv_static_buffer_data;
+	// size_t uv_static_size_data;
+	// GLfloat *color_buffer_data;
+	// size_t color_size_data;
 }				t_model;
 
 typedef struct	s_listParsing
@@ -186,6 +188,8 @@ typedef struct s_env
 	t_bmp			bmp2;
 	GLuint			texture;
 	GLuint			programId;
+	GLuint			programSkyboxId;
+	GLuint			cubemapTexture;
 	// t_data			data;
 	t_action action;
 	SDL_GLContext	context;
@@ -211,10 +215,10 @@ typedef struct s_env
 /* Init */
 SDL_Window*		initWindow();
 t_vao *initOpenGL(t_model obj);
-t_objectInWorld initCamera();
+t_objectInWorld initCamera(t_vec3 whl);
 t_objectInWorld *initModel(t_model modelData);
 bool getModel(char *filename, t_model *model);
-
+int loadSkyBox(char **file, GLuint *textureId);
 
 /* main prog */
 

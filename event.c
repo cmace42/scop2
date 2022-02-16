@@ -138,10 +138,10 @@ int event(t_env *data, float deltaTime)
 					data->camera.position = vec3_add(data->camera.position, vec3_mult_value(data->camera.right, deltaTime * (SPEED + (data->speed * (float)data->action.haveSpeedBoost))));
 					break;
 				case SDLK_SPACE:
-					data->camera.position = vec3_add(data->camera.position, vec3_mult_value(data->camera.up, deltaTime * SPEED));
+					data->camera.position = vec3_add(data->camera.position, vec3_mult_value(data->camera.up, deltaTime * (SPEED + (data->speed * (float)data->action.haveSpeedBoost))));
 					break;
 				case SDLK_LCTRL:
-					data->camera.position = vec3_sub(data->camera.position, vec3_mult_value(data->camera.up, deltaTime * SPEED));
+					data->camera.position = vec3_sub(data->camera.position, vec3_mult_value(data->camera.up, deltaTime * (SPEED + (data->speed * (float)data->action.haveSpeedBoost))));
 					break;
 				case SDLK_p:
 				{

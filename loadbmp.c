@@ -42,7 +42,6 @@ int loadBMP_custom(const char *imagepath, t_bmp *bmp)
 	fread(bmp->data,1,imageSize,file); 
 	fclose(file);
 	return (GET_RESULT);
-	
 }
 
 GLuint getTextureId(t_bmp bmp)

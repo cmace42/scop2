@@ -45,3 +45,55 @@ t_mat4 initModelMatrice(t_vec3 angle, t_vec3 whl, t_vec3 pos)
 	t_mat4 modelMatrice = mat4_mult(mat4_mult(scale, rotate), translation);
 	return (modelMatrice);
 }
+
+t_vec3 initAllWhl(t_objectInWorld *model, size_t size_groupe)
+{
+	t_vec3 whltotal = (t_vec3){0.0,0.0,0.0};
+	size_t i;
+
+	i = 0;
+	while (i < size_groupe)
+	{
+		whltotal.x += fabs(model[i].whl.x);
+		whltotal.y += fabs(model[i].whl.y);
+		whltotal.z += fabs(model[i].whl.z);
+		i++;
+	}
+	return (whltotal);
+}
+
+void freeAll(t_env *env)
+{
+	size_t y;
+	y = 0;
+	while (y < env->modelData.size_groupe)
+	{
+		if (env->modelData.vertex[y].buffer_data)
+			free(env->modelData.vertex[y].buffer_data);
+		if (env->modelData.uv[y].buffer_data)
+			free(env->modelData.uv[y].buffer_data);
+		if (env->modelData.normal[y].buffer_data)
+			free(env->modelData.normal[y].buffer_data);
+		if (env->modelData.color[y].buffer_data)
+			free(env->modelData.color[y].buffer_data);
+		if (env->modelData.vertex[y].name)
+			free(env->modelData.vertex[y].name);
+		y++;
+	}
+	if (env->bmp1.data)
+		free(env->bmp1.data);
+	if (env->bmp2.data)
+		free(env->bmp2.data);
+	if (env->model)
+		free(env->model);
+	if (env->modelData.color)
+		free(env->modelData.color);
+	if (env->modelData.vertex)
+		free(env->modelData.vertex);
+	if (env->modelData.uv)
+		free(env->modelData.uv);
+	if (env->modelData.normal)
+		free(env->modelData.normal);
+	if (env->vao)
+		free(env->vao);
+}

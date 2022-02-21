@@ -1,12 +1,22 @@
 #include "scop.h"
 
+extern char vertexshader_glsl[];
+extern int vertexshader_glsl_len;
+extern char fragmentshader_glsl[];
+extern int fragmentshader_glsl_len;
+
+extern char skyboxvertexshader_glsl[];
+extern int skyboxvertexshader_glsl_len;
+extern char skyboxfragmentshader_glsl[];
+extern int skyboxfragmentshader_glsl_len;
+
 float skyboxVertices[] = {
-	// positions          
+	// positions
 	-1.0f,  1.0f, -1.0f,
 	-1.0f, -1.0f, -1.0f,
-		1.0f, -1.0f, -1.0f,
-		1.0f, -1.0f, -1.0f,
-		1.0f,  1.0f, -1.0f,
+	1.0f, -1.0f, -1.0f,
+	1.0f, -1.0f, -1.0f,
+	1.0f,  1.0f, -1.0f,
 	-1.0f,  1.0f, -1.0f,
 
 	-1.0f, -1.0f,  1.0f,
@@ -16,33 +26,33 @@ float skyboxVertices[] = {
 	-1.0f,  1.0f,  1.0f,
 	-1.0f, -1.0f,  1.0f,
 
-		1.0f, -1.0f, -1.0f,
-		1.0f, -1.0f,  1.0f,
-		1.0f,  1.0f,  1.0f,
-		1.0f,  1.0f,  1.0f,
-		1.0f,  1.0f, -1.0f,
-		1.0f, -1.0f, -1.0f,
+	1.0f, -1.0f, -1.0f,
+	1.0f, -1.0f,  1.0f,
+	1.0f,  1.0f,  1.0f,
+	1.0f,  1.0f,  1.0f,
+	1.0f,  1.0f, -1.0f,
+	1.0f, -1.0f, -1.0f,
 
 	-1.0f, -1.0f,  1.0f,
 	-1.0f,  1.0f,  1.0f,
-		1.0f,  1.0f,  1.0f,
-		1.0f,  1.0f,  1.0f,
-		1.0f, -1.0f,  1.0f,
+	1.0f,  1.0f,  1.0f,
+	1.0f,  1.0f,  1.0f,
+	1.0f, -1.0f,  1.0f,
 	-1.0f, -1.0f,  1.0f,
 
 	-1.0f,  1.0f, -1.0f,
-		1.0f,  1.0f, -1.0f,
-		1.0f,  1.0f,  1.0f,
-		1.0f,  1.0f,  1.0f,
+	1.0f,  1.0f, -1.0f,
+	1.0f,  1.0f,  1.0f,
+	1.0f,  1.0f,  1.0f,
 	-1.0f,  1.0f,  1.0f,
 	-1.0f,  1.0f, -1.0f,
 
 	-1.0f, -1.0f, -1.0f,
 	-1.0f, -1.0f,  1.0f,
-		1.0f, -1.0f, -1.0f,
-		1.0f, -1.0f, -1.0f,
+	1.0f, -1.0f, -1.0f,
+	1.0f, -1.0f, -1.0f,
 	-1.0f, -1.0f,  1.0f,
-		1.0f, -1.0f,  1.0f
+	1.0f, -1.0f,  1.0f
 };
 
 t_vao *initOpenGL(t_model model)
@@ -53,7 +63,6 @@ t_vao *initOpenGL(t_model model)
 	i = 0;
 	if (!(vao = malloc(sizeof(t_vao) * model.size_groupe)))
 		return (NULL);
-	printf("%zu\n",model.size_groupe);
 	while (i < model.size_groupe)
 	{
 		// see https://youtu.be/hrZbyd4qPnk for VAO et VBO
@@ -77,13 +86,6 @@ t_vao *initOpenGL(t_model model)
 		glBufferData(GL_ARRAY_BUFFER, sizeof(GLfloat) * model.uv[i].size_data, model.uv[i].buffer_data, GL_STATIC_DRAW);
 		i++;
 	}
-    glGenVertexArrays(1, &vao[0].skyboxVAO);
-    glGenBuffers(1, &vao[0].skyboxVBO);
-    glBindVertexArray(vao[0].skyboxVAO);
-    glBindBuffer(GL_ARRAY_BUFFER, vao[0].skyboxVBO);
-    glBufferData(GL_ARRAY_BUFFER, sizeof(skyboxVertices), &skyboxVertices, GL_STATIC_DRAW);
-    glEnableVertexAttribArray(0);
-    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
 	// Active le test de profondeur
 	glEnable(GL_DEPTH_TEST);
 	// Accepte le fragment s'il est plus proche de la caméra que le précédent accepté
@@ -150,4 +152,54 @@ t_objectInWorld *initModel(t_model modelData)
 		i++;
 	}
 	return (model);
+}
+
+t_action initAction()
+{
+	t_action action;
+
+	action.showTexture = false;
+	action.test = false;
+	action.transition = 1;
+	action.rotate = true;
+	action.rotateKeyboardMode = true;
+	action.isBmp1 = false;
+	action.haveSpeedBoost = false;
+	action.showFace = 1;
+	action.showDept = false;
+	return (action);
+}
+
+bool init(t_env *env, char *filename)
+{
+	if (getModel(filename, &env->modelData))
+	{
+		if ((env->window = initWindow()) != NULL)
+		{
+			SDL_SetRelativeMouseMode(true);
+			env->context = SDL_GL_CreateContext(env->window);
+			env->vao = initOpenGL(env->modelData);
+			if (!(env->model = initModel(env->modelData)))
+			{
+				printf("merde\n");
+				return (false);
+			}
+			env->camera = initCamera(initAllWhl(env->model, env->modelData.size_groupe));
+			loadBMP_custom("petit-poney.bmp", &env->bmp1);
+			loadBMP_custom("diffuse.bmp", &env->bmp2);
+			env->texture = getTextureId(env->bmp2);
+			env->programId = loadShaders(vertexshader_glsl, vertexshader_glsl_len, fragmentshader_glsl, fragmentshader_glsl_len);
+			env->action = initAction();
+			env->time.lastTime = 0;
+			env->speed = fabs(env->model[0].whl.y) / 20.0f;
+		}
+		else
+		{
+			printf("Failed to init window\n");
+			return (false);
+		}
+	}
+	else
+		return (false);
+	return (true);
 }

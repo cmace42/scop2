@@ -219,6 +219,8 @@ t_objectInWorld initCamera(t_vec3 whl);
 t_objectInWorld *initModel(t_model modelData);
 bool getModel(char *filename, t_model *model);
 int loadSkyBox(char **file, GLuint *textureId);
+t_action initAction();
+bool init(t_env *env, char *filename);
 
 /* main prog */
 
@@ -227,6 +229,7 @@ int eventTemp();
 int event(t_env *data, float deltaTime);	
 void applyPerspective(GLuint programId, t_objectInWorld *model, t_objectInWorld *camera);
 void render(t_env data);
+t_action interact(t_env data);
 
 /* Tools */
 int				loadObj(char *filepath, t_model *model, t_vec3 *whl);
@@ -242,8 +245,10 @@ int				loadBMP_custom(const char *imagepath, t_bmp *bmp);
 t_time			getDataTime(t_time last);
 GLuint			getTextureId(t_bmp bmp);
 void doRotate(t_objectInWorld **model, t_vec3 rotate, size_t size);
-
+t_vec3		initAllWhl(t_objectInWorld *model, size_t size_groupe);
+void freeAll(t_env *env);
 void printModel(t_model model, t_face_type type);
+void mouseCamera(t_objectInWorld *camera, int *xMouse, int *yMouse, float deltaTime);
 
 /* Tools Parsing */
 void printList(t_listParsing* node);
@@ -251,7 +256,7 @@ void printListR(t_listParsing* node);
 int append(t_listParsing** head_ref, GLfloat new_data);
 int insertAfter(t_listParsing *prev_node, GLfloat new_data);
 int push(t_listParsing** head_ref, GLfloat new_data);
-void freeList(t_listParsing **head_ref);
+void		freeList(t_listParsing **head_ref);
 
 /* Math */
 

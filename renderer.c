@@ -5,13 +5,6 @@ void render(t_env data)
 	size_t i;
 
 	i = 0;
-	glDepthMask(GL_FALSE);
-	// ... set view and projection matrix
-	glBindVertexArray(data.vao[0].skyboxVAO);
-	glBindTexture(GL_TEXTURE_CUBE_MAP, data.cubemapTexture);
-	glUseProgram(data.programSkyboxId);
-	glDrawArrays(GL_TRIANGLES, 0, 36);
-	glDepthMask(GL_TRUE);
 	while (i < data.modelData.size_groupe)
 	{
 		applyPerspective(data.programId, &data.model[i], &data.camera);
@@ -50,5 +43,5 @@ void render(t_env data)
 		glDisableVertexAttribArray(0);
 		i++;
 	}
-		SDL_GL_SwapWindow(data.window);
+	SDL_GL_SwapWindow(data.window);
 }

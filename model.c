@@ -196,6 +196,8 @@ bool readBuffers(t_obj obj, t_model *model)
 				return (false);
 			model->vertex[z].name = strcpy(model->vertex[z].name, obj.groupe[i].name);
 		}
+		else
+			model->vertex[z].name = NULL;
 		while(y < obj.groupe[i].faces.len)
 		{
 			if (!getVerticesBuffer(obj.groupe[i].faces.triangle[y], obj.vertex, &(model->vertex[z]), y * 9))
@@ -216,7 +218,6 @@ bool readBuffers(t_obj obj, t_model *model)
 		getColorBuffer(&(model->color[z]));
 		if (obj.type != Obj_Vertex_Texture_Normal_Type && obj.type != Obj_Texture_Type)
 		{
-			printf("yo\n");
 			getStaticUv(&(model->uv[z]), model->vertex[z]);
 		}
 		z++;

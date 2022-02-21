@@ -42,6 +42,8 @@ SRCS =	\
 			loadbmp.c\
 			renderer.c\
 			skybox.c\
+			interaction.c\
+			mouse.c\
 			time.c\
 			mat4_identity.c\
 			mat4_mult.c\

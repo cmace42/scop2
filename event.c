@@ -59,57 +59,39 @@ int event(t_env *data, float deltaTime)
 				case SDLK_KP_4:
 				{
 					if (data->action.rotateKeyboardMode)
-					{
 						doRotate(&data->model, (t_vec3){.y = 0.1f}, data->modelData.size_groupe);
-					}
 					else
-					{
 						doTranslate(&data->model, (t_vec3){.x = 0.1f}, data->modelData.size_groupe);
-					}
 					break;
 				}
 				case SDLK_KP_6:
 				{
 					if (data->action.rotateKeyboardMode)
-					{
 						doRotate(&data->model, (t_vec3){.y = -0.1f}, data->modelData.size_groupe);
-					}
 					else
-					{
 						doTranslate(&data->model, (t_vec3){.x = -0.1f}, data->modelData.size_groupe);
-					}
 					break;
 				}
 				case SDLK_KP_8:
 				{
 					if (data->action.rotateKeyboardMode)
-					{
 						doRotate(&data->model, (t_vec3){.x= -0.1f}, data->modelData.size_groupe);
-					}
 					else
-					{
 						doTranslate(&data->model, (t_vec3){.y = 0.1f}, data->modelData.size_groupe);
-					}
 					break;
 				}
 				case SDLK_KP_2:
 				{
 					if (data->action.rotateKeyboardMode)
-					{
 						doRotate(&data->model, (t_vec3){.x= 0.1f}, data->modelData.size_groupe);
-					}
 					else
-					{
 						doTranslate(&data->model, (t_vec3){.y = -0.1f}, data->modelData.size_groupe);
-					}
 					break;
 				}
 				case SDLK_KP_7:
 				{
 					if (data->action.rotateKeyboardMode)
-					{
-						doRotate(&data->model, (t_vec3){.z= 0.1f}, data->modelData.size_groupe);
-					}
+						doRotate(&data->model, (t_vec3){.z = 0.1f}, data->modelData.size_groupe);
 					else
 						doTranslate(&data->model, (t_vec3){.z = 0.1f}, data->modelData.size_groupe);
 					break;
@@ -117,7 +99,7 @@ int event(t_env *data, float deltaTime)
 				case SDLK_KP_9:
 				{
 					if (data->action.rotateKeyboardMode)
-						doRotate(&data->model, (t_vec3){.z= -0.1f}, data->modelData.size_groupe);
+						doRotate(&data->model, (t_vec3){.z = -0.1f}, data->modelData.size_groupe);
 					else
 						doTranslate(&data->model, (t_vec3){.z = -0.1f}, data->modelData.size_groupe);
 					break;
@@ -167,13 +149,9 @@ int event(t_env *data, float deltaTime)
 					data->action.isBmp1 = !data->action.isBmp1;
 					glDeleteTextures(1, &data->texture);
 					if (data->action.isBmp1)
-					{
 						data->texture = getTextureId(data->bmp1);
-					}
 					else
-					{
 						data->texture = getTextureId(data->bmp2);
-					}
 					break;
 				}
 				case SDLK_LSHIFT:
@@ -223,19 +201,6 @@ int event(t_env *data, float deltaTime)
 			}
 		}
 	}
-	SDL_GetRelativeMouseState(&xMouse, &yMouse);
-	data->camera.angle.x += MOUSESPEED * deltaTime * (float)(xMouse);
-	data->camera.angle.y += MOUSESPEED * deltaTime * (float)(yMouse);
-	data->camera.dir = vec3_new(cosf(data->camera.angle.y) * sinf(data->camera.angle.x),
-			sinf(data->camera.angle.y),
-			cosf(data->camera.angle.y) * cosf(data->camera.angle.x));
-	data->camera.right = vec3_new(sinf(data->camera.angle.x - 3.14f/2.0f),
-			0,
-			cosf(data->camera.angle.x - 3.14f/2.0f));
-	data->camera.up = vec3_cross(data->camera.right, data->camera.dir);
-	data->camera.target = vec3_add(data->camera.position, data->camera.dir);
-	// printf("%f, %f, %f\n", right.x, right.y, right.z);
-	// printf("data->camera = x : %f, y : %f, z : %f\n\n",data->camera.position.x,data->camera.position.y,data->camera.position.z);
-
+	mouseCamera(&data->camera, &xMouse, &yMouse, data->time.deltaTime);
 	return (1);
 }

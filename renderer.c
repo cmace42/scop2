@@ -19,7 +19,7 @@ void render(t_env data)
 		(void*)0            // décalage du tableau de tampon
 		);
 		glEnableVertexAttribArray(1);
-		glBindBuffer(GL_ARRAY_BUFFER, data.vao[i].colorBuffer);
+		glBindBuffer(GL_ARRAY_BUFFER, data.action.isFacesColor ? data.vao[i].colorFacesBuffer : data.vao[i].colorTrianglesBuffer);
 		glVertexAttribPointer(
 		1,                  //cela correspond au « layout » dans le shader 
 		3,                  // taille

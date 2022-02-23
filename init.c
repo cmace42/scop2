@@ -78,9 +78,12 @@ t_vao *initOpenGL(t_model model)
 		// Fournit les sommets à OpenGL.
 		glBufferData(GL_ARRAY_BUFFER, sizeof(GLfloat) * model.vertex[i].size_data, model.vertex[i].buffer_data, GL_STATIC_DRAW);
 		// glBufferData(GL_ARRAY_BUFFER, sizeof(g_vertex_buffer_data), g_vertex_buffer_data, GL_STATIC_DRAW);
-		glGenBuffers(1, &vao[i].colorBuffer); 
-		glBindBuffer(GL_ARRAY_BUFFER, vao[i].colorBuffer); 
-		glBufferData(GL_ARRAY_BUFFER, sizeof(GLfloat) * model.color[i].size_data, model.color[i].buffer_data, GL_STATIC_DRAW);
+		glGenBuffers(1, &vao[i].colorTrianglesBuffer); 
+		glBindBuffer(GL_ARRAY_BUFFER, vao[i].colorTrianglesBuffer); 
+		glBufferData(GL_ARRAY_BUFFER, sizeof(GLfloat) * model.colorTriangles[i].size_data, model.colorTriangles[i].buffer_data, GL_STATIC_DRAW);
+		glGenBuffers(1, &vao[i].colorFacesBuffer); 
+		glBindBuffer(GL_ARRAY_BUFFER, vao[i].colorFacesBuffer); 
+		glBufferData(GL_ARRAY_BUFFER, sizeof(GLfloat) * model.colorFaces[i].size_data, model.colorFaces[i].buffer_data, GL_STATIC_DRAW);
 		glGenBuffers(1, &vao[i].textureBuffer);
 		glBindBuffer(GL_ARRAY_BUFFER, vao[i].textureBuffer);
 		glBufferData(GL_ARRAY_BUFFER, sizeof(GLfloat) * model.uv[i].size_data, model.uv[i].buffer_data, GL_STATIC_DRAW);

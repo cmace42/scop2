@@ -66,11 +66,19 @@ typedef struct s_triangle
 	t_triangle_point c;
 }				t_triangle;
 
+typedef struct s_facesPerLine
+{
+	size_t len;
+	size_t size;
+	size_t *this;
+}				t_facesPerLine;
+
 typedef struct s_faces_array
 {
 	size_t len;
 	size_t size;
 	t_triangle *triangle;
+	t_facesPerLine fpl;
 }				t_faces_array;
 
 typedef struct s_groupe
@@ -98,7 +106,6 @@ typedef struct s_obj
 	t_groupe	*groupe;
 	t_face_type	type;
 }				t_obj;
-
 
 enum {
 	DONE,
@@ -221,7 +228,7 @@ int	obj_vertex_type(size_t *vertex, t_face_type *type, t_obj_reader *reader);
 int	obj_uv_type(size_t *uv, t_face_type *type, t_obj_reader *reader, bool *haveNormal);
 int obj_normal_type(size_t *normal, t_face_type *type, t_obj_reader *reader, bool *haveNormal);
 int obj_append_triangle(t_faces_array *face, t_triangle triangle);
-
+t_facesPerLine create_fpl_array(size_t size);
 t_faces_array create_triangle_array(size_t size);
 t_obj create_groupe(size_t size, t_face_type type);
 t_groupe *obj_append_groupe(t_obj *obj, t_groupe groupe);

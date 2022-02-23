@@ -187,6 +187,11 @@ int event(t_env *data, float deltaTime)
 						glDisable(GL_DEPTH_TEST);
 					break;
 				}
+				case SDLK_u:
+				{
+					data->action.isFacesColor = !data->action.isFacesColor;
+					break;
+				}
 			}
 		}
 		else if (event.type == SDL_KEYUP)

@@ -43,7 +43,9 @@ bool initBuffer(t_obj obj, t_model *model)
 		return (false);
 	if (!(model->normal = malloc(sizeof(t_bufferData) * model->size_groupe)))
 		return (false);
-	if (!(model->color = malloc(sizeof(t_bufferData) * model->size_groupe)))
+	if (!(model->colorTriangles = malloc(sizeof(t_bufferData) * model->size_groupe)))
+		return (false);
+	if (!(model->colorFaces = malloc(sizeof(t_bufferData) * model->size_groupe)))
 		return (false);
 	while (iGroupe < obj.len)
 	{
@@ -56,8 +58,11 @@ bool initBuffer(t_obj obj, t_model *model)
 		model->normal[z].size_data = obj.groupe[iGroupe].faces.len * 3 * 3;
 		if (!(model->normal[z].buffer_data = malloc(sizeof(GLfloat) * model->normal[z].size_data)))
 			return (false);
-		model->color[z].size_data = obj.groupe[iGroupe].faces.len * 3 * 3;
-		if (!(model->color[z].buffer_data = malloc(sizeof(GLfloat) * model->color[z].size_data)))
+		model->colorTriangles[z].size_data = obj.groupe[iGroupe].faces.len * 3 * 3;
+		if (!(model->colorTriangles[z].buffer_data = malloc(sizeof(GLfloat) * model->colorTriangles[z].size_data)))
+			return (false);
+		model->colorFaces[z].size_data = obj.groupe[iGroupe].faces.len * 3 * 3;
+		if (!(model->colorFaces[z].buffer_data = malloc(sizeof(GLfloat) * model->colorFaces[z].size_data)))
 			return (false);
 		iGroupe++;
 		z++;
@@ -151,7 +156,7 @@ void getStaticUv(t_bufferData *uvBuffer, t_bufferData vertexBuffer)
 	}
 }
 
-void getColorBuffer(t_bufferData *colorBuffer)
+void getTriangleColorBuffer(t_bufferData *colorBuffer)
 {
 	size_t i;
 	size_t z;
@@ -171,6 +176,38 @@ void getColorBuffer(t_bufferData *colorBuffer)
 		colorBuffer->buffer_data[i + 8] = (color[z % 19]).z / 255;
 		i+=9;
 		z++;
+	}
+}
+
+void getFacesColorBuffer(t_bufferData *colorBuffer, t_facesPerLine fpl)
+{
+	size_t i;
+	size_t z;
+	size_t y;
+	size_t c;
+
+	i = 0;
+	z = 0;
+	y = 0;
+	while (y < fpl.len)
+	{
+		while (z < fpl.this[y])
+		{
+			colorBuffer->buffer_data[i] = (color[c % 19]).x / 255;
+			colorBuffer->buffer_data[i + 1] = (color[c % 19]).y / 255;
+			colorBuffer->buffer_data[i + 2] = (color[c % 19]).z / 255;
+			colorBuffer->buffer_data[i + 3] = (color[c % 19]).x / 255;
+			colorBuffer->buffer_data[i + 4] = (color[c % 19]).y / 255;
+			colorBuffer->buffer_data[i + 5] = (color[c % 19]).z / 255;
+			colorBuffer->buffer_data[i + 6] = (color[c % 19]).x / 255;
+			colorBuffer->buffer_data[i + 7] = (color[c % 19]).y / 255;
+			colorBuffer->buffer_data[i + 8] = (color[c % 19]).z / 255;
+			i+=9;
+			z++;
+		}
+		z = 0;
+		c++;
+		y++;
 	}
 }
 
@@ -215,7 +252,8 @@ bool readBuffers(t_obj obj, t_model *model)
 			y++;
 			t++;
 		}
-		getColorBuffer(&(model->color[z]));
+		getTriangleColorBuffer(&(model->colorTriangles[z]));
+		getFacesColorBuffer(&(model->colorFaces[z]), obj.groupe[i].faces.fpl);
 		if (obj.type != Obj_Vertex_Texture_Normal_Type && obj.type != Obj_Texture_Type)
 		{
 			getStaticUv(&(model->uv[z]), model->vertex[z]);
@@ -289,6 +327,8 @@ void freeObj(t_obj *obj)
 	{
 		if (obj->groupe[i].faces.triangle)
 			free(obj->groupe[i].faces.triangle);
+		if (obj->groupe[i].faces.fpl.this)
+			free(obj->groupe[i].faces.fpl.this);
 		if (obj->groupe[i].name)
 			free(obj->groupe[i].name);
 		i++;

@@ -35,3 +35,12 @@ t_obj create_groupe(size_t size, t_face_type type)
 		.groupe = (t_groupe*)malloc(sizeof(t_groupe) * size),
 	});
 }
+
+t_facesPerLine create_fpl_array(size_t size)
+{
+	return((t_facesPerLine){
+		.size = size,
+		.len = 0,
+		.this = (size_t*)malloc(sizeof(size_t) * size),
+	});
+}

@@ -34,6 +34,25 @@ int obj_read_triangle(t_triangle *triangle, t_face_type *type, t_obj_reader *rea
 	return ret;
 }
 
+int obj_append_fpl(t_facesPerLine *tabfpl, size_t fpl)
+{
+	size_t new_size;
+	size_t *new;
+
+	if (tabfpl->len == tabfpl->size)
+	{
+		new_size = tabfpl->size * 2;
+		if (!(new = (size_t*)malloc(sizeof(size_t) * new_size)))
+			return (RIP_MALLOC);
+		ft_memcpy(new, tabfpl->this, sizeof(size_t) * tabfpl->size);
+		free(tabfpl->this);
+		tabfpl->this = new;
+		tabfpl->size = new_size;
+	}
+	tabfpl->this[tabfpl->len++] = fpl;
+	return (GET_RESULT);
+}
+
 int obj_get_triangles_index(t_faces_array *faces, t_face_type *type, t_obj_reader *reader)
 {
 	int ret;
@@ -41,9 +60,11 @@ int obj_get_triangles_index(t_faces_array *faces, t_face_type *type, t_obj_reade
 	t_triangle_point sommet[3];
 	t_triangle triangle;
 	int i;
+	size_t y;
 
 	i = 0;
 	c = obj_reader_peek(reader);
+	y = 1;
 	while (i < 3)
 	{
 		ret = obj_skip_whitespace(reader);
@@ -72,6 +93,9 @@ int obj_get_triangles_index(t_faces_array *faces, t_face_type *type, t_obj_reade
 		ret = obj_skip_whitespace(reader);
 		if (ret != GET_RESULT)
 			return (ret);
+		y++;
 	}
+	if ((ret = obj_append_fpl(&faces->fpl, y)) != GET_RESULT)
+		return (ret);
 	return (ret);
 }

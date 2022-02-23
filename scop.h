@@ -60,7 +60,8 @@ typedef struct s_vao
 {
 	GLuint VertexArrayID;
 	GLuint vertexBuffer;
-	GLuint colorBuffer;
+	GLuint colorTrianglesBuffer;
+	GLuint colorFacesBuffer;
 	GLuint textureBuffer;
 	GLuint skyboxVAO;
 	GLuint skyboxVBO;
@@ -105,7 +106,8 @@ typedef struct s_model
 	t_bufferData* vertex;
 	t_bufferData* uv;
 	t_bufferData* normal;
-	t_bufferData* color;
+	t_bufferData* colorFaces;
+	t_bufferData* colorTriangles;
 	// GLfloat *vertex_buffer_data;
 	// size_t vertex_size_data;
 	// GLfloat *uv_buffer_data;
@@ -167,6 +169,7 @@ typedef struct s_action
 	bool haveSpeedBoost;
 	int8_t showFace;
 	bool showDept;
+	bool isFacesColor;
 }				t_action;
 
 typedef struct s_bmp

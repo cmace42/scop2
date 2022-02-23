@@ -65,7 +65,8 @@ int obj_get_groupe(t_obj *obj, t_groupe **currentGroupe, t_obj_reader *reader)
 		// free(faces.triangle);
 		return (RIP_MALLOC);
 	}
-	if (!((**currentGroupe).faces = create_triangle_array(10)).triangle)
+	if (!((**currentGroupe).faces = create_triangle_array(10)).triangle
+		|| !((**currentGroupe).faces.fpl = create_fpl_array(10)).this)
 		return (RIP_MALLOC);
 	if ((ret = obj_read_groupe(*currentGroupe, reader)) != GET_RESULT)
 		return (ret);

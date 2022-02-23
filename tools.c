@@ -74,8 +74,10 @@ void freeAll(t_env *env)
 			free(env->modelData.uv[y].buffer_data);
 		if (env->modelData.normal[y].buffer_data)
 			free(env->modelData.normal[y].buffer_data);
-		if (env->modelData.color[y].buffer_data)
-			free(env->modelData.color[y].buffer_data);
+		if (env->modelData.colorTriangles[y].buffer_data)
+			free(env->modelData.colorTriangles[y].buffer_data);
+		if (env->modelData.colorFaces[y].buffer_data)
+			free(env->modelData.colorFaces[y].buffer_data);
 		if (env->modelData.vertex[y].name)
 			free(env->modelData.vertex[y].name);
 		y++;
@@ -86,8 +88,10 @@ void freeAll(t_env *env)
 		free(env->bmp2.data);
 	if (env->model)
 		free(env->model);
-	if (env->modelData.color)
-		free(env->modelData.color);
+	if (env->modelData.colorTriangles)
+		free(env->modelData.colorTriangles);
+	if (env->modelData.colorFaces)
+		free(env->modelData.colorFaces);
 	if (env->modelData.vertex)
 		free(env->modelData.vertex);
 	if (env->modelData.uv)

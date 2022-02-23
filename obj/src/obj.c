@@ -145,7 +145,7 @@ int obj_read(t_obj *obj, char *filepath, t_obj_reader *reader)
 		|| !(currentGroupe = obj_append_groupe(obj, (t_groupe) {
 			.name = NULL,
 			.faces = create_triangle_array(10)
-	})))
+	})) || !(currentGroupe->faces.fpl = create_fpl_array(10)).this)
 	{
 		return(RIP_MALLOC);
 	}

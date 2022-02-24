@@ -345,8 +345,9 @@ int getModel(char *filename, t_model *model)
 
 	if ((ret = obj_read(&obj, filename, &reader)) != GET_RESULT)
 	{
+		if (ret != RIP_OPEN)
+			freeObj(&obj);
 		printError(reader, ret);
-		freeObj(&obj);
 		return (ret);
 	}
 	i = 0;

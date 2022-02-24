@@ -3,14 +3,14 @@
 int printError(t_obj_reader self, int error)
 {
 	int ret;
+	// write(2, "Error line ", 11);
+	printf("Line : %zu\n",self.line);
+	// write(2, "col ", 65);
+	printf("Col : %zu\n",self.column);
 	if (error == WRONG_CHAR || error == NO_RESULT)
 	{
-		write(2, "Error line ", 11);
-		printf("%zu\n",self.line);
-		write(2, ", col ", 6);
-		printf("%zu\n",self.column);
 		write(2, " char : ", 8);
-		if ((ret = obj_reader_peek(&self)) == -1)
+		if ((ret = obj_reader_peek(&self)) <= -1)
 		{
 			// printf("\n%d\n", ret);
 			error = RIP_READ;
@@ -92,14 +92,14 @@ static int	obj_read_type(t_obj *obj, t_groupe **currentGroupe, t_obj_reader *rea
 	if (c == 'v')
 	{
 		ret = obj_get_vertex_type(obj, reader);
-		if (ret != GET_RESULT && ret != DONE)
+		if (ret != GET_RESULT)
 		{
 			return (ret);
 		}
 	}
 	else if (c == 'f')
 	{
-		if ((ret = obj_reader_next(reader) != GET_RESULT)
+		if (((ret = obj_reader_next(reader)) != GET_RESULT)
 			|| (ret = obj_get_triangles_index(&(*currentGroupe)->faces, &obj->type, reader)) != GET_RESULT)
 		{
 			return (ret);
@@ -107,8 +107,8 @@ static int	obj_read_type(t_obj *obj, t_groupe **currentGroupe, t_obj_reader *rea
 	}
 	else if (c == 'g')
 	{
-		if ((ret = obj_reader_next(reader) != GET_RESULT)
-			|| (ret = obj_get_groupe(obj, currentGroupe, reader) != GET_RESULT))
+		if (((ret = obj_reader_next(reader)) != GET_RESULT)
+			|| (ret = obj_get_groupe(obj, currentGroupe, reader)) != GET_RESULT)
 		{
 			return (ret);
 		}
@@ -117,14 +117,14 @@ static int	obj_read_type(t_obj *obj, t_groupe **currentGroupe, t_obj_reader *rea
 	{
 		// close(reader->fd);
 		// printf("%zd\n",read(reader->fd, reader->buffer, reader->buffer_size));
-		if ((ret = obj_skip_nl(reader)) != GET_RESULT && ret != DONE)
+		if ((ret = obj_skip_nl(reader)) != GET_RESULT)
 		{
 			return (ret);
 		}
 	}
 	else
-		ret = c == -1 ? RIP_READ : WRONG_CHAR;
-	return (GET_RESULT);
+		ret = c <= -1 ? RIP_READ : WRONG_CHAR;
+	return (ret);
 }
 
 int obj_read(t_obj *obj, char *filepath, t_obj_reader *reader)
@@ -149,6 +149,7 @@ int obj_read(t_obj *obj, char *filepath, t_obj_reader *reader)
 	{
 		return(RIP_MALLOC);
 	}
+	printf("start lecture file\n");
 	while((c = obj_reader_peek(reader)) > 0)
 	{
 		ret = obj_read_type(obj, &currentGroupe, reader);
@@ -156,7 +157,10 @@ int obj_read(t_obj *obj, char *filepath, t_obj_reader *reader)
 			return (ret);
 		c = obj_reader_next(reader);
 	}
-	if (c == -1)
+	printf("end lecture file\n");
+	if (c <= -1)
 		return (RIP_READ);
+	if (obj->vertex.len < 1)
+		return (NO_VERTEX);
 	return (ret);
 }

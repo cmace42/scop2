@@ -39,7 +39,7 @@ int obj_read_name(char **name, t_obj_reader *reader)
 	}
 	if (obj_append_char('\0', name, &size, i) != GET_RESULT)
 		return (RIP_MALLOC);
-	return (c == -1 ? RIP_READ : GET_RESULT);
+	return (c <= -1 ? RIP_READ : GET_RESULT);
 }
 
 int obj_read_groupe(t_groupe *newGroupe, t_obj_reader *reader)

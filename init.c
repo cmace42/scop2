@@ -170,12 +170,14 @@ t_action initAction()
 	action.haveSpeedBoost = false;
 	action.showFace = 1;
 	action.showDept = false;
+	action.greymode = true;
 	return (action);
 }
 
-bool init(t_env *env, char *filename)
+int init(t_env *env, char *filename)
 {
-	if (getModel(filename, &env->modelData))
+	int ret;
+	if ((ret = getModel(filename, &env->modelData)) == GET_RESULT)
 	{
 		if ((env->window = initWindow()) != NULL)
 		{
@@ -185,7 +187,7 @@ bool init(t_env *env, char *filename)
 			if (!(env->model = initModel(env->modelData)))
 			{
 				printf("merde\n");
-				return (false);
+				return (FAILEDTOINITMODEL);
 			}
 			env->camera = initCamera(initAllWhl(env->model, env->modelData.size_groupe));
 			loadBMP_custom("petit-poney.bmp", &env->bmp1);
@@ -199,10 +201,8 @@ bool init(t_env *env, char *filename)
 		else
 		{
 			printf("Failed to init window\n");
-			return (false);
+			return (FAILEDTOINITWINDOW);
 		}
 	}
-	else
-		return (false);
-	return (true);
+	return (ret);
 }

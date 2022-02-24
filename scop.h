@@ -170,6 +170,8 @@ typedef struct s_action
 	int8_t showFace;
 	bool showDept;
 	bool isFacesColor;
+	bool greymode;
+	GLuint greymodeLoc;
 }				t_action;
 
 typedef struct s_bmp
@@ -199,31 +201,22 @@ typedef struct s_env
 	float speed;
  }				t_env;
 
-// enum {
-// 	DONE,
-// 	WRONG_CHAR,
-// 	NO_RESULT,
-// 	GET_RESULT,
-// 	GET_FLOAT,
-// 	RIP_MALLOC,
-// 	RIP_OPEN,
-// 	RIP_READ,
-// 	PREVIOUS_NODE_CANT_BE_NULL,
-// 	FACE_ID_OVERFLOW,
-// 	FACE_ID_CANT_BE_ZERO,
-// 	NO_DATA,
-// 	UV_NORMAL_NOT_EQUAL_TO_VERTEX,
-// };
+enum {
+	MALLOCINITBUFFERFAILED = 100,
+	READBUFFERFAILED,
+	FAILEDTOINITMODEL,
+	FAILEDTOINITWINDOW,
+};
 
 /* Init */
 SDL_Window*		initWindow();
 t_vao *initOpenGL(t_model obj);
 t_objectInWorld initCamera(t_vec3 whl);
 t_objectInWorld *initModel(t_model modelData);
-bool getModel(char *filename, t_model *model);
+int getModel(char *filename, t_model *model);
 int loadSkyBox(char **file, GLuint *textureId);
 t_action initAction();
-bool init(t_env *env, char *filename);
+int init(t_env *env, char *filename);
 
 /* main prog */
 

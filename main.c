@@ -4,17 +4,19 @@ int main(int argc, char **argv)
 {
 	t_env env;
 	size_t i;
+	int ret;
 
 	if (argc != 2)
 	{
 		printf("fais l'usage\n");
 		return (0);
 	}
-	if (init(&env, argv[1]))
+	if ((ret = init(&env, argv[1])) == GET_RESULT)
 	{
 		loop(env);
 	}
-	freeAll(&env);
+	if (ret != WRONG_CHAR && ret != RIP_READ && ret != RIP_OPEN && ret != NO_VERTEX)
+		freeAll(&env);
 	glDeleteTextures(1, &env.texture);
 	glDeleteProgram(env.programId);
 	i = 0;

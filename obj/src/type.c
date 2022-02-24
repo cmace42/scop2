@@ -10,7 +10,7 @@ static int control_type(t_face_type *type, t_face_type new_type)
 	{
 		return (WRONG_TYPE);
 	}
-    return (DONE);
+    return (GET_RESULT);
 }
 
 int	obj_vertex_type(size_t *vertex, t_face_type *type, t_obj_reader *reader)
@@ -23,19 +23,19 @@ int	obj_vertex_type(size_t *vertex, t_face_type *type, t_obj_reader *reader)
 	c = obj_reader_peek(reader);
 	if (c < '0' || c > '9')
 	{
-		return (c == -1 ? RIP_READ : WRONG_CHAR);
+		return (c <= -1 ? RIP_READ : WRONG_CHAR);
 	}
 	ret = obj_read_part_int(&res, reader, &unusedSign);
 	*vertex = (size_t)res - 1;
 	c = obj_reader_peek(reader);
 	if ((c) == ' ' || c == '\t' || c == '\r' || c == '\n' || c == 0)
 	{
-		if ((ret = control_type(type, Obj_Vertex_Type)) != DONE)
+		if ((ret = control_type(type, Obj_Vertex_Type)) != GET_RESULT)
 			return(WRONG_VERTEX_TYPE_IN_FACE);
 		return (GET_RESULT);
 	}
 	else if (c != '/')
-		return (c == -1 ? RIP_READ : WRONG_CHAR);
+		return (c <= -1 ? RIP_READ : WRONG_CHAR);
 	return (GET_RESULT);
 }
 
@@ -51,7 +51,7 @@ int	obj_uv_type(size_t *uv, t_face_type *type, t_obj_reader *reader, bool *haveN
 	c = obj_reader_peek(reader);
 	if (c == '/')
 	{
-		if ((ret = control_type(type, Obj_Normal_Type)) != DONE)
+		if ((ret = control_type(type, Obj_Normal_Type)) != GET_RESULT)
 			return(WRONG_NORMAL_TYPE_IN_FACE);
 		*haveNormal = true;
 	}
@@ -67,12 +67,12 @@ int	obj_uv_type(size_t *uv, t_face_type *type, t_obj_reader *reader, bool *haveN
 	if ((c) == ' ' || c == '\t' || c == '\r' || c == '\n' || c == 0)
 	{
 		*haveNormal = false;
-		if ((ret = control_type(type, Obj_Texture_Type)) != DONE)
+		if ((ret = control_type(type, Obj_Texture_Type)) != GET_RESULT)
 			return(WRONG_VERTEX_TYPE_IN_FACE);
 		return (GET_RESULT);
 	}
 	else if (c != '/')
-		return (c == -1 ? RIP_READ : WRONG_CHAR);
+		return (c <= -1 ? RIP_READ : WRONG_CHAR);
 	return (GET_RESULT);
 }
 
@@ -86,12 +86,12 @@ int obj_normal_type(size_t *normal, t_face_type *type, t_obj_reader *reader, boo
 	obj_reader_next(reader);
 	c = obj_reader_peek(reader);
 	if (c < '0' || c > '9')
-		return (c == -1 ? RIP_READ : WRONG_CHAR);
+		return (c <= -1 ? RIP_READ : WRONG_CHAR);
 	ret = obj_read_part_int(&res, reader, &unusedSign);
 	*normal = (size_t)res - 1;
 	if (!*haveNormal)
 	{
-		if ((ret = control_type(type, Obj_Vertex_Texture_Normal_Type)) != DONE)
+		if ((ret = control_type(type, Obj_Vertex_Texture_Normal_Type)) != GET_RESULT)
 			return(WRONG_VERTEX_TYPE_IN_FACE);
 	}
 	return (GET_RESULT);

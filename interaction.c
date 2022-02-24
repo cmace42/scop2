@@ -18,5 +18,7 @@ t_action interact(t_env data)
 	data.action.bidouilleTest.y = cosf((float)SDL_GetTicks()/1000.0f) / 2.0f;
 	data.action.bidouilleTest.z = tanf((float)SDL_GetTicks()/1000.0f) / 2.0f;
 	glUniform3f(data.action.bidouilleTestLoc, data.action.bidouilleTest.x, data.action.bidouilleTest.y,data.action.bidouilleTest.z);
+	data.action.greymodeLoc = glGetUniformLocation(data.programId, "greymode");
+	glUniform1i(data.action.greymodeLoc, data.action.greymode);
 	return (data.action);
 }

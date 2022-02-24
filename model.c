@@ -336,7 +336,7 @@ void freeObj(t_obj *obj)
 	free(obj->groupe);
 }
 
-bool getModel(char *filename, t_model *model)
+int getModel(char *filename, t_model *model)
 {
 	t_obj_reader reader;
 	t_obj obj;
@@ -346,26 +346,25 @@ bool getModel(char *filename, t_model *model)
 	if ((ret = obj_read(&obj, filename, &reader)) != GET_RESULT)
 	{
 		printError(reader, ret);
-		return (false);
+		freeObj(&obj);
+		return (ret);
 	}
-	if (obj.vertex.len < 1)
-		return (false);
 	i = 0;
 	if (obj.groupe[0].name == NULL && obj.len > 1)
 		i = 1;
 	while (i < obj.len)
 	{
 		if (obj.groupe[i].faces.len < 1)
-			return (false);
+			return (NO_FACES);
 		i++;
 	}
 	// printobj(obj);
 	if (!initBuffer(obj, model))
-		return (false);
+		return (MALLOCINITBUFFERFAILED);
 	if (!readBuffers(obj, model))
 	{
-		return (false);
+		return (READBUFFERFAILED);
 	}
 	freeObj(&obj);
-	return (true);
+	return (GET_RESULT);
 }

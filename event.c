@@ -187,9 +187,14 @@ int event(t_env *data, float deltaTime)
 						glDisable(GL_DEPTH_TEST);
 					break;
 				}
-				case SDLK_u:
+				case SDLK_i:
 				{
 					data->action.isFacesColor = !data->action.isFacesColor;
+					break;
+				}
+				case SDLK_u:
+				{
+					data->action.greymode = !data->action.greymode;
 					break;
 				}
 			}

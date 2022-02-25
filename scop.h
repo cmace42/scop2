@@ -172,6 +172,8 @@ typedef struct s_action
 	bool isFacesColor;
 	bool greymode;
 	GLuint greymodeLoc;
+	bool glcullface;
+	GLuint glcullfaceLoc;
 }				t_action;
 
 typedef struct s_bmp

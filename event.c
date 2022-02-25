@@ -197,6 +197,15 @@ int event(t_env *data, float deltaTime)
 					data->action.greymode = !data->action.greymode;
 					break;
 				}
+				case SDLK_k:
+				{
+					data->action.glcullface = !data->action.glcullface;
+					if (data->action.glcullface)
+						glEnable(GL_CULL_FACE);
+					else
+						glDisable(GL_CULL_FACE);
+					break;
+				}
 			}
 		}
 		else if (event.type == SDL_KEYUP)

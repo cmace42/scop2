@@ -93,6 +93,8 @@ t_vao *initOpenGL(t_model model)
 	glEnable(GL_DEPTH_TEST);
 	// Accepte le fragment s'il est plus proche de la caméra que le précédent accepté
 	glDepthFunc(GL_LESS);
+	glCullFace(GL_FRONT);
+	glFrontFace(GL_CCW);
 	printf("OpenGL and VAO initialised\n");
 	return (vao);
 }
@@ -171,6 +173,7 @@ t_action initAction()
 	action.showFace = 1;
 	action.showDept = false;
 	action.greymode = true;
+	action.glcullface = true;
 	return (action);
 }
 

@@ -132,7 +132,7 @@ int event(t_env *data, float deltaTime)
 					break;
 				}
 				case SDLK_o:
-					data->action.test = !data->action.test;
+					data->action.autoColor = !data->action.autoColor;
 					break;
 				case SDLK_r:
 				{
@@ -204,6 +204,29 @@ int event(t_env *data, float deltaTime)
 						glEnable(GL_CULL_FACE);
 					else
 						glDisable(GL_CULL_FACE);
+					break;
+				}
+				case SDLK_z:
+				{
+					if (!data->action.greymode)
+						data->action.colorInc.x+= 0.02;
+					break;
+				}
+				case SDLK_x:
+				{
+					if (!data->action.greymode)
+						data->action.colorInc.y+= 0.02;
+					break;
+				}
+				case SDLK_c:
+				{
+					if (!data->action.greymode)
+						data->action.colorInc.z+= 0.02;
+					break;
+				}
+				case SDLK_t:
+				{
+					data->action.colorInc = (t_vec3){0.0f,0.0f,0.0f};
 					break;
 				}
 			}

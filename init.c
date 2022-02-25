@@ -164,7 +164,7 @@ t_action initAction()
 	t_action action;
 
 	action.showTexture = false;
-	action.test = false;
+	action.autoColor = false;
 	action.transition = 1;
 	action.rotate = true;
 	action.rotateKeyboardMode = true;
@@ -173,7 +173,8 @@ t_action initAction()
 	action.showFace = 1;
 	action.showDept = false;
 	action.greymode = true;
-	action.glcullface = true;
+	action.glcullface = false;
+	action.colorInc = (t_vec3) {0.0000f, 0.0000f, 0.0000f};
 	return (action);
 }
 

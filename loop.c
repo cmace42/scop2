@@ -3,7 +3,6 @@
 void loop(t_env data)
 {
 	int running = 1;
-	data.action.colorTest = 0;
 	data.action.transition = 1.0f;
 	while(running)
 	{
@@ -15,6 +14,7 @@ void loop(t_env data)
 			doRotate(&data.model, (t_vec3){.y = 0.02f}, data.modelData.size_groupe);
 		data.action = interact(data);
 		render(data);
+		// printf("\n%f\r",data.time.deltaTime/1000.0f);
 		SDL_Delay(1000/60); // 1000 ms / nombre de fps (ici 60) = ms par seconde entre chaque frame
 	}
 }

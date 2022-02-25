@@ -157,12 +157,10 @@ typedef struct s_action
 	GLuint	ShowTextureLoc;
 	float transition;
 	GLuint transitionLoc;
-	bool test;
-	GLuint	testLoc;
-	int colorTest;
-	GLuint colorTestLoc;
-	t_vec3 bidouilleTest;
-	GLuint bidouilleTestLoc;
+	bool autoColor;
+	GLuint	autoColorLoc;
+	t_vec3 color;
+	GLuint colorLoc;
 	bool rotate;
 	bool rotateKeyboardMode;
 	bool isBmp1;
@@ -174,6 +172,7 @@ typedef struct s_action
 	GLuint greymodeLoc;
 	bool glcullface;
 	GLuint glcullfaceLoc;
+	t_vec3 colorInc;
 }				t_action;
 
 typedef struct s_bmp

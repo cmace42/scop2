@@ -21,6 +21,7 @@ static const t_vec3 color[] =
 	(t_vec3){242.0f,100.0f, 25.0f},
 	(t_vec3){114.0f,189.0f, 163.0f},
 	(t_vec3){148.0f,232.0f, 180.0f},
+	(t_vec3){8.0f,23.0f, 180.0f},
 };
 
 bool initBuffer(t_obj obj, t_model *model)
@@ -165,15 +166,15 @@ void getTriangleColorBuffer(t_bufferData *colorBuffer)
 	z = 0;
 	while (i < colorBuffer->size_data)
 	{
-		colorBuffer->buffer_data[i] = (color[z % 19]).x / 255;
-		colorBuffer->buffer_data[i + 1] = (color[z % 19]).y / 255;
-		colorBuffer->buffer_data[i + 2] = (color[z % 19]).z / 255;
-		colorBuffer->buffer_data[i + 3] = (color[z % 19]).x / 255;
-		colorBuffer->buffer_data[i + 4] = (color[z % 19]).y / 255;
-		colorBuffer->buffer_data[i + 5] = (color[z % 19]).z / 255;
-		colorBuffer->buffer_data[i + 6] = (color[z % 19]).x / 255;
-		colorBuffer->buffer_data[i + 7] = (color[z % 19]).y / 255;
-		colorBuffer->buffer_data[i + 8] = (color[z % 19]).z / 255;
+		colorBuffer->buffer_data[i] = (color[z % 20]).x / 255;
+		colorBuffer->buffer_data[i + 1] = (color[z % 20]).y / 255;
+		colorBuffer->buffer_data[i + 2] = (color[z % 20]).z / 255;
+		colorBuffer->buffer_data[i + 3] = (color[z % 20]).x / 255;
+		colorBuffer->buffer_data[i + 4] = (color[z % 20]).y / 255;
+		colorBuffer->buffer_data[i + 5] = (color[z % 20]).z / 255;
+		colorBuffer->buffer_data[i + 6] = (color[z % 20]).x / 255;
+		colorBuffer->buffer_data[i + 7] = (color[z % 20]).y / 255;
+		colorBuffer->buffer_data[i + 8] = (color[z % 20]).z / 255;
 		i+=9;
 		z++;
 	}

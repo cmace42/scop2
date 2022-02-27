@@ -88,8 +88,8 @@ GLSLOBJ = $(addprefix $(OBJ_DIR)/,$(GLSL:.glsl=.o))
 # addprefix permet de rediriger a la creation dans le dossier garbage
 
 # --   Compilation flags  -- #
-CC			=	gcc
-CFLAGS	  =   -Wall -Wextra -Werror -fsanitize=address
+CC			=	gcc 
+CFLAGS	  =   -Wall -Wextra -Werror #-fsanitize=address
 # --  Animation Calcul %  -- #
 T = $(words $(OBJS) 0)
 N = 0

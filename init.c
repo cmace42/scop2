@@ -55,6 +55,15 @@ float skyboxVertices[] = {
 	1.0f, -1.0f,  1.0f
 };
 
+char *cubemap[] = {
+	"right.bmp",
+    "left.bmp",
+    "top.bmp",
+    "bottom.bmp",
+    "front.bmp",
+    "back.bmp",
+};
+
 t_vao *initOpenGL(t_model model)
 {
 	t_vao *vao;
@@ -89,6 +98,12 @@ t_vao *initOpenGL(t_model model)
 		glBufferData(GL_ARRAY_BUFFER, sizeof(GLfloat) * model.uv[i].size_data, model.uv[i].buffer_data, GL_STATIC_DRAW);
 		i++;
 	}
+    glGenVertexArrays(1, &vao[0].skyboxVAO);
+    glGenBuffers(1, &vao[0].skyboxVBO);
+    glBindVertexArray(vao[0].skyboxVAO);
+	glBindBuffer(GL_ARRAY_BUFFER, vao[0].skyboxVBO);
+	glBufferData(GL_ARRAY_BUFFER, sizeof(float) * 108, &skyboxVertices, GL_STATIC_DRAW);
+	printf("%d\n", vao[0].skyboxVBO);
 	// Active le test de profondeur
 	glEnable(GL_DEPTH_TEST);
 	// Accepte le fragment s'il est plus proche de la caméra que le précédent accepté
@@ -181,6 +196,7 @@ t_action initAction()
 int init(t_env *env, char *filename)
 {
 	int ret;
+
 	if ((ret = getModel(filename, &env->modelData)) == GET_RESULT)
 	{
 		if ((env->window = initWindow()) != NULL)
@@ -188,6 +204,9 @@ int init(t_env *env, char *filename)
 			SDL_SetRelativeMouseMode(true);
 			env->context = SDL_GL_CreateContext(env->window);
 			env->vao = initOpenGL(env->modelData);
+			if (loadSkyBox(cubemap, &env->cubemapTexture) == -1)
+				return (MDRCCASSER);
+			printf("=== %d\n",env->cubemapTexture);
 			if (!(env->model = initModel(env->modelData)))
 			{
 				printf("merde\n");
@@ -196,8 +215,9 @@ int init(t_env *env, char *filename)
 			env->camera = initCamera(initAllWhl(env->model, env->modelData.size_groupe));
 			loadBMP_custom("petit-poney.bmp", &env->bmp1);
 			loadBMP_custom("diffuse.bmp", &env->bmp2);
-			env->texture = getTextureId(env->bmp2);
 			env->programId = loadShaders(vertexshader_glsl, vertexshader_glsl_len, fragmentshader_glsl, fragmentshader_glsl_len);
+			env->programSkyboxId = loadShaders(skyboxvertexshader_glsl, skyboxvertexshader_glsl_len, skyboxfragmentshader_glsl, skyboxfragmentshader_glsl_len);
+			env->texture = getTextureId(env->bmp2);
 			env->action = initAction();
 			env->time.lastTime = 0;
 			env->speed = fabs(env->model[0].whl.y) / 20.0f;

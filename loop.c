@@ -8,7 +8,7 @@ void loop(t_env data)
 	{
 		running = event(&data, data.time.deltaTime);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-		// glClearColor(0.0f, 0.0f, 0.4f, 0.0f);
+		glClearColor(0.0f, 0.0f, 0.4f, 0.0f);
 		data.time = getDataTime(data.time);
 		if (data.action.rotate)
 			doRotate(&data.model, (t_vec3){.y = 0.02f}, data.modelData.size_groupe);

@@ -79,8 +79,6 @@ typedef struct s_vao
 	GLuint colorTrianglesBuffer;
 	GLuint colorFacesBuffer;
 	GLuint textureBuffer;
-	GLuint skyboxVAO;
-	GLuint skyboxVBO;
 }				t_vao;
 
 typedef struct s_objectInWorld
@@ -210,8 +208,6 @@ typedef struct s_env
 	t_bmp			bmp2;
 	GLuint			texture;
 	GLuint			programId;
-	GLuint			programSkyboxId;
-	GLuint			cubemapTexture;
 	t_action action;
 	SDL_GLContext	context;
 	float speed;
@@ -231,7 +227,6 @@ t_vao *initOpenGL(t_model obj);
 t_objectInWorld initCamera(t_vec3 whl);
 t_objectInWorld *initModel(t_model modelData);
 int getModel(char *filename, t_model *model);
-int loadSkyBox(char **file, GLuint *textureId);
 t_action initAction();
 int init(t_env *env, char *filename);
 

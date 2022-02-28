@@ -5,12 +5,13 @@ t_action interact(t_env data)
 	t_vec3 colorInc;
 	float tmp;
 
-	tmp = ((float)SDL_GetTicks()/1000.0f) / M_PI;
+	tmp = ((float)SDL_GetTicks() / 1000.0f) / M_PI;
 	colorInc = data.action.autoColor ? (t_vec3){
 		.x = tmp,
 		.y = tmp,
 		.z = tmp,
-	} : (t_vec3){
+	}
+	: (t_vec3){
 		.x = data.action.colorInc.x / M_PI,
 		.y = data.action.colorInc.y / M_PI,
 		.z = data.action.colorInc.z / M_PI,
@@ -27,7 +28,7 @@ t_action interact(t_env data)
 	data.action.color.x = (cosf(colorInc.x * 2) + 1) / 2.0f;
 	data.action.color.y = (cosf(colorInc.y * 3) + 1) / 2.0f;
 	data.action.color.z = (cos(colorInc.z * 5) + 1) / 2.0f;
-	glUniform3f(data.action.colorLoc, data.action.color.x, data.action.color.y,data.action.color.z);
+	glUniform3f(data.action.colorLoc, data.action.color.x, data.action.color.y, data.action.color.z);
 	data.action.greymodeLoc = glGetUniformLocation(data.programId, "greymode");
 	glUniform1i(data.action.greymodeLoc, data.action.greymode);
 	return (data.action);

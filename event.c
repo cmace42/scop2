@@ -4,10 +4,10 @@ int eventTemp()
 {
 	SDL_Event event;
 
-	while(SDL_PollEvent(&event))
+	while (SDL_PollEvent(&event))
 	{
 		if (event.type == SDL_QUIT)
-			return(0);
+			return (0);
 		switch (event.key.keysym.sym)
 		{
 			case SDLK_ESCAPE:
@@ -44,14 +44,14 @@ void doTranslate(t_objectInWorld **model, t_vec3 translate, size_t size)
 
 int event(t_env *data, float deltaTime)
 {
-	
+
 	SDL_Event event;
 	int xMouse, yMouse;
 
-	while(SDL_PollEvent(&event))
+	while (SDL_PollEvent(&event))
 	{
 		if (event.type == SDL_QUIT)
-			return(0);
+			return (0);
 		if (event.type == SDL_KEYDOWN)
 		{
 			switch (event.key.keysym.sym)
@@ -75,7 +75,7 @@ int event(t_env *data, float deltaTime)
 				case SDLK_KP_8:
 				{
 					if (data->action.rotateKeyboardMode)
-						doRotate(&data->model, (t_vec3){.x= -0.1f}, data->modelData.size_groupe);
+						doRotate(&data->model, (t_vec3){.x = -0.1f}, data->modelData.size_groupe);
 					else
 						doTranslate(&data->model, (t_vec3){.y = 0.1f}, data->modelData.size_groupe);
 					break;
@@ -83,7 +83,7 @@ int event(t_env *data, float deltaTime)
 				case SDLK_KP_2:
 				{
 					if (data->action.rotateKeyboardMode)
-						doRotate(&data->model, (t_vec3){.x= 0.1f}, data->modelData.size_groupe);
+						doRotate(&data->model, (t_vec3){.x = 0.1f}, data->modelData.size_groupe);
 					else
 						doTranslate(&data->model, (t_vec3){.y = -0.1f}, data->modelData.size_groupe);
 					break;
@@ -209,24 +209,24 @@ int event(t_env *data, float deltaTime)
 				case SDLK_z:
 				{
 					if (!data->action.greymode)
-						data->action.colorInc.x+= 0.02;
+						data->action.colorInc.x += 0.02;
 					break;
 				}
 				case SDLK_x:
 				{
 					if (!data->action.greymode)
-						data->action.colorInc.y+= 0.02;
+						data->action.colorInc.y += 0.02;
 					break;
 				}
 				case SDLK_c:
 				{
 					if (!data->action.greymode)
-						data->action.colorInc.z+= 0.02;
+						data->action.colorInc.z += 0.02;
 					break;
 				}
 				case SDLK_t:
 				{
-					data->action.colorInc = (t_vec3){0.0f,0.0f,0.0f};
+					data->action.colorInc = (t_vec3){0.0f, 0.0f, 0.0f};
 					break;
 				}
 			}

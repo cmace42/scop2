@@ -41,7 +41,6 @@ SRCS =	\
 			tools.c\
 			loadbmp.c\
 			renderer.c\
-			skybox.c\
 			interaction.c\
 			mouse.c\
 			time.c\
@@ -69,8 +68,6 @@ SRCS =	\
 GLSL = \
 			vertexshader.glsl\
 			fragmentshader.glsl\
-			skyboxvertexshader.glsl\
-			skyboxfragmentshader.glsl\
 
 # Seulement les fichiers donner explicitement ici
 # seront chercher ( avec vpath ) et compiler

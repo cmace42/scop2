@@ -5,10 +5,10 @@ int reader_skip_nextline(t_obj_reader *self)
 	int16_t c;
 
 	obj_reader_next(self);
-	while((c = obj_reader_peek(self)) > 0 && c != '\n')
+	while ((c = obj_reader_peek(self)) > 0 && c != '\n')
 	{
 		if (obj_reader_next(self) == -1)
-			return(RIP_READ);
+			return (RIP_READ);
 	}
 	if (c == -1)
 		return (RIP_READ);
@@ -19,7 +19,7 @@ int reader_skip_wt(t_obj_reader *self)
 {
 	int16_t c;
 
-	while((c = obj_reader_peek(self)) > 0 && (c == ' ' || c == '\t') && c != '\n')
+	while ((c = obj_reader_peek(self)) > 0 && (c == ' ' || c == '\t') && c != '\n')
 	{
 		// printf("'%d' ", c);
 		if (obj_reader_next(self) == -1)
@@ -51,7 +51,7 @@ int reader_numberInt(t_obj_reader *self, int *result, bool forFace)
 			return (GET_FLOAT);
 		}
 		else if (c == ' ' || c == '\t' || c == '\n' || (forFace && c == '/'))
-			return(ret);
+			return (ret);
 		else
 		{
 			// printf("erreur l%ld,c%ld : '%c'\n", self->line,self->column, c);
@@ -85,13 +85,13 @@ int render_numberGLfloat(t_obj_reader *self, GLfloat *result, bool forFace)
 			// printf("%f\n", *result);
 			break;
 		}
-		else 
+		else
 		{
 			// printf("erreur l%ld,c%ld : '%c'\n", self->line,self->column, c);
 			return (WRONG_CHAR);
 		}
 		if (obj_reader_next(self) == -1)
-			return(RIP_READ);
+			return (RIP_READ);
 	}
 	if (c == -1)
 		return (RIP_READ);
@@ -148,7 +148,7 @@ int printError(t_obj_reader *self, int error)
 	return (error);
 }
 
-int reader_number(t_obj_reader *self, t_listParsing** vertices, bool uv)
+int reader_number(t_obj_reader *self, t_listParsing **vertices, bool uv)
 {
 	int16_t c;
 	int num1;
@@ -162,7 +162,7 @@ int reader_number(t_obj_reader *self, t_listParsing** vertices, bool uv)
 	num2 = 0;
 	int n;
 	n = uv ? 2 : 3;
-	while(i < n)
+	while (i < n)
 	{
 		if (reader_skip_wt(self) == RIP_READ)
 			return (RIP_READ);
@@ -187,7 +187,7 @@ int reader_number(t_obj_reader *self, t_listParsing** vertices, bool uv)
 				return (ret);
 		}
 		if (append(vertices, (((GLfloat)num1 + num2) * (GLfloat)sign)) == RIP_MALLOC)
-			return(RIP_MALLOC);
+			return (RIP_MALLOC);
 		if (reader_skip_wt(self) == RIP_READ)
 			return (RIP_READ);
 		sign = 1;
@@ -196,7 +196,7 @@ int reader_number(t_obj_reader *self, t_listParsing** vertices, bool uv)
 	if ((c = obj_reader_peek(self)) != '\n')
 	{
 		if (reader_skip_nextline(self) == RIP_READ)
-			return(RIP_READ);
+			return (RIP_READ);
 	}
 	else if (c == -1)
 		return (RIP_READ);
@@ -205,7 +205,7 @@ int reader_number(t_obj_reader *self, t_listParsing** vertices, bool uv)
 
 int reader_faces(t_obj_reader *self, t_listData *data)
 {
-	int16_t c;	
+	int16_t c;
 	int i;
 	int indV[3];
 	int indUv[3];
@@ -221,14 +221,14 @@ int reader_faces(t_obj_reader *self, t_listData *data)
 	haveUv = false;
 	bool haveNormal;
 	haveNormal = false;
-	while(i < 3)
+	while (i < 3)
 	{
 		if (reader_skip_wt(self) == RIP_READ)
 			return (RIP_READ);
 		if ((ret = reader_numberInt(self, &num, true)) != GET_RESULT)
-			return(ret);
+			return (ret);
 		if (append(&data->facesV, num) == RIP_MALLOC)
-			return(RIP_MALLOC);
+			return (RIP_MALLOC);
 		indV[i] = num;
 		data->nFacesV++;
 		if (reader_skip_wt(self) == RIP_READ)
@@ -241,9 +241,9 @@ int reader_faces(t_obj_reader *self, t_listData *data)
 			{
 				haveUv = true;
 				if ((ret = reader_numberInt(self, &num, true)) != GET_RESULT)
-					return(ret);
+					return (ret);
 				if (append(&data->facesUv, num) == RIP_MALLOC)
-					return(RIP_MALLOC);
+					return (RIP_MALLOC);
 				indUv[i] = num;
 				data->nFacesUv++;
 				if (i == 0)
@@ -266,9 +266,9 @@ int reader_faces(t_obj_reader *self, t_listData *data)
 			if (obj_reader_next(self) == -1)
 				return (RIP_READ);
 			if ((ret = reader_numberInt(self, &num, true)) != GET_RESULT)
-				return(ret);
+				return (ret);
 			if (append(&data->facesNormal, num) == RIP_MALLOC)
-				return(RIP_MALLOC);
+				return (RIP_MALLOC);
 			indNormal[i] = num;
 			data->nFacesNormal++;
 			if (i == 0)
@@ -280,21 +280,21 @@ int reader_faces(t_obj_reader *self, t_listData *data)
 			return (RIP_READ);
 		i++;
 	}
-	while((c = obj_reader_peek(self)) > 0 && c != '\n')
+	while ((c = obj_reader_peek(self)) > 0 && c != '\n')
 	{
 		if (reader_skip_wt(self) == RIP_READ)
 			return (RIP_READ);
 		if (obj_reader_peek(self) != '\n')
 		{
 			if (append(&data->facesV, indV[0]) == RIP_MALLOC)
-				return(RIP_MALLOC);
+				return (RIP_MALLOC);
 			if (append(&data->facesV, indV[2]) == RIP_MALLOC)
-				return(RIP_MALLOC);
+				return (RIP_MALLOC);
 			int prov = indV[2];
 			if ((ret = reader_numberInt(self, &indV[2], true)) != GET_RESULT)
 				return (ret);
 			if (append(&data->facesV, indV[2]) == RIP_MALLOC)
-				return(RIP_MALLOC);
+				return (RIP_MALLOC);
 			data->nFacesV += 3;
 			if ((c = obj_reader_peek(self)) == '/')
 			{
@@ -303,14 +303,14 @@ int reader_faces(t_obj_reader *self, t_listData *data)
 				if ((c = obj_reader_peek(self)) != '/' && c > -1 && haveUv)
 				{
 					if (append(&data->facesUv, indUv[0]) == RIP_MALLOC)
-						return(RIP_MALLOC);
+						return (RIP_MALLOC);
 					if (append(&data->facesUv, indUv[2]) == RIP_MALLOC)
-						return(RIP_MALLOC);
+						return (RIP_MALLOC);
 					if ((ret = reader_numberInt(self, &indUv[2], true)) != GET_RESULT)
 						return (ret);
 					if (append(&data->facesUv, indUv[2]) == RIP_MALLOC)
-						return(RIP_MALLOC);
-					data->nFacesUv+= 3;
+						return (RIP_MALLOC);
+					data->nFacesUv += 3;
 				}
 				else if (c == '/' && haveUv)
 				{
@@ -326,14 +326,14 @@ int reader_faces(t_obj_reader *self, t_listData *data)
 				if (obj_reader_next(self) == -1)
 					return (RIP_READ);
 				if (append(&data->facesNormal, indNormal[0]) == RIP_MALLOC)
-					return(RIP_MALLOC);
+					return (RIP_MALLOC);
 				if (append(&data->facesNormal, indNormal[2]) == RIP_MALLOC)
-					return(RIP_MALLOC);
+					return (RIP_MALLOC);
 				if ((ret = reader_numberInt(self, &indNormal[2], true)) != GET_RESULT)
 					return (ret);
 				if (append(&data->facesNormal, indNormal[2]) == RIP_MALLOC)
-					return(RIP_MALLOC);
-				data->nFacesNormal+= 3;
+					return (RIP_MALLOC);
+				data->nFacesNormal += 3;
 			}
 			else if (haveNormal)
 			{
@@ -350,7 +350,6 @@ int reader_faces(t_obj_reader *self, t_listData *data)
 	// printList(data->facesNormal);
 	return (GET_RESULT);
 }
-
 
 int getDataListOfFile(char *filepath, t_listData *data, t_obj_reader *r)
 {
@@ -370,10 +369,10 @@ int getDataListOfFile(char *filepath, t_listData *data, t_obj_reader *r)
 	data->vUv = NULL;
 	data->vNormal = NULL;
 	printf("Reading file.....\n");
-	while((c = obj_reader_peek(r)) > 0)
+	while ((c = obj_reader_peek(r)) > 0)
 	{
 		// if (r->line % 10000 == 0)
-			printf("%ld lines read....\r", r->line);
+		printf("%ld lines read....\r", r->line);
 		if (c == 'v')
 		{
 			obj_reader_next(r);
@@ -417,12 +416,12 @@ int getDataListOfFile(char *filepath, t_listData *data, t_obj_reader *r)
 		else
 		{
 			if (c != '#')
-				printf("Warning : l%ld,c%ld : '%c'\n", r->line,r->column, c);
+				printf("Warning : l%ld,c%ld : '%c'\n", r->line, r->column, c);
 			if (reader_skip_nextline(r) == -1)
 				return (RIP_READ);
 		}
-		if(obj_reader_next(r) == RIP_READ)
-			return(RIP_READ);
+		if (obj_reader_next(r) == RIP_READ)
+			return (RIP_READ);
 	}
 	// printf("vertices : %d, uv : %d, normal : %d, facesV : %d, facesUv : %d, facesNormal : %d\n", data->nVertices, data->nUv, data->nNormal, data->nFacesV, data->nFacesUv, data->nFacesNormal);
 	// printList(data->vertices);
@@ -439,7 +438,7 @@ GLfloat *getTempBufferData(t_listParsing *data, int dataSize)
 {
 	GLfloat *buffer;
 	// printf("%d\n", dataSize);
-	if ((buffer = (GLfloat*)malloc(sizeof(GLfloat) * dataSize)) == NULL)
+	if ((buffer = (GLfloat *)malloc(sizeof(GLfloat) * dataSize)) == NULL)
 		return (NULL);
 	int i;
 	i = 0;
@@ -452,22 +451,22 @@ GLfloat *getTempBufferData(t_listParsing *data, int dataSize)
 	return (buffer);
 }
 
-int getBufferData(GLfloat *tempBuffer, int sizeTempBuffer,t_listParsing *dataFaces, int faceSize, GLfloat** buffer)
+int getBufferData(GLfloat *tempBuffer, int sizeTempBuffer, t_listParsing *dataFaces, int faceSize, GLfloat **buffer)
 {
 	int i;
-	if((*buffer = (GLfloat*)malloc(sizeof(GLfloat) * faceSize * 3)) == NULL)
+	if ((*buffer = (GLfloat *)malloc(sizeof(GLfloat) * faceSize * 3)) == NULL)
 	{
 		return (RIP_MALLOC);
 	}
-	printf("Start getBufferData : %d\n",sizeTempBuffer);
+	printf("Start getBufferData : %d\n", sizeTempBuffer);
 	i = 0;
-	while(dataFaces != NULL)
+	while (dataFaces != NULL)
 	{
 		if (dataFaces->number <= 0)
 			return (FACE_ID_CANT_BE_ZERO);
 		else if (dataFaces->number * 3 <= sizeTempBuffer)
 		{
-			(*buffer)[i] = tempBuffer[(int)dataFaces->number  * 3 - 1];
+			(*buffer)[i] = tempBuffer[(int)dataFaces->number * 3 - 1];
 			i++;
 			(*buffer)[i] = tempBuffer[(int)dataFaces->number * 3 - 2];
 			i++;
@@ -499,7 +498,7 @@ int getTempsBuffersData(t_model *temp, t_listData data)
 	return (GET_RESULT);
 }
 
-int getStaticUv(GLfloat* vertex, int size, GLfloat **uv, size_t *uvSize, t_vec3 *whl)
+int getStaticUv(GLfloat *vertex, int size, GLfloat **uv, size_t *uvSize, t_vec3 *whl)
 {
 	int i;
 	GLfloat xmin;
@@ -517,7 +516,7 @@ int getStaticUv(GLfloat* vertex, int size, GLfloat **uv, size_t *uvSize, t_vec3 
 	zmax = vertex[0 + 2];
 	i = 3;
 	*uvSize = 0;
-	while(i < size)
+	while (i < size)
 	{
 		xmin = vertex[i] > xmin ? xmin : vertex[i];
 		xmax = vertex[i] < xmax ? xmax : vertex[i];
@@ -528,7 +527,7 @@ int getStaticUv(GLfloat* vertex, int size, GLfloat **uv, size_t *uvSize, t_vec3 
 		i += 3;
 		*uvSize += 3;
 	}
-	if((*uv = (GLfloat*)malloc(sizeof(GLfloat) * (*uvSize))) == NULL)
+	if ((*uv = (GLfloat *)malloc(sizeof(GLfloat) * (*uvSize))) == NULL)
 	{
 		return (RIP_MALLOC);
 	}
@@ -538,8 +537,8 @@ int getStaticUv(GLfloat* vertex, int size, GLfloat **uv, size_t *uvSize, t_vec3 
 	{
 		(*uv)[i] = (xmin - vertex[i]) / xmax; // voir si c'est po interverti suite a la modif du dessus
 		(*uv)[i + 1] = (ymin - vertex[i + 1]) / ymax;
-		i+= 3;
-		y+= 3;
+		i += 3;
+		y += 3;
 	}
 	whl->x = (xmax - xmin) / 2 + xmin;
 	whl->y = (ymax - ymin) / 2 + ymin;
@@ -562,17 +561,17 @@ int getColorBufferData(size_t sizeVertex, GLfloat **colorBuffer, size_t *colorBu
 	color = (float)(rand() % 255) / 1000.0f;
 
 	sizeVertex = sizeVertex * 3;
-	if((*colorBuffer = (GLfloat*)malloc(sizeof(GLfloat) * (sizeVertex))) == NULL)
+	if ((*colorBuffer = (GLfloat *)malloc(sizeof(GLfloat) * (sizeVertex))) == NULL)
 	{
 		return (RIP_MALLOC);
 	}
-	while(i < sizeVertex)
+	while (i < sizeVertex)
 	{
 		while (y < 3)
 		{
 			setColorBuffer(&(*colorBuffer)[i], color);
 			y++;
-			i+=3;
+			i += 3;
 		}
 		color = (float)(rand() % 255) / 1000.0f;
 		y = 0;
@@ -586,7 +585,7 @@ void printBuffer(GLfloat *buffer, size_t sizebuffer)
 	int i = 0;
 	while (i < sizebuffer * 3)
 	{
-		printf("buffer[%d] = %f\n",i, buffer[i] );
+		printf("buffer[%d] = %f\n", i, buffer[i]);
 		i++;
 	}
 }
@@ -622,7 +621,7 @@ int loadObj(char *filepath, t_model *model, t_vec3 *whl)
 					{
 						if (data.nFacesV == data.nFacesUv || data.nFacesV == data.nFacesNormal)
 						{
-							if(temp.uv_buffer_data && data.vUv)
+							if (temp.uv_buffer_data && data.vUv)
 							{
 								ret = getBufferData(temp.uv_buffer_data, data.nUv, data.facesUv, data.nFacesUv, &model->uv_buffer_data);
 								model->uv_size_data = data.nFacesUv;

@@ -1,6 +1,6 @@
 #include "obj.h"
 
-t_obj_reader	obj_create_reader(int fd, char *buffer, size_t buffer_size)
+t_obj_reader obj_create_reader(int fd, char *buffer, size_t buffer_size)
 {
 	return ((t_obj_reader){
 		.fd = fd,
@@ -9,13 +9,12 @@ t_obj_reader	obj_create_reader(int fd, char *buffer, size_t buffer_size)
 		.len = 0,
 		.i = 0,
 		.column = 0,
-		.line = 1
-	});
+		.line = 1});
 }
 
-int16_t			obj_reader_peek(t_obj_reader *self)
+int16_t obj_reader_peek(t_obj_reader *self)
 {
-	size_t	len;
+	size_t len;
 
 	if (self->i >= self->len)
 	{
@@ -28,7 +27,7 @@ int16_t			obj_reader_peek(t_obj_reader *self)
 	return (self->buffer[self->i]);
 }
 
-int			obj_reader_next(t_obj_reader *self)
+int obj_reader_next(t_obj_reader *self)
 {
 	int16_t c;
 

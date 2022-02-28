@@ -5,65 +5,6 @@ extern int vertexshader_glsl_len;
 extern char fragmentshader_glsl[];
 extern int fragmentshader_glsl_len;
 
-extern char skyboxvertexshader_glsl[];
-extern int skyboxvertexshader_glsl_len;
-extern char skyboxfragmentshader_glsl[];
-extern int skyboxfragmentshader_glsl_len;
-
-float skyboxVertices[] = {
-	// positions
-	-1.0f,  1.0f, -1.0f,
-	-1.0f, -1.0f, -1.0f,
-	1.0f, -1.0f, -1.0f,
-	1.0f, -1.0f, -1.0f,
-	1.0f,  1.0f, -1.0f,
-	-1.0f,  1.0f, -1.0f,
-
-	-1.0f, -1.0f,  1.0f,
-	-1.0f, -1.0f, -1.0f,
-	-1.0f,  1.0f, -1.0f,
-	-1.0f,  1.0f, -1.0f,
-	-1.0f,  1.0f,  1.0f,
-	-1.0f, -1.0f,  1.0f,
-
-	1.0f, -1.0f, -1.0f,
-	1.0f, -1.0f,  1.0f,
-	1.0f,  1.0f,  1.0f,
-	1.0f,  1.0f,  1.0f,
-	1.0f,  1.0f, -1.0f,
-	1.0f, -1.0f, -1.0f,
-
-	-1.0f, -1.0f,  1.0f,
-	-1.0f,  1.0f,  1.0f,
-	1.0f,  1.0f,  1.0f,
-	1.0f,  1.0f,  1.0f,
-	1.0f, -1.0f,  1.0f,
-	-1.0f, -1.0f,  1.0f,
-
-	-1.0f,  1.0f, -1.0f,
-	1.0f,  1.0f, -1.0f,
-	1.0f,  1.0f,  1.0f,
-	1.0f,  1.0f,  1.0f,
-	-1.0f,  1.0f,  1.0f,
-	-1.0f,  1.0f, -1.0f,
-
-	-1.0f, -1.0f, -1.0f,
-	-1.0f, -1.0f,  1.0f,
-	1.0f, -1.0f, -1.0f,
-	1.0f, -1.0f, -1.0f,
-	-1.0f, -1.0f,  1.0f,
-	1.0f, -1.0f,  1.0f
-};
-
-char *cubemap[] = {
-	"right.bmp",
-    "left.bmp",
-    "top.bmp",
-    "bottom.bmp",
-    "front.bmp",
-    "back.bmp",
-};
-
 t_vao *initOpenGL(t_model model)
 {
 	t_vao *vao;
@@ -81,29 +22,23 @@ t_vao *initOpenGL(t_model model)
 		// Ceci identifiera notre tampon de sommets
 		// Génère un tampon et place l'identifiant dans 'vertexBuffer'
 		printf("Initialisation OpenGL and VAO...\n");
-		glGenBuffers(1, &vao[i].vertexBuffer); 
+		glGenBuffers(1, &vao[i].vertexBuffer);
 		// Les commandes suivantes vont parler de notre tampon 'vertexBuffer'
-		glBindBuffer(GL_ARRAY_BUFFER, vao[i].vertexBuffer); 
+		glBindBuffer(GL_ARRAY_BUFFER, vao[i].vertexBuffer);
 		// Fournit les sommets à OpenGL.
 		glBufferData(GL_ARRAY_BUFFER, sizeof(GLfloat) * model.vertex[i].size_data, model.vertex[i].buffer_data, GL_STATIC_DRAW);
 		// glBufferData(GL_ARRAY_BUFFER, sizeof(g_vertex_buffer_data), g_vertex_buffer_data, GL_STATIC_DRAW);
-		glGenBuffers(1, &vao[i].colorTrianglesBuffer); 
-		glBindBuffer(GL_ARRAY_BUFFER, vao[i].colorTrianglesBuffer); 
+		glGenBuffers(1, &vao[i].colorTrianglesBuffer);
+		glBindBuffer(GL_ARRAY_BUFFER, vao[i].colorTrianglesBuffer);
 		glBufferData(GL_ARRAY_BUFFER, sizeof(GLfloat) * model.colorTriangles[i].size_data, model.colorTriangles[i].buffer_data, GL_STATIC_DRAW);
-		glGenBuffers(1, &vao[i].colorFacesBuffer); 
-		glBindBuffer(GL_ARRAY_BUFFER, vao[i].colorFacesBuffer); 
+		glGenBuffers(1, &vao[i].colorFacesBuffer);
+		glBindBuffer(GL_ARRAY_BUFFER, vao[i].colorFacesBuffer);
 		glBufferData(GL_ARRAY_BUFFER, sizeof(GLfloat) * model.colorFaces[i].size_data, model.colorFaces[i].buffer_data, GL_STATIC_DRAW);
 		glGenBuffers(1, &vao[i].textureBuffer);
 		glBindBuffer(GL_ARRAY_BUFFER, vao[i].textureBuffer);
 		glBufferData(GL_ARRAY_BUFFER, sizeof(GLfloat) * model.uv[i].size_data, model.uv[i].buffer_data, GL_STATIC_DRAW);
 		i++;
 	}
-    glGenVertexArrays(1, &vao[0].skyboxVAO);
-    glGenBuffers(1, &vao[0].skyboxVBO);
-    glBindVertexArray(vao[0].skyboxVAO);
-	glBindBuffer(GL_ARRAY_BUFFER, vao[0].skyboxVBO);
-	glBufferData(GL_ARRAY_BUFFER, sizeof(float) * 108, &skyboxVertices, GL_STATIC_DRAW);
-	printf("%d\n", vao[0].skyboxVBO);
 	// Active le test de profondeur
 	glEnable(GL_DEPTH_TEST);
 	// Accepte le fragment s'il est plus proche de la caméra que le précédent accepté
@@ -189,7 +124,7 @@ t_action initAction()
 	action.showDept = false;
 	action.greymode = true;
 	action.glcullface = false;
-	action.colorInc = (t_vec3) {0.0000f, 0.0000f, 0.0000f};
+	action.colorInc = (t_vec3){0.0000f, 0.0000f, 0.0000f};
 	return (action);
 }
 
@@ -204,9 +139,6 @@ int init(t_env *env, char *filename)
 			SDL_SetRelativeMouseMode(true);
 			env->context = SDL_GL_CreateContext(env->window);
 			env->vao = initOpenGL(env->modelData);
-			if (loadSkyBox(cubemap, &env->cubemapTexture) == -1)
-				return (MDRCCASSER);
-			printf("=== %d\n",env->cubemapTexture);
 			if (!(env->model = initModel(env->modelData)))
 			{
 				printf("merde\n");
@@ -216,7 +148,6 @@ int init(t_env *env, char *filename)
 			loadBMP_custom("petit-poney.bmp", &env->bmp1);
 			loadBMP_custom("diffuse.bmp", &env->bmp2);
 			env->programId = loadShaders(vertexshader_glsl, vertexshader_glsl_len, fragmentshader_glsl, fragmentshader_glsl_len);
-			env->programSkyboxId = loadShaders(skyboxvertexshader_glsl, skyboxvertexshader_glsl_len, skyboxfragmentshader_glsl, skyboxfragmentshader_glsl_len);
 			env->texture = getTextureId(env->bmp2);
 			env->action = initAction();
 			env->time.lastTime = 0;

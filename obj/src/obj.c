@@ -4,9 +4,9 @@ int printError(t_obj_reader self, int error)
 {
 	int ret;
 	// write(2, "Error line ", 11);
-	printf("Line : %zu\n",self.line);
+	printf("Line : %zu\n", self.line);
 	// write(2, "col ", 65);
-	printf("Col : %zu\n",self.column);
+	printf("Col : %zu\n", self.column);
 	if (error == WRONG_CHAR || error == NO_RESULT)
 	{
 		write(2, " char : ", 8);
@@ -48,7 +48,7 @@ int printError(t_obj_reader self, int error)
 	return (error);
 }
 
-static int	obj_get_vertex_type(t_obj *obj, t_obj_reader *reader)
+static int obj_get_vertex_type(t_obj *obj, t_obj_reader *reader)
 {
 	int16_t c;
 	int ret;
@@ -64,14 +64,14 @@ static int	obj_get_vertex_type(t_obj *obj, t_obj_reader *reader)
 		if ((ret = obj_reader_next(reader)) != GET_RESULT)
 			return (ret);
 		ret = obj_get_vertex(&obj->vn, reader);
-		//parse vn
+		// parse vn
 	}
 	else if (c == 't')
 	{
 		if ((ret = obj_reader_next(reader)) != GET_RESULT)
 			return (ret);
 		ret = obj_get_uv(&obj->vt, reader);
-		//parse uv
+		// parse uv
 	}
 	else
 		ret = c == -1 ? RIP_READ : WRONG_CHAR;
@@ -82,7 +82,7 @@ static int	obj_get_vertex_type(t_obj *obj, t_obj_reader *reader)
 	return (ret);
 }
 
-static int	obj_read_type(t_obj *obj, t_groupe **currentGroupe, t_obj_reader *reader)
+static int obj_read_type(t_obj *obj, t_groupe **currentGroupe, t_obj_reader *reader)
 {
 	int16_t c;
 	int ret;
@@ -135,22 +135,22 @@ int obj_read(t_obj *obj, char *filepath, t_obj_reader *reader)
 	t_groupe *currentGroupe;
 
 	ret = GET_RESULT;
-	if ((*reader = obj_create_reader(open(filepath, O_RDONLY),buffer, 4096)).fd  <= 0)
-		return(RIP_OPEN);
+	if ((*reader = obj_create_reader(open(filepath, O_RDONLY), buffer, 4096)).fd <= 0)
+		return (RIP_OPEN);
 	if (!(*obj = create_groupe(1, Obj_No_Type)).groupe)
 		return (RIP_MALLOC);
 	if (!(obj->vertex = create_vertex_array(10)).this
 		|| !(obj->vn = create_vertex_array(10)).this
 		|| !(obj->vt = create_uv_array(10)).this
-		|| !(currentGroupe = obj_append_groupe(obj, (t_groupe) {
+		|| !(currentGroupe = obj_append_groupe(obj, (t_groupe){
 			.name = NULL,
 			.faces = create_triangle_array(10)
-	})) || !(currentGroupe->faces.fpl = create_fpl_array(10)).this)
+		})) || !(currentGroupe->faces.fpl = create_fpl_array(10)).this)
 	{
-		return(RIP_MALLOC);
+		return (RIP_MALLOC);
 	}
 	printf("start lecture file\n");
-	while((c = obj_reader_peek(reader)) > 0)
+	while ((c = obj_reader_peek(reader)) > 0)
 	{
 		ret = obj_read_type(obj, &currentGroupe, reader);
 		if (ret != GET_RESULT)

@@ -1,6 +1,5 @@
 #include "obj.h"
 
-
 int obj_read_part_int(float *value, t_obj_reader *reader, int *sign)
 {
 	int16_t c;

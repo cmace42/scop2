@@ -1,17 +1,17 @@
 #include "scop.h"
 
 //Projection Matrice
-t_mat4 initPerspective ( float fov, float zNear, float zFar)
+t_mat4 initPerspective (float fov, float zNear, float zFar)
 {
 	const float ar =  4.0f / 3.0f;
-    // const float zRange = zNear - zFar;
-    const float tanHalfFOV = tanf(ToRadian(fov / 2.0));
+	// const float zRange = zNear - zFar;
+	const float tanHalfFOV = tanf(ToRadian(fov / 2.0));
 
 	return ((t_mat4){
 		.m = {
 			{1.0f / (tanHalfFOV * ar), 0.0f, 0.0f, 0.0f},
 			{0.0f, 1.0f / tanHalfFOV, 0.0f, 0.0f},
-            {0.0, 0.0,  - (zFar + zNear) / (zFar - zNear), (-2 * zFar * zNear) / (zFar - zNear)},
+			{0.0, 0.0, - (zFar + zNear) / (zFar - zNear), (-2 * zFar * zNear) / (zFar - zNear)},
 			{0.0f, 0.0f, -1.0f, 0.0f}
 		}
 	});

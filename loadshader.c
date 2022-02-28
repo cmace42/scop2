@@ -17,8 +17,8 @@ GLuint loadShaders(const char *vertexSource, int vertexLen, const char *fragment
 	if (!result)
 	{
 		glGetShaderInfoLog(vertexShaderID, sizeof(infoLog), NULL, infoLog);
-        write(STDERR_FILENO, "error shader compilation failed: ", sizeof("error shader compilation failed: "));
-        write(STDERR_FILENO, infoLog, strlen(infoLog));
+		write(STDERR_FILENO, "error shader compilation failed: ", sizeof("error shader compilation failed: "));
+		write(STDERR_FILENO, infoLog, strlen(infoLog));
 	}
 
 	// Compile le fragment shader
@@ -46,7 +46,7 @@ GLuint loadShaders(const char *vertexSource, int vertexLen, const char *fragment
 		printf("ERROR::PROGRAM::COMPILATION_FAILED\n%s\n", infoLog);
 	}
 
-	//suppression du vertex et fragment shader car elles sont dans le program donc elles ne servent plus a rien
+	// suppression du vertex et fragment shader car elles sont dans le program donc elles ne servent plus a rien
 	glDeleteShader(vertexShaderID);
 	glDeleteShader(fragmentShaderID);
 

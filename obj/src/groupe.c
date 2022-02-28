@@ -8,7 +8,7 @@ int obj_append_char(int8_t c, char **name, size_t *size, size_t i)
 	if (i == *size)
 	{
 		new_size = *size * 2;
-		if (!(new = (char*)malloc(sizeof(char) * new_size)))
+		if (!(new = (char *)malloc(sizeof(char) * new_size)))
 			return (RIP_MALLOC);
 		memcpy(new, *name, sizeof(char) * *size);
 		free(*name);
@@ -27,9 +27,9 @@ int obj_read_name(char **name, t_obj_reader *reader)
 
 	i = 0;
 	size = 10;
-	if (!(*name = (char*)malloc(sizeof(char) * size)))
+	if (!(*name = (char *)malloc(sizeof(char) * size)))
 		return (RIP_MALLOC);
-	while((c = obj_reader_peek(reader)) != '\n' && c > 0)
+	while ((c = obj_reader_peek(reader)) != '\n' && c > 0)
 	{
 		if (obj_append_char(c, name, &size, i) != GET_RESULT)
 			return (RIP_MALLOC);
@@ -59,7 +59,7 @@ int obj_get_groupe(t_obj *obj, t_groupe **currentGroupe, t_obj_reader *reader)
 {
 	// t_faces_array faces;
 	int ret;
-	
+
 	if (!(*currentGroupe = obj_append_groupe(obj, **currentGroupe)))
 	{
 		// free(faces.triangle);

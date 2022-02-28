@@ -13,7 +13,7 @@ int main(int argc, char **argv)
 	}
 	if ((ret = init(&env, argv[1])) == GET_RESULT)
 	{
-		printf("%s",keymessage);
+		printf("%s", keymessage);
 		loop(env);
 	}
 	if (ret != WRONG_CHAR && ret != RIP_READ && ret != RIP_OPEN && ret != NO_VERTEX)
@@ -21,7 +21,7 @@ int main(int argc, char **argv)
 	glDeleteTextures(1, &env.texture);
 	glDeleteProgram(env.programId);
 	i = 0;
-	while(i < env.modelData.size_groupe)
+	while (i < env.modelData.size_groupe)
 	{
 		glDeleteVertexArrays(1, &env.vao[i].VertexArrayID);
 		glDeleteBuffers(1, &env.vao[i].vertexBuffer);

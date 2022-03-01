@@ -1,27 +1,41 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   loadbmp.c                                          :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: cmace <cmace@student.42.fr>                +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/03/01 11:09:53 by cmace             #+#    #+#             */
+/*   Updated: 2022/03/01 14:25:16 by cmace            ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "scop.h"
 
-int loadBMP_custom(const char *imagepath, t_bmp *bmp)
+int	loadBMP_custom(const char *imagepath, t_bmp *bmp)
 {
 	// Données lues à partir de l'en-tête du fichier BMP
-	unsigned char header[54]; // Chaque fichier BMP débute par un en-tête de 54 octets
-	unsigned int dataPos;	  // Position dans le fichier où les données débutent
-	unsigned int imageSize;	  // = bmp.width*bmp.height*3
+	unsigned char	header[54]; // Chaque fichier BMP débute par un en-tête de 54 octets
+	unsigned int	dataPos; // Position dans le fichier où les données débutent
+	unsigned int	imageSize; // = bmp.width*bmp.height*3
 	// Ouverture du fichier
-	FILE *file = fopen(imagepath, "rb");
+	FILE			*file;
+
+	file = fopen(imagepath, "rb");
 	if (!file)
 	{
 		printf("Image could not be opened\n");
-		return 0;
+		return (0);
 	}
 	if (fread(header, 1, 54, file) != 54)
 	{ // S'il n'est pas possible de lire 54 octets : problème
 		printf("Not a correct BMP file\n");
-		return 0;
+		return (0);
 	}
 	if (header[0] != 'B' || header[1] != 'M')
 	{
 		printf("Not a correct BMP file\n");
-		return 0;
+		return (0);
 	}
 	// Lit des entiers à partir du tableau d'octets
 	dataPos = *(int *)&(header[0x0A]);
@@ -44,10 +58,11 @@ int loadBMP_custom(const char *imagepath, t_bmp *bmp)
 	return (GET_RESULT);
 }
 
-GLuint getTextureId(t_bmp bmp)
+GLuint	getTextureId(t_bmp bmp)
 {
 	// Crée une texture OpenGL
-	GLuint textureID;
+	GLuint	textureID;
+
 	glGenTextures(1, &textureID);
 	// "Lie" la nouvelle texture : toutes les fonctions agissant sur les textures suivantes vont modifier cette texture
 	glBindTexture(GL_TEXTURE_2D, textureID);

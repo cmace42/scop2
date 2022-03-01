@@ -1,8 +1,22 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   loop.c                                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: cmace <cmace@student.42.fr>                +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/03/01 11:09:44 by cmace             #+#    #+#             */
+/*   Updated: 2022/03/01 14:16:51 by cmace            ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "scop.h"
 
-void loop(t_env data)
+void	loop(t_env data)
 {
-	int running = 1;
+	int	running;
+
+	running = 1;
 	data.action.transition = 1.0f;
 	while (running)
 	{

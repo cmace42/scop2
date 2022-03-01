@@ -1,26 +1,20 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   event.c                                            :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: cmace <cmace@student.42.fr>                +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/03/01 11:10:04 by cmace             #+#    #+#             */
+/*   Updated: 2022/03/01 14:33:51 by cmace            ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "scop.h"
 
-int eventTemp()
+void	doRotate(t_objectInWorld **model, t_vec3 rotate, size_t size)
 {
-	SDL_Event event;
-
-	while (SDL_PollEvent(&event))
-	{
-		if (event.type == SDL_QUIT)
-			return (0);
-		switch (event.key.keysym.sym)
-		{
-			case SDLK_ESCAPE:
-				return (0);
-				break;
-		}
-	}
-	return (1);
-}
-
-void doRotate(t_objectInWorld **model, t_vec3 rotate, size_t size)
-{
-	size_t i;
+	size_t	i;
 
 	i = 0;
 	while (i < size)
@@ -30,9 +24,9 @@ void doRotate(t_objectInWorld **model, t_vec3 rotate, size_t size)
 	}
 }
 
-void doTranslate(t_objectInWorld **model, t_vec3 translate, size_t size)
+void	doTranslate(t_objectInWorld **model, t_vec3 translate, size_t size)
 {
-	size_t i;
+	size_t	i;
 
 	i = 0;
 	while (i < size)
@@ -42,11 +36,12 @@ void doTranslate(t_objectInWorld **model, t_vec3 translate, size_t size)
 	}
 }
 
-int event(t_env *data, float deltaTime)
+int	event(t_env *data, float deltaTime)
 {
 
-	SDL_Event event;
-	int xMouse, yMouse;
+	SDL_Event	event;
+	int	xMouse;
+	int	yMouse;
 
 	while (SDL_PollEvent(&event))
 	{

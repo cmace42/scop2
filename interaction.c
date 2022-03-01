@@ -1,17 +1,28 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   interaction.c                                      :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: cmace <cmace@student.42.fr>                +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/03/01 11:09:56 by cmace             #+#    #+#             */
+/*   Updated: 2022/03/01 14:31:16 by cmace            ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "scop.h"
 
-t_action interact(t_env data)
+t_action	interact(t_env data)
 {
-	t_vec3 colorInc;
-	float tmp;
+	t_vec3	colorInc;
+	float	tmp;
 
 	tmp = ((float)SDL_GetTicks() / 1000.0f) / M_PI;
 	colorInc = data.action.autoColor ? (t_vec3){
 		.x = tmp,
 		.y = tmp,
 		.z = tmp,
-	}
-	: (t_vec3){
+	} : (t_vec3){
 		.x = data.action.colorInc.x / M_PI,
 		.y = data.action.colorInc.y / M_PI,
 		.z = data.action.colorInc.z / M_PI,

@@ -1,6 +1,18 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   type.c                                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: cmace <cmace@student.42.fr>                +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/03/01 11:10:19 by cmace             #+#    #+#             */
+/*   Updated: 2022/03/01 14:39:34 by cmace            ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "obj.h"
 
-static int control_type(t_face_type *type, t_face_type new_type)
+static int	control_type(t_face_type *type, t_face_type new_type)
 {
 	if (*type == Obj_No_Type)
 	{
@@ -13,12 +25,12 @@ static int control_type(t_face_type *type, t_face_type new_type)
 	return (GET_RESULT);
 }
 
-int obj_vertex_type(size_t *vertex, t_face_type *type, t_obj_reader *reader)
+int	obj_vertex_type(size_t *vertex, t_face_type *type, t_obj_reader *reader)
 {
-	int unusedSign;
-	int16_t c;
-	int ret;
-	float res;
+	int		unusedSign;
+	int16_t	c;
+	int		ret;
+	float	res;
 
 	c = obj_reader_peek(reader);
 	if (c < '0' || c > '9')
@@ -39,12 +51,12 @@ int obj_vertex_type(size_t *vertex, t_face_type *type, t_obj_reader *reader)
 	return (GET_RESULT);
 }
 
-int obj_uv_type(size_t *uv, t_face_type *type, t_obj_reader *reader, bool *haveNormal)
+int	obj_uv_type(size_t *uv, t_face_type *type, t_obj_reader *reader, bool *haveNormal)
 {
-	int unusedSign;
-	int16_t c;
-	int ret;
-	float res;
+	int		unusedSign;
+	int16_t	c;
+	int		ret;
+	float	res;
 
 	*haveNormal = false;
 	obj_reader_next(reader);
@@ -76,12 +88,12 @@ int obj_uv_type(size_t *uv, t_face_type *type, t_obj_reader *reader, bool *haveN
 	return (GET_RESULT);
 }
 
-int obj_normal_type(size_t *normal, t_face_type *type, t_obj_reader *reader, bool *haveNormal)
+int	obj_normal_type(size_t *normal, t_face_type *type, t_obj_reader *reader, bool *haveNormal)
 {
-	int unusedSign;
-	int16_t c;
-	int ret;
-	float res;
+	int		unusedSign;
+	int16_t	c;
+	int		ret;
+	float	res;
 
 	obj_reader_next(reader);
 	c = obj_reader_peek(reader);

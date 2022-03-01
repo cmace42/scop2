@@ -1,33 +1,44 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   model.c                                            :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: cmace <cmace@student.42.fr>                +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/03/01 11:09:22 by cmace             #+#    #+#             */
+/*   Updated: 2022/03/01 13:47:17 by cmace            ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "scop.h"
 
-static const t_vec3 color[] =
-{
+static const t_vec3	color[] = {
 	(t_vec3){2, 57, 74},
-	(t_vec3){4.0f,53.0f, 101.0f},
-	(t_vec3){81.0f,88.0f, 187.0f},
+	(t_vec3){4.0f, 53.0f, 101.0f},
+	(t_vec3){81.0f, 88.0f, 187.0f},
 	(t_vec3){235.0f, 75.0f, 152.0f},
-	(t_vec3){255.0f,136.0f, 17.0f},
-	(t_vec3){244.0f,208.0f, 111.0f},
-	(t_vec3){255.0f,248.0f, 240.0f},
-	(t_vec3){57.0f,47.0f, 90.0f},
-	(t_vec3){30.0f,0.0f, 14.0f},
-	(t_vec3){130.0f,48.0f, 56.0f},
-	(t_vec3){222.0f,196.0f, 111.0f},
-	(t_vec3){244.0f,247.0f, 190.0f},
-	(t_vec3){31.0f,101.0f, 138.0f},
-	(t_vec3){134.0f,187.0f, 2016.0f},
-	(t_vec3){117.0f,142.0f, 79.0f},
-	(t_vec3){246.0f,174.0f, 45.0f},
-	(t_vec3){242.0f,100.0f, 25.0f},
-	(t_vec3){114.0f,189.0f, 163.0f},
-	(t_vec3){148.0f,232.0f, 180.0f},
-	(t_vec3){8.0f,23.0f, 180.0f},
+	(t_vec3){255.0f, 136.0f, 17.0f},
+	(t_vec3){244.0f, 208.0f, 111.0f},
+	(t_vec3){255.0f, 248.0f, 240.0f},
+	(t_vec3){57.0f, 47.0f, 90.0f},
+	(t_vec3){30.0f, 0.0f, 14.0f},
+	(t_vec3){130.0f, 48.0f, 56.0f},
+	(t_vec3){222.0f, 196.0f, 111.0f},
+	(t_vec3){244.0f, 247.0f, 190.0f},
+	(t_vec3){31.0f, 101.0f, 138.0f},
+	(t_vec3){134.0f, 187.0f, 2016.0f},
+	(t_vec3){117.0f, 142.0f, 79.0f},
+	(t_vec3){246.0f, 174.0f, 45.0f},
+	(t_vec3){242.0f, 100.0f, 25.0f},
+	(t_vec3){114.0f, 189.0f, 163.0f},
+	(t_vec3){148.0f, 232.0f, 180.0f},
+	(t_vec3){8.0f, 23.0f, 180.0f},
 };
 
-bool initBuffer(t_obj obj, t_model *model)
+bool	initBuffer(t_obj obj, t_model *model)
 {
-	size_t iGroupe;
-	size_t z;
+	size_t	iGroupe;
+	size_t	z;
 
 	iGroupe = 0;
 	z = 0;
@@ -51,7 +62,7 @@ bool initBuffer(t_obj obj, t_model *model)
 	while (iGroupe < obj.len)
 	{
 		model->vertex[z].size_data = obj.groupe[iGroupe].faces.len * 3 * 3;
-		if  (!(model->vertex[z].buffer_data = malloc(sizeof(GLfloat) * model->vertex[z].size_data)))
+		if (!(model->vertex[z].buffer_data = malloc(sizeof(GLfloat) * model->vertex[z].size_data)))
 			return (false);
 		model->uv[z].size_data = obj.groupe[iGroupe].faces.len * 2 * 3;
 		if (!(model->uv[z].buffer_data = malloc(sizeof(GLfloat) * model->uv[z].size_data)))
@@ -71,59 +82,57 @@ bool initBuffer(t_obj obj, t_model *model)
 	return (true);
 }
 
-void readVertex(t_vertex vertex, t_bufferData *buffer, size_t i)
+void	readVertex(t_vertex vertex, t_bufferData *buffer, size_t i)
 {
-	// printf("%zu %f\n",i, vertex.x);
 	buffer->buffer_data[i] = (GLfloat)vertex.x;
 	buffer->buffer_data[i + 1] = (GLfloat)vertex.y;
 	buffer->buffer_data[i + 2] = (GLfloat)vertex.z;
 }
 
-void readUv(t_uv uv, t_bufferData *buffer, size_t i)
+void	readUv(t_uv uv, t_bufferData *buffer, size_t i)
 {
-	// printf("%zu %f\n",i, uv.x);
 	buffer->buffer_data[i] = (GLfloat)uv.u;
 	buffer->buffer_data[i + 1] = (GLfloat)uv.v;
 }
 
-bool getUvBuffer(t_triangle triangle, t_uv_array uv, t_bufferData *uvBuffer, size_t i)
+bool	getUvBuffer(t_triangle triangle, t_uv_array uv, t_bufferData *uvBuffer, size_t i)
 {
-	if (triangle.a.indexUv > uv.len || triangle.b.indexUv > uv.len ||  triangle.c.indexUv > uv.len)
-		return false;
+	if (triangle.a.indexUv > uv.len || triangle.b.indexUv > uv.len || triangle.c.indexUv > uv.len)
+		return (false);
 	readUv(uv.this[triangle.a.indexUv], uvBuffer, i);
 	readUv(uv.this[triangle.b.indexUv], uvBuffer, i + 2);
 	readUv(uv.this[triangle.c.indexUv], uvBuffer, i + 4);
-	return true;
+	return (true);
 }
 
-bool getVerticesBuffer(t_triangle triangle, t_vertex_array vertices, t_bufferData *vertexBuffer, size_t i)
+bool	getVerticesBuffer(t_triangle triangle, t_vertex_array vertices, t_bufferData *vertexBuffer, size_t i)
 {
 	if (triangle.a.indexVertex > vertices.len || triangle.b.indexVertex > vertices.len
 		|| triangle.c.indexVertex > vertices.len)
-		return false;
+		return (false);
 	readVertex(vertices.this[triangle.a.indexVertex], vertexBuffer, i);
 	readVertex(vertices.this[triangle.b.indexVertex], vertexBuffer, i + 3);
 	readVertex(vertices.this[triangle.c.indexVertex], vertexBuffer, i + 6);
-	return true;
+	return (true);
 }
 
-bool getNormalBuffer(t_triangle triangle, t_vertex_array normal, t_bufferData *normalBuffer, size_t i)
+bool	getNormalBuffer(t_triangle triangle, t_vertex_array normal, t_bufferData *normalBuffer, size_t i)
 {
-	if ( triangle.a.indexNormal > normal.len || triangle.b.indexNormal > normal.len
+	if (triangle.a.indexNormal > normal.len || triangle.b.indexNormal > normal.len
 		|| triangle.c.indexNormal > normal.len)
-		return false;
+		return (false);
 	readVertex(normal.this[triangle.a.indexNormal], normalBuffer, i);
 	readVertex(normal.this[triangle.b.indexNormal], normalBuffer, i + 3);
 	readVertex(normal.this[triangle.c.indexNormal], normalBuffer, i + 6);
-	return true;
+	return (true);
 }
 
-void getStaticUv(t_bufferData *uvBuffer, t_bufferData vertexBuffer)
+void	getStaticUv(t_bufferData *uvBuffer, t_bufferData vertexBuffer)
 {
-	t_vec3 maxVec;
-	t_vec3 minVec;
-	size_t i;
-	size_t j;
+	t_vec3	maxVec;
+	t_vec3	minVec;
+	size_t	i;
+	size_t	j;
 
 	minVec = (t_vec3){vertexBuffer.buffer_data[0], vertexBuffer.buffer_data[1], vertexBuffer.buffer_data[2]};
 	maxVec = (t_vec3){vertexBuffer.buffer_data[0], vertexBuffer.buffer_data[1], vertexBuffer.buffer_data[2]};
@@ -142,25 +151,25 @@ void getStaticUv(t_bufferData *uvBuffer, t_bufferData vertexBuffer)
 	}
 	i = 0;
 	j = 0;
-	while(i < uvBuffer->size_data)
+	while (i < uvBuffer->size_data)
 	{
 		if (minVec.x == maxVec.x)
-            uvBuffer->buffer_data[i] = 0;
-        else
+			uvBuffer->buffer_data[i] = 0;
+		else
 			uvBuffer->buffer_data[i] = (vertexBuffer.buffer_data[j + 2] - minVec.x) / (maxVec.x - minVec.x);
 		if (minVec.y == maxVec.y)
-            uvBuffer->buffer_data[i + 1] = 0;
-        else
+			uvBuffer->buffer_data[i + 1] = 0;
+		else
 			uvBuffer->buffer_data[i + 1] = (vertexBuffer.buffer_data[j + 1] - minVec.y) / (maxVec.y - minVec.y);
-		i+=2;
-		j+=3;
+		i += 2;
+		j += 3;
 	}
 }
 
-void getTriangleColorBuffer(t_bufferData *colorBuffer)
+void	getTriangleColorBuffer(t_bufferData *colorBuffer)
 {
-	size_t i;
-	size_t z;
+	size_t	i;
+	size_t	z;
 
 	i = 0;
 	z = 0;
@@ -175,17 +184,17 @@ void getTriangleColorBuffer(t_bufferData *colorBuffer)
 		colorBuffer->buffer_data[i + 6] = (color[z % 20]).x / 255;
 		colorBuffer->buffer_data[i + 7] = (color[z % 20]).y / 255;
 		colorBuffer->buffer_data[i + 8] = (color[z % 20]).z / 255;
-		i+=9;
+		i += 9;
 		z++;
 	}
 }
 
-void getFacesColorBuffer(t_bufferData *colorBuffer, t_facesPerLine fpl)
+void	getFacesColorBuffer(t_bufferData *colorBuffer, t_facesPerLine fpl)
 {
-	size_t i;
-	size_t z;
-	size_t y;
-	size_t c;
+	size_t	i;
+	size_t	z;
+	size_t	y;
+	size_t	c;
 
 	i = 0;
 	z = 0;
@@ -203,7 +212,7 @@ void getFacesColorBuffer(t_bufferData *colorBuffer, t_facesPerLine fpl)
 			colorBuffer->buffer_data[i + 6] = (color[c % 19]).x / 255;
 			colorBuffer->buffer_data[i + 7] = (color[c % 19]).y / 255;
 			colorBuffer->buffer_data[i + 8] = (color[c % 19]).z / 255;
-			i+=9;
+			i += 9;
 			z++;
 		}
 		z = 0;
@@ -212,17 +221,16 @@ void getFacesColorBuffer(t_bufferData *colorBuffer, t_facesPerLine fpl)
 	}
 }
 
-bool readBuffers(t_obj obj, t_model *model)
+bool	readBuffers(t_obj obj, t_model *model)
 {
-	size_t i;
-	size_t y;
-	size_t z;
-	size_t t;
+	size_t	i;
+	size_t	y;
+	size_t	z;
+	size_t	t;
 
 	i = 0;
 	t = 0;
 	z = 0;
-	// printobj(obj);
 	if (obj.len > 1)
 		i = 1;
 	while (i < obj.len)
@@ -236,7 +244,7 @@ bool readBuffers(t_obj obj, t_model *model)
 		}
 		else
 			model->vertex[z].name = NULL;
-		while(y < obj.groupe[i].faces.len)
+		while (y < obj.groupe[i].faces.len)
 		{
 			if (!getVerticesBuffer(obj.groupe[i].faces.triangle[y], obj.vertex, &(model->vertex[z]), y * 9))
 				return (false);
@@ -248,7 +256,7 @@ bool readBuffers(t_obj obj, t_model *model)
 			if (obj.type == Obj_Vertex_Texture_Normal_Type || obj.type == Obj_Texture_Type)
 			{
 				if (!getUvBuffer(obj.groupe[i].faces.triangle[y], obj.vt, &(model->uv[z]), y * 6))
-					return false;
+					return (false);
 			}
 			y++;
 			t++;
@@ -262,16 +270,16 @@ bool readBuffers(t_obj obj, t_model *model)
 		z++;
 		i++;
 	}
-	return true;
+	return (true);
 }
 
-void printModel(t_model model, t_face_type type)
+void	printModel(t_model model, t_face_type type)
 {
-	size_t i;
-	size_t y;
+	size_t	i;
+	size_t	y;
 
 	i = 0;
-	printf("size_groupe : %zu\n",model.size_groupe);
+	printf("size_groupe : %zu\n", model.size_groupe);
 	while (i < model.size_groupe)
 	{
 		if (model.vertex[i].name)
@@ -279,33 +287,33 @@ void printModel(t_model model, t_face_type type)
 		y = 0;
 		while (y < model.vertex[i].size_data)
 		{
-			printf("%zu   ",y);
-			printf("%f ",model.vertex[i].buffer_data[y]);
-			printf("%f ",model.vertex[i].buffer_data[y++]);
-			printf("%f \n",model.vertex[i].buffer_data[y++]);
+			printf("%zu ", y);
+			printf("%f ", model.vertex[i].buffer_data[y]);
+			printf("%f ", model.vertex[i].buffer_data[y++]);
+			printf("%f \n", model.vertex[i].buffer_data[y++]);
 			y++;
 		}
 		if (type == Obj_Vertex_Texture_Normal_Type || type == Obj_Normal_Type)
 		{
 			y = 0;
-			while(y < model.normal[i].size_data)
+			while (y < model.normal[i].size_data)
 			{
-				printf("%zu   ",y);
-				printf("%f ",model.normal[i].buffer_data[y]);
-				printf("%f ",model.normal[i].buffer_data[y++]);
-				printf("%f \n",model.normal[i].buffer_data[y++]);
+				printf("%zu   ", y);
+				printf("%f ", model.normal[i].buffer_data[y]);
+				printf("%f ", model.normal[i].buffer_data[y++]);
+				printf("%f \n", model.normal[i].buffer_data[y++]);
 				y++;
 			}
 		}
 		if (type == Obj_Vertex_Texture_Normal_Type || type == Obj_Texture_Type)
 		{
 			y = 0;
-			while(y < model.uv[i].size_data)
+			while (y < model.uv[i].size_data)
 			{
-				printf("%zu   ",y);
-				printf("%f ",model.uv[i].buffer_data[y]);
-				printf("%f ",model.uv[i].buffer_data[y++]);
-				printf("%f \n",model.uv[i].buffer_data[y++]);
+				printf("%zu   ", y);
+				printf("%f ", model.uv[i].buffer_data[y]);
+				printf("%f ", model.uv[i].buffer_data[y++]);
+				printf("%f \n", model.uv[i].buffer_data[y++]);
 				y++;
 			}
 		}
@@ -313,9 +321,9 @@ void printModel(t_model model, t_face_type type)
 	}
 }
 
-void freeObj(t_obj *obj)
+void	freeObj(t_obj *obj)
 {
-	size_t i;
+	size_t	i;
 
 	i = 0;
 	if (obj->vertex.this)
@@ -337,12 +345,12 @@ void freeObj(t_obj *obj)
 	free(obj->groupe);
 }
 
-int getModel(char *filename, t_model *model)
+int	getModel(char *filename, t_model *model)
 {
-	t_obj_reader reader;
-	t_obj obj;
-	int ret;
-	size_t i;
+	t_obj_reader	reader;
+	t_obj			obj;
+	int				ret;
+	size_t			i;
 
 	if ((ret = obj_read(&obj, filename, &reader)) != GET_RESULT)
 	{
@@ -360,7 +368,6 @@ int getModel(char *filename, t_model *model)
 			return (NO_FACES);
 		i++;
 	}
-	// printobj(obj);
 	if (!initBuffer(obj, model))
 		return (MALLOCINITBUFFERFAILED);
 	if (!readBuffers(obj, model))

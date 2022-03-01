@@ -1,9 +1,21 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   tools.c                                            :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: cmace <cmace@student.42.fr>                +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/03/01 11:10:26 by cmace             #+#    #+#             */
+/*   Updated: 2022/03/01 15:15:10 by cmace            ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "obj.h"
 
-int obj_skip_nl(t_obj_reader *self)
+int	obj_skip_nl(t_obj_reader *self)
 {
-	int16_t c;
-	int ret;
+	int16_t	c;
+	int		ret;
 
 	ret = GET_RESULT;
 	while ((c = obj_reader_peek(self)) != '\n' && c > 0)
@@ -16,10 +28,10 @@ int obj_skip_nl(t_obj_reader *self)
 	return (ret);
 }
 
-int obj_skip_whitespace(t_obj_reader *self)
+int	obj_skip_whitespace(t_obj_reader *self)
 {
-	int16_t c;
-	int ret;
+	int16_t	c;
+	int		ret;
 
 	ret = GET_RESULT;
 	while ((c = obj_reader_peek(self)) == ' ' || c == '\t' || c == '\r')
@@ -32,11 +44,12 @@ int obj_skip_whitespace(t_obj_reader *self)
 	return (ret);
 }
 
-void printobj(t_obj obj)
+void	printobj(t_obj obj)
 {
-	size_t i;
-	size_t y = 0;
+	size_t	i;
+	size_t	y;
 
+	y = 0;
 	i = 0;
 	printf("%d\n", obj.type);
 	printf("v.len : %zu, uv.len %zu, vn.len : %zu, faces.len : %zu\n", obj.vertex.len, obj.vt.len, obj.vn.len, obj.groupe[y].faces.len);

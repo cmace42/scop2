@@ -1,14 +1,26 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   init.c                                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: cmace <cmace@student.42.fr>                +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/03/01 11:10:00 by cmace             #+#    #+#             */
+/*   Updated: 2022/03/01 14:32:51 by cmace            ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "scop.h"
 
-extern char vertexshader_glsl[];
-extern int vertexshader_glsl_len;
-extern char fragmentshader_glsl[];
-extern int fragmentshader_glsl_len;
+extern char	vertexshader_glsl[];
+extern int	vertexshader_glsl_len;
+extern char	fragmentshader_glsl[];
+extern int	fragmentshader_glsl_len;
 
-t_vao *initOpenGL(t_model model)
+t_vao	*initOpenGL(t_model model)
 {
-	t_vao *vao;
-	size_t i;
+	t_vao	*vao;
+	size_t	i;
 
 	i = 0;
 	if (!(vao = malloc(sizeof(t_vao) * model.size_groupe)))
@@ -18,7 +30,6 @@ t_vao *initOpenGL(t_model model)
 		// see https://youtu.be/hrZbyd4qPnk for VAO et VBO
 		glGenVertexArrays(1, &vao[i].VertexArrayID);
 		glBindVertexArray(vao[i].VertexArrayID);
-
 		// Ceci identifiera notre tampon de sommets
 		// Génère un tampon et place l'identifiant dans 'vertexBuffer'
 		printf("Initialisation OpenGL and VAO...\n");
@@ -49,9 +60,9 @@ t_vao *initOpenGL(t_model model)
 	return (vao);
 }
 
-t_objectInWorld initCamera(t_vec3 whl)
+t_objectInWorld	initCamera(t_vec3 whl)
 {
-	t_objectInWorld camera;
+	t_objectInWorld	camera;
 	camera.target = vec3_new(0.0f, 0.0f, 0.0f);
 	camera.position = vec3_new(whl.x, whl.y, whl.z * 5 + 10);
 	camera.up = vec3_new(0.0f, 1.0f, 5.0f);
@@ -60,11 +71,11 @@ t_objectInWorld initCamera(t_vec3 whl)
 	return (camera);
 }
 
-t_vec3 getWidthHeighLengh(t_bufferData data)
+t_vec3	getWidthHeighLengh(t_bufferData data)
 {
-	t_vec3 whlMax;
-	t_vec3 whlMin;
-	size_t i;
+	t_vec3	whlMax;
+	t_vec3	whlMin;
+	size_t	i;
 
 	whlMin = (t_vec3){data.buffer_data[0], data.buffer_data[1], data.buffer_data[2]};
 	whlMax = (t_vec3){data.buffer_data[0], data.buffer_data[1], data.buffer_data[2]};
@@ -88,10 +99,10 @@ t_vec3 getWidthHeighLengh(t_bufferData data)
 	return (vec3_add(whlMin, vec3_div_value(vec3_sub(whlMax, whlMin), 2)));
 }
 
-t_objectInWorld *initModel(t_model modelData)
+t_objectInWorld	*initModel(t_model modelData)
 {
-	t_objectInWorld *model;
-	size_t i;
+	t_objectInWorld	*model;
+	size_t			i;
 
 	i = 0;
 	if (!(model = malloc(sizeof(t_objectInWorld) * modelData.size_groupe)))
@@ -109,9 +120,9 @@ t_objectInWorld *initModel(t_model modelData)
 	return (model);
 }
 
-t_action initAction()
+t_action	initAction(void)
 {
-	t_action action;
+	t_action	action;
 
 	action.showTexture = false;
 	action.autoColor = false;
@@ -128,9 +139,9 @@ t_action initAction()
 	return (action);
 }
 
-int init(t_env *env, char *filename)
+int	init(t_env *env, char *filename)
 {
-	int ret;
+	int	ret;
 
 	if ((ret = getModel(filename, &env->modelData)) == GET_RESULT)
 	{

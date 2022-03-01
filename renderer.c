@@ -1,8 +1,20 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   renderer.c                                         :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: cmace <cmace@student.42.fr>                +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/03/01 11:08:55 by cmace             #+#    #+#             */
+/*   Updated: 2022/03/01 13:24:53 by cmace            ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "scop.h"
 
-void render(t_env data)
+void	render(t_env data)
 {
-	size_t i;
+	size_t	i;
 
 	i = 0;
 	while (i < data.modelData.size_groupe)
@@ -11,36 +23,15 @@ void render(t_env data)
 		applyPerspective(data.programId, &data.model[i], &data.camera);
 		glEnableVertexAttribArray(0);
 		glBindBuffer(GL_ARRAY_BUFFER, data.vao[i].vertexBuffer);
-		glVertexAttribPointer(
-			0,		  // cela correspond au « layout » dans le shader
-			3,		  // taille
-			GL_FLOAT, // type
-			GL_FALSE, // normalisé ?
-			0,		  // nombre d'octets séparant deux sommets dans le tampon
-			(void *)0 // décalage du tableau de tampon
-		);
+		glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, (void *)0);
 		glEnableVertexAttribArray(1);
 		glBindBuffer(GL_ARRAY_BUFFER, data.action.isFacesColor ? data.vao[i].colorFacesBuffer : data.vao[i].colorTrianglesBuffer);
-		glVertexAttribPointer(
-			1,		  // cela correspond au « layout » dans le shader
-			3,		  // taille
-			GL_FLOAT, // type
-			GL_FALSE, // normalisé ?
-			0,		  // nombre d'octets séparant deux sommets dans le tampon
-			(void *)0 // décalage du tableau de tampon
-		);
+		glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 0, (void *)0);
 		glEnableVertexAttribArray(2);
 		glBindBuffer(GL_ARRAY_BUFFER, data.vao[i].textureBuffer);
-		glVertexAttribPointer(
-			2,		  // cela correspond au « layout » dans le shader
-			2,		  // taille
-			GL_FLOAT, // type
-			GL_FALSE, // normalisé ?
-			0,		  // nombre d'octets séparant deux sommets dans le tampon
-			(void *)0 // décalage du tableau de tampon
-		);
+		glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, 0, (void *)0);
 		glUseProgram(data.programId);
-		glDrawArrays(GL_TRIANGLES, 0, data.modelData.vertex[i].size_data); // Démarre à partir du sommet 0; 3 sommets au total -> 1 triangle
+		glDrawArrays(GL_TRIANGLES, 0, data.modelData.vertex[i].size_data);
 		glDisableVertexAttribArray(0);
 		i++;
 	}

@@ -1,9 +1,23 @@
-#include "obj.h"
-void *ft_memcpy(void *dst, const void *src, size_t n)
-{
-	const char *c_src = src;
-	char *c_dst;
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   append.c                                           :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: cmace <cmace@student.42.fr>                +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/03/01 11:10:45 by cmace             #+#    #+#             */
+/*   Updated: 2022/03/01 15:38:24 by cmace            ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
+#include "obj.h"
+
+void	*ft_memcpy(void *dst, const void *src, size_t n)
+{
+	char	*c_src;
+	char	*c_dst;
+
+	c_src = (char*)src;
 	c_dst = dst;
 	while (n--)
 	{
@@ -12,10 +26,10 @@ void *ft_memcpy(void *dst, const void *src, size_t n)
 	return (dst);
 }
 
-int obj_append_vertex(t_vertex_array *vertex_array, t_vertex vertex)
+int	obj_append_vertex(t_vertex_array *vertex_array, t_vertex vertex)
 {
-	size_t new_size;
-	t_vertex *new;
+	size_t		new_size;
+	t_vertex	*new;
 
 	if (vertex_array->len == vertex_array->size)
 	{
@@ -31,12 +45,11 @@ int obj_append_vertex(t_vertex_array *vertex_array, t_vertex vertex)
 	return (GET_RESULT);
 }
 
-int obj_append_uv(t_uv_array *uv_array, t_uv uv)
+int	obj_append_uv(t_uv_array *uv_array, t_uv uv)
 {
-	size_t new_size;
-	t_uv *new;
+	size_t	new_size;
+	t_uv	*new;
 
-	// printf("%ld %ld\n", uv_array->len, uv_array->size);
 	if (uv_array->len == uv_array->size)
 	{
 		new_size = uv_array->size * 2;
@@ -51,12 +64,11 @@ int obj_append_uv(t_uv_array *uv_array, t_uv uv)
 	return (GET_RESULT);
 }
 
-int obj_append_triangle(t_faces_array *faces, t_triangle triangle)
+int	obj_append_triangle(t_faces_array *faces, t_triangle triangle)
 {
-	size_t new_size;
-	t_triangle *new;
+	size_t		new_size;
+	t_triangle	*new;
 
-	// printf("%ld %ld\n", faces->len, faces->size);
 	if (faces->len == faces->size)
 	{
 		new_size = faces->size * 2;
@@ -71,12 +83,11 @@ int obj_append_triangle(t_faces_array *faces, t_triangle triangle)
 	return (GET_RESULT);
 }
 
-t_groupe *obj_append_groupe(t_obj *obj, t_groupe groupe)
+t_groupe	*obj_append_groupe(t_obj *obj, t_groupe groupe)
 {
-	size_t new_size;
-	t_groupe *new;
+	size_t		new_size;
+	t_groupe	*new;
 
-	// printf("in append groupe %ld\n", obj->len);
 	if (obj->len == obj->size)
 	{
 		new_size = obj->size * 2;

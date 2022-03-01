@@ -1,6 +1,18 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   vec3_length.c                                      :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: cmace <cmace@student.42.fr>                +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/03/01 11:07:47 by cmace             #+#    #+#             */
+/*   Updated: 2022/03/01 11:27:55 by cmace            ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "scop.h"
 
-float vec3_length(t_vec3 vec)
+float	vec3_length(t_vec3 vec)
 {
-    return (sqrtf(vec.x * vec.x + vec.y * vec.y + vec.z * vec.z));
+	return (sqrtf(vec.x * vec.x + vec.y * vec.y + vec.z * vec.z));
 }

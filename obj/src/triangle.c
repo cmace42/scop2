@@ -1,22 +1,30 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   triangle.c                                         :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: cmace <cmace@student.42.fr>                +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/03/01 11:10:23 by cmace             #+#    #+#             */
+/*   Updated: 2022/03/01 14:40:34 by cmace            ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "obj.h"
 
-int obj_read_triangle_point_index(t_triangle_point *point, t_face_type *type, t_obj_reader *reader)
+int	obj_read_triangle_point_index(t_triangle_point *point, t_face_type *type, t_obj_reader *reader)
 {
-	int ret;
-	bool test;
+	int		ret;
+	bool	test;
 
 	if ((ret = obj_vertex_type(&point->indexVertex, type, reader)) != GET_RESULT || *type == Obj_Vertex_Type)
 	{
 		return (ret);
 	}
-	// if ((ret = obj_reader_next(reader)) != GET_RESULT)
-	// 	return (ret);
 	if ((ret = obj_uv_type(&point->indexUv, type, reader, &test)) != GET_RESULT || *type == Obj_Texture_Type)
 	{
 		return (ret);
 	}
-	// if ((ret = obj_reader_next(reader)) != GET_RESULT)
-	// 	return (ret);
 	if ((ret = obj_normal_type(&point->indexNormal, type, reader, &test)) != GET_RESULT)
 	{
 		return (ret);
@@ -24,9 +32,9 @@ int obj_read_triangle_point_index(t_triangle_point *point, t_face_type *type, t_
 	return (GET_RESULT);
 }
 
-int obj_read_triangle(t_triangle *triangle, t_face_type *type, t_obj_reader *reader)
+int	obj_read_triangle(t_triangle *triangle, t_face_type *type, t_obj_reader *reader)
 {
-	int ret;
+	int	ret;
 
 	ret = obj_skip_whitespace(reader);
 	triangle->b = triangle->c;
@@ -34,10 +42,10 @@ int obj_read_triangle(t_triangle *triangle, t_face_type *type, t_obj_reader *rea
 	return ret;
 }
 
-int obj_append_fpl(t_facesPerLine *tabfpl, size_t fpl)
+int	obj_append_fpl(t_facesPerLine *tabfpl, size_t fpl)
 {
-	size_t new_size;
-	size_t *new;
+	size_t	new_size;
+	size_t	*new;
 
 	if (tabfpl->len == tabfpl->size)
 	{
@@ -53,14 +61,14 @@ int obj_append_fpl(t_facesPerLine *tabfpl, size_t fpl)
 	return (GET_RESULT);
 }
 
-int obj_get_triangles_index(t_faces_array *faces, t_face_type *type, t_obj_reader *reader)
+int	obj_get_triangles_index(t_faces_array *faces, t_face_type *type, t_obj_reader *reader)
 {
-	int ret;
-	int16_t c;
-	t_triangle_point sommet[3];
-	t_triangle triangle;
-	int i;
-	size_t y;
+	int					ret;
+	int16_t				c;
+	t_triangle_point	sommet[3];
+	t_triangle			triangle;
+	int					i;
+	size_t				y;
 
 	i = 0;
 	c = obj_reader_peek(reader);

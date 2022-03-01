@@ -1,10 +1,22 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   main.c                                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: cmace <cmace@student.42.fr>                +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/03/01 11:09:42 by cmace             #+#    #+#             */
+/*   Updated: 2022/03/01 14:15:57 by cmace            ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "scop.h"
 
-int main(int argc, char **argv)
+int	main(int argc, char **argv)
 {
-	t_env env;
-	size_t i;
-	int ret;
+	t_env	env;
+	size_t	i;
+	int		ret;
 
 	if (argc != 2)
 	{
@@ -13,7 +25,7 @@ int main(int argc, char **argv)
 	}
 	if ((ret = init(&env, argv[1])) == GET_RESULT)
 	{
-		printf("%s", keymessage);
+		printf("%s", KEYMESSAGE);
 		loop(env);
 	}
 	if (ret != WRONG_CHAR && ret != RIP_READ && ret != RIP_OPEN && ret != NO_VERTEX)

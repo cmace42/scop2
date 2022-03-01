@@ -1,8 +1,21 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   window.c                                           :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: cmace <cmace@student.42.fr>                +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/03/01 11:08:19 by cmace             #+#    #+#             */
+/*   Updated: 2022/03/01 11:13:31 by cmace            ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "scop.h"
 
-SDL_Window *initWindow()
+SDL_Window	*initWindow(void)
 {
-	SDL_Window *window;
+	SDL_Window	*window;
+
 	printf("Initialisation SDL2...\n");
 	if (SDL_Init(SDL_INIT_VIDEO | SDL_INIT_EVENTS) < 0)
 		return (NULL);

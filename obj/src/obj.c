@@ -1,26 +1,31 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   obj.c                                              :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: cmace <cmace@student.42.fr>                +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/03/01 11:10:35 by cmace             #+#    #+#             */
+/*   Updated: 2022/03/01 15:17:34 by cmace            ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "obj.h"
 
-int printError(t_obj_reader self, int error)
+int	printError(t_obj_reader self, int error)
 {
-	int ret;
-	// write(2, "Error line ", 11);
+	int	ret;
 	printf("Line : %zu\n", self.line);
-	// write(2, "col ", 65);
 	printf("Col : %zu\n", self.column);
 	if (error == WRONG_CHAR || error == NO_RESULT)
 	{
 		write(2, " char : ", 8);
 		if ((ret = obj_reader_peek(&self)) <= -1)
-		{
-			// printf("\n%d\n", ret);
 			error = RIP_READ;
-		}
 		else if (ret == '\n' || ret == 0)
 			write(2, "'\\n' OR 'EOF'. Need more data\n", 31);
 		else if (ret >= 7 && ret <= 13)
-		{
 			write(2, "Non readable\n", 14);
-		}
 		else
 		{
 			write(2, "'", 1);
@@ -48,30 +53,26 @@ int printError(t_obj_reader self, int error)
 	return (error);
 }
 
-static int obj_get_vertex_type(t_obj *obj, t_obj_reader *reader)
+static int	obj_get_vertex_type(t_obj *obj, t_obj_reader *reader)
 {
-	int16_t c;
-	int ret;
+	int16_t	c;
+	int		ret;
+
 	ret = obj_reader_next(reader);
 	c = obj_reader_peek(reader);
 	if (c == ' ' || c == '\t')
-	{
 		ret = obj_get_vertex(&obj->vertex, reader);
-		// parse vertex
-	}
 	else if (c == 'n')
 	{
 		if ((ret = obj_reader_next(reader)) != GET_RESULT)
 			return (ret);
 		ret = obj_get_vertex(&obj->vn, reader);
-		// parse vn
 	}
 	else if (c == 't')
 	{
 		if ((ret = obj_reader_next(reader)) != GET_RESULT)
 			return (ret);
 		ret = obj_get_uv(&obj->vt, reader);
-		// parse uv
 	}
 	else
 		ret = c == -1 ? RIP_READ : WRONG_CHAR;
@@ -82,10 +83,10 @@ static int obj_get_vertex_type(t_obj *obj, t_obj_reader *reader)
 	return (ret);
 }
 
-static int obj_read_type(t_obj *obj, t_groupe **currentGroupe, t_obj_reader *reader)
+static int	obj_read_type(t_obj *obj, t_groupe **currentGroupe, t_obj_reader *reader)
 {
-	int16_t c;
-	int ret;
+	int16_t	c;
+	int		ret;
 
 	ret = GET_RESULT;
 	c = obj_reader_peek(reader);
@@ -115,8 +116,6 @@ static int obj_read_type(t_obj *obj, t_groupe **currentGroupe, t_obj_reader *rea
 	}
 	else if (c == 's' || c == 'm' || c == 'u' || c == 'o' || c == '#' || c == '\n')
 	{
-		// close(reader->fd);
-		// printf("%zd\n",read(reader->fd, reader->buffer, reader->buffer_size));
 		if ((ret = obj_skip_nl(reader)) != GET_RESULT)
 		{
 			return (ret);
@@ -127,12 +126,12 @@ static int obj_read_type(t_obj *obj, t_groupe **currentGroupe, t_obj_reader *rea
 	return (ret);
 }
 
-int obj_read(t_obj *obj, char *filepath, t_obj_reader *reader)
+int	obj_read(t_obj *obj, char *filepath, t_obj_reader *reader)
 {
-	char buffer[4096];
-	int16_t c;
-	int ret;
-	t_groupe *currentGroupe;
+	char		buffer[4096];
+	int16_t		c;
+	int			ret;
+	t_groupe	*currentGroupe;
 
 	ret = GET_RESULT;
 	if ((*reader = obj_create_reader(open(filepath, O_RDONLY), buffer, 4096)).fd <= 0)

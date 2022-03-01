@@ -1,9 +1,21 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   vertex.c                                           :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: cmace <cmace@student.42.fr>                +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/03/01 11:10:16 by cmace             #+#    #+#             */
+/*   Updated: 2022/03/01 14:38:17 by cmace            ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "obj.h"
 
-int obj_read_part_int(float *value, t_obj_reader *reader, int *sign)
+int	obj_read_part_int(float *value, t_obj_reader *reader, int *sign)
 {
-	int16_t c;
-	int ret;
+	int16_t	c;
+	int		ret;
 
 	*value = 0;
 	*sign = 1;
@@ -27,11 +39,11 @@ int obj_read_part_int(float *value, t_obj_reader *reader, int *sign)
 	return (c == -1 ? RIP_READ : ret);
 }
 
-int obj_read_part_float(float *value, t_obj_reader *reader)
+int	obj_read_part_float(float *value, t_obj_reader *reader)
 {
-	int16_t c;
-	int ret;
-	int i;
+	int16_t	c;
+	int		ret;
+	int		i;
 
 	*value = 0;
 	i = 0;
@@ -49,12 +61,12 @@ int obj_read_part_float(float *value, t_obj_reader *reader)
 	return (c == -1 ? RIP_READ : GET_RESULT);
 }
 
-int obj_read_float(float *value, t_obj_reader *reader)
+int	obj_read_float(float *value, t_obj_reader *reader)
 {
-	int sign;
-	int ret;
-	int16_t c;
-	float res;
+	int		sign;
+	int		ret;
+	int16_t	c;
+	float	res;
 
 	ret = GET_RESULT;
 	sign = 1;
@@ -79,10 +91,11 @@ int obj_read_float(float *value, t_obj_reader *reader)
 	return (c == -1 ? RIP_READ : ret);
 }
 
-int obj_get_uv(t_uv_array *uv_array, t_obj_reader *reader)
+int	obj_get_uv(t_uv_array *uv_array, t_obj_reader *reader)
 {
-	int ret;
-	t_uv uv;
+	int		ret;
+	t_uv	uv;
+
 	ret = obj_skip_whitespace(reader);
 	if (ret != GET_RESULT)
 		return (ret);
@@ -104,10 +117,11 @@ int obj_get_uv(t_uv_array *uv_array, t_obj_reader *reader)
 	return (obj_append_uv(uv_array, uv));
 }
 
-int obj_get_vertex(t_vertex_array *vertex_array, t_obj_reader *reader)
+int	obj_get_vertex(t_vertex_array *vertex_array, t_obj_reader *reader)
 {
-	int ret;
-	t_vertex v;
+	int			ret;
+	t_vertex	v;
+
 	ret = obj_skip_whitespace(reader);
 	if (ret != GET_RESULT)
 		return (ret);

@@ -6,7 +6,7 @@
 /*   By: cmace <cmace@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/01 11:10:23 by cmace             #+#    #+#             */
-/*   Updated: 2022/03/01 14:40:34 by cmace            ###   ########.fr       */
+/*   Updated: 2022/03/01 16:07:00 by cmace            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,17 +18,11 @@ int	obj_read_triangle_point_index(t_triangle_point *point, t_face_type *type, t_
 	bool	test;
 
 	if ((ret = obj_vertex_type(&point->indexVertex, type, reader)) != GET_RESULT || *type == Obj_Vertex_Type)
-	{
 		return (ret);
-	}
 	if ((ret = obj_uv_type(&point->indexUv, type, reader, &test)) != GET_RESULT || *type == Obj_Texture_Type)
-	{
 		return (ret);
-	}
 	if ((ret = obj_normal_type(&point->indexNormal, type, reader, &test)) != GET_RESULT)
-	{
 		return (ret);
-	}
 	return (GET_RESULT);
 }
 
@@ -52,7 +46,7 @@ int	obj_append_fpl(t_facesPerLine *tabfpl, size_t fpl)
 		new_size = tabfpl->size * 2;
 		if (!(new = (size_t *)malloc(sizeof(size_t) * new_size)))
 			return (RIP_MALLOC);
-		ft_memcpy(new, tabfpl->this, sizeof(size_t) * tabfpl->size);
+		memcpy(new, tabfpl->this, sizeof(size_t) * tabfpl->size);
 		free(tabfpl->this);
 		tabfpl->this = new;
 		tabfpl->size = new_size;

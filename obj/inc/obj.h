@@ -6,7 +6,7 @@
 /*   By: cmace <cmace@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/01 11:10:49 by cmace             #+#    #+#             */
-/*   Updated: 2022/03/01 15:30:02 by cmace            ###   ########.fr       */
+/*   Updated: 2022/03/01 16:03:05 by cmace            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,6 @@
 # include <fcntl.h>
 # include <stdio.h>
 # include <string.h>
-# include "../../libft/libft.h"
 
 typedef struct s_obj_reader
 {

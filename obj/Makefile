@@ -6,7 +6,7 @@
 #    By: cmace <cmace@student.42.fr>                +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2018/02/16 18:35:57 by cmace             #+#    #+#              #
-#    Updated: 2018/03/22 13:49:24 by cmace            ###   ########.fr        #
+#    Updated: 2022/03/01 16:58:03 by cmace            ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -22,6 +22,7 @@ $(libobj.objects): CPPFLAGS += -MMD -MP -I$(libobj.rootdir)inc
 
 .PHONY: all
 all: libobj.a
+	echo $(wildcard $(libobj.rootdir)src/*.d)
 
 libobj.a: libobj.a($(libobj.objects))
 

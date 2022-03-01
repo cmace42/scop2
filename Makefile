@@ -10,195 +10,188 @@
 #																			  #
 # **************************************************************************** #
 
-export CPPFLAGS="-I/Users/$(USER)/.brew/opt/readline/include"
-export LDFLAGS="-L/Users/$(USER)/.brew/opt/readline/lib"
 
-NAME		=	scop
-# --   Directory   -- #
-OBJ_DIR	 =   ./objs
-LIB_DIR		=   ./libft
-OBJLIB_DIR		= ./obj
-INC_OBJLIB_DIR		= ./obj/inc
-INC_DIR		=	./
-INC_LIB_DIR =	./libft/incs
-
-# --  Search All files in SRCS  -- #
-SRC_DIR = ./ #$(shell find srcs -type d)
-vpath %.c $(foreach dir, $(SRC_DIR), $(dir):)
-# Grace a ca tu pourras faire autant de sous dossier 
-# dans SRC_DIR, tout sera check
+NAME			=	scop
+FILE_EXTENSION	=	.c
 
 
-SRCS =	\
-			main.c\
-			window.c\
-			loop.c\
-			event.c\
-			init.c\
-			model.c\
-			loadshader.c\
-			mvp.c\
-			tools.c\
-			loadbmp.c\
-			renderer.c\
-			interaction.c\
-			mouse.c\
-			time.c\
-			mat4_identity.c\
-			mat4_mult.c\
-			mat4_rotation.c\
-			mat4_scaling.c\
-			mat4_translation.c\
-			vec3_add.c\
-			vec3_cross.c\
-			vec3_div.c\
-			vec3_length.c\
-			vec3_mult.c\
-			vec3_new.c\
-			vec3_normalisation.c\
-			vec3_sub.c\
-			vec3_dot.c\
-			toRadian.c\
-			printMat4.c\
-#		etc.. 
-# #			loadObj.c
-# #			#toolsParsing.c 
-# #			objReader.c
+##############################
+###          SRCS          ###
+##############################
+SRCS_DIR		=	$(shell find srcs -type d)
+SRCS			=	\
+						main.c\
+						window.c\
+						loop.c\
+						event.c\
+						init.c\
+						model.c\
+						loadshader.c\
+						mvp.c\
+						tools.c\
+						loadbmp.c\
+						renderer.c\
+						interaction.c\
+						mouse.c\
+						time.c\
+						mat4_identity.c\
+						mat4_mult.c\
+						mat4_rotation.c\
+						mat4_scaling.c\
+						mat4_translation.c\
+						vec3_add.c\
+						vec3_cross.c\
+						vec3_div.c\
+						vec3_length.c\
+						vec3_mult.c\
+						vec3_new.c\
+						vec3_normalisation.c\
+						vec3_sub.c\
+						vec3_dot.c\
+						toRadian.c\
+						printMat4.c\
+vpath 					%.c $(foreach dir, $(SRC_DIR), $(dir):)
 
+##############################
+###          GLSL          ###
+##############################
+GLSL_DIR		=	./
 GLSL = \
 			vertexshader.glsl\
 			fragmentshader.glsl\
+vpath				%.glsl $(GLSL_DIR)
 
-# Seulement les fichiers donner explicitement ici
-# seront chercher ( avec vpath ) et compiler
 
-# SRCS = $(foreach dir, $(SRC_DIR), $(foreach file, $(wildcard $(dir)/*.c), $(notdir $(file))))
+##############################
+###        HEADERS         ###
+##############################
+HEADERS_DIR		=	incs/
+HEADERS			=	scop.h
+vpath				%.h $(HEADERS_DIR)
 
-# Cette commande te permet de remplacer SRCS, elle compilera tout tes fichier .c 
-# Dans SRC_DIR recursivement dans tout les sous dossier ( ATTENTION PAS SECU / et pas a la norme 42)
+##############################
+###          OBJS          ###
+##############################
+OBJS_DIR		=	objs/
+OBJS			=	$(addprefix $(OBJS_DIR), $(SRCS:.c=.o))
+vpath				%.o $(OBJS_DIR)
+GLSLOBJ			=	$(addprefix $(OBJS_DIR)/,$(GLSL:.glsl=.o))
+vpath				%.o $(OBJS_DIR)
 
-# --  Redirection in OBJS  -- #
-OBJS = $(addprefix $(OBJ_DIR)/, $(SRCS:%.c=%.o))
-GLSLOBJ = $(addprefix $(OBJ_DIR)/,$(GLSL:.glsl=.o))
-# OBJ = $(SRC:.c=.o) $(GLSL:.glsl=.o)
+##############################
+###      DEPENDENCIES      ###
+##############################
+DEP_DIR			=	dependencies/
+DEP				=	$(addprefix $(DEP_DIR)/, $(SRCS:.c=.d))
+vpath				%.d $(DEP_DIR)
 
-# addprefix permet de rediriger a la creation dans le dossier garbage
 
-# --   Compilation flags  -- #
-CC			=	gcc 
-CFLAGS	  =   -Wall -Wextra -Werror #-fsanitize=address
-# --  Animation Calcul %  -- #
-T = $(words $(OBJS) 0)
-N = 0
-C = $(words $N)$(eval N := x $N)
-ECHO = "[`expr $C '*' 100 / $T`%]"
-
-# Tout ca c'est toi qui me la donner, normalement tu te rappelle comment ca marche
-
-# --  Color   -- #
-_CYAN  = \033[36m
-_GREEN = \033[32m
-_RED   = \033[31m
-_ENDL  = \033[0m
-
-UNAME = $(shell uname)
+##############################
+###      COMPILATION       ###
+##############################
+CC				=	TO_CHANGE
+CFLAGS			=	-Wall -Wextra -Werror
+DEPFLAGS		=	-MT $@ -MMD -MP -MF $(DEP_DIR)/$*.d
+SHELL			=	/bin/bash
+UNAME			= $(shell uname)
 # --  Check OS for Additional Flags %  -- #
-LDFLAGS = -L $(OBJLIB_DIR) -lobj -L $(LIB_DIR) -lft -lSDL2
-
+LDFLAGS			= -L $(OBJLIB_DIR) -lobj -lSDL2
 ifeq ($(UNAME), Linux)
-LDFLAGS += -lm -lGL
+LDFLAGS			+= -lm -lGL
 endif
 ifeq ($(UNAME), Darwin)
-LDFLAGS += -framework OpenGl -framework GLUT
+LDFLAGS			+= -framework OpenGl -framework GLUT
 endif
 
-LIBOBJ_A = ./obj/libobj.a
-LIBFT_A = ./libft/libft.a
 
 
-# ici un petit bloque de compile si jamais tu as besoin de diff OS
+##############################
+###         RULES          ###
+##############################
 
-.PHONY: all
-all : lib
-	@make $(NAME) --no-print-directory
-.PHONY: lib
-lib:
-	@make -C $(LIB_DIR) --no-print-directory
-	make -C $(OBJLIB_DIR) --no-print-directory
+all				:	$(OBJS_DIR) $(DEP_DIR) $(NAME)
 
-# No print directory c'est pour ne pas afficher les deplacement de dossier entre les different Makefile
-# ( pour mute certaine lignes )
+$(NAME)			:	$(OBJS)
+					$(CC) $(CFLAGS) $(DEPFLAGS) $(OBJS) $(LDFLAGS) -o $(NAME)
 
-$(NAME): $(GLSLOBJ) $(OBJS)  $(INC_OBJLIB_DIR)/*.h $(INC_DIR)/*.h $(LIBOBJ_A) $(LIBFT_A)
-	$(CC) $(CFLAGS) -o $(NAME) $(OBJS) $(GLSLOBJ)  $(OSFLAG) $(LDFLAGS)
-	echo "$(_GREEN)[100%] $(NAME) Compilation Success$(_ENDL)"
+$(OBJS_DIR)%.o	:	%.c | $(DEP_DIR)/%.d
+					echo $<
+					$(CC) $(CFLAGS) $(DEPFLAGS) $(LDFLAGS) -o $@ -c $<
 
-# J'ajoute en dependance les .h pour ne pas avec a faire make re quand je les change
-# c'est pas encore super optimiser, mais cest un debut
+$(OBJS_DIR)		:
+					mkdir -p $(OBJS_DIR)
+					find srcs/* -type d
+					find srcs/* -type d | sed 's^$(SRCS_DIR)^$(OBJS_DIR)^g' | xargs mkdir -p
+					echo yooooooooooo
 
-$(OBJ_DIR)/%.o : %.c | $(OBJ_DIR)
-	$(CC) $(CFLAGS) -o $@ -c $< -I $(INC_DIR)  -I $(INC_LIB_DIR) -I $(INC_OBJLIB_DIR) $(CPPFLAGS)
-	@printf "%-65b\r" "$(_GREEN)$(ECHO)$(_CYAN) Compilation $(notdir $@)"
+$(DEP_DIR)		:
+					mkdir -p $(DEP_DIR)
+					find srcs/* -type d | sed 's^$(SRCS_DIR)^$(DEP_DIR)^g' | xargs mkdir -p
 
-$(OBJ_DIR)/%.o: %.glsl | $(OBJ_DIR)
-	@xxd -i $< | $(CC) -c -xc - -o $@
+$(OBJ_DIR)/%.o:		%.glsl
+					@xxd -i $< | $(CC) -c -xc - -o $@
 
-# dependance indirecte de la regle OBJ_DIR pour que l'appelle a la regle ce fasse uniquement dans le cas ou elle n'existe pas
+clean			:
+					rm -rf $(OBJS_DIR)
 
-$(OBJ_DIR) :
-	mkdir -p $@
+fclean			:	clean
+					rm -rf $(NAME)
+
+dclean			:
+					rm -rf $(DEP_DIR)
+
+re				:	fclean	all
+
+remake			:	fclean dclean
+					sed -i "s/^SRCS\t.*/SRCS\t\t\t=\t$$(echo $$(ls $(SRCS_DIR) | grep .cpp))/" Makefile
+					sed -i "s/^HEADERS\t.*/HEADERS\t\t\t=\t$$(echo $$(ls $(HEADERS_DIR) | grep .hpp))/" Makefile
+
+.PHONY			:	all clean fclean dclean re remake
 
 
 
-# La regle de creation du dossier OBJ_DIR
 
-.PHONY: clean
-clean:
-	@rm -rf $(OBJ_DIR)
-	@make clean -C $(LIB_DIR) --no-print-directory
-	@echo "$(_RED)[100%]$(_CYAN)  $(NAME) *.o has been cleaned"
 
-.PHONY: fclean
-fclean: clean
-	@make fclean -C $(LIB_DIR) --no-print-directory
-	@make fclean -C $(OBJLIB_DIR) 
-	@rm -f $(NAME)
-	@echo "$(_RED)$(NAME) $(_CYAN)   has been cleaned"
 
-.PHONY: re
-re: fclean all
 
-# # BINAIRE
-# NAME = scop
 
-# # FLAGS DE COMPILE WOLLAH
-# CC = gcc
-# FLAGS = -g -fsanitize=address
-# # OTHERFLAGS = -O3
-# UNAME := $(shell uname)
-# LDFLAGS = -lSDL2
 
-# ifeq ($(UNAME), Linux)
-# LDFLAGS += -lm -lGL
-# endif
-# ifeq ($(UNAME), Darwin)
-# LDFLAGS += -framework OpenGl -framework GLUT
-# endif
 
-# LIBFTDIR = libft
 
-# # SOURCES
-# SRC = \
+
+# export CPPFLAGS="-I/Users/$(USER)/.brew/opt/readline/include"
+# export LDFLAGS="-L/Users/$(USER)/.brew/opt/readline/lib"
+
+# NAME		=	scop
+# # --   Directory   -- #
+# OBJ_DIR	 =   ./objs
+# OBJLIB_DIR		= ./obj
+# INC_OBJLIB_DIR		= ./obj/inc
+# INC_DIR		=	./inc/
+
+# # --  Search All files in SRCS  -- #
+# SRC_DIR = $(shell find srcs -type d)
+# vpath %.c $(foreach dir, $(SRC_DIR), $(dir):)
+# # Grace a ca tu pourras faire autant de sous dossier 
+# # dans SRC_DIR, tout sera check
+
+# # GLSL_DIR = $(shell find srcs/glsl -type d)
+# # vpath %.glsl $(foreach dir, $(GLSL_DIR), $(dir):)
+
+# SRCS =	\
 # 			main.c\
 # 			window.c\
 # 			loop.c\
 # 			event.c\
 # 			init.c\
+# 			model.c\
 # 			loadshader.c\
 # 			mvp.c\
 # 			tools.c\
 # 			loadbmp.c\
 # 			renderer.c\
+# 			interaction.c\
+# 			mouse.c\
 # 			time.c\
 # 			mat4_identity.c\
 # 			mat4_mult.c\
@@ -213,116 +206,101 @@ re: fclean all
 # 			vec3_new.c\
 # 			vec3_normalisation.c\
 # 			vec3_sub.c\
+# 			vec3_dot.c\
 # 			toRadian.c\
 # 			printMat4.c\
 
-# #			loadObj.c
-# #			#toolsParsing.c 
-# #			objReader.c
 # GLSL = \
 # 			vertexshader.glsl\
 # 			fragmentshader.glsl\
 
-# OBJ = $(SRC:.c=.o) $(GLSL:.glsl=.o)
+# # Seulement les fichiers donner explicitement ici
+# # seront chercher ( avec vpath ) et compiler
+
+# # SRCS = $(foreach dir, $(SRC_DIR), $(foreach file, $(wildcard $(dir)/*.c), $(notdir $(file))))
+
+# # Cette commande te permet de remplacer SRCS, elle compilera tout tes fichier .c 
+# # Dans SRC_DIR recursivement dans tout les sous dossier ( ATTENTION PAS SECU / et pas a la norme 42)
+
+# # --  Redirection in OBJS  -- #
+# OBJS = $(addprefix $(OBJ_DIR)/, $(SRCS:%.c=%.o))
+# GLSLOBJ = $(addprefix $(OBJ_DIR)/,$(GLSL:.glsl=.o))
+# # OBJ = $(SRC:.c=.o) $(GLSL:.glsl=.o)
+
+# # addprefix permet de rediriger a la creation dans le dossier garbage
+
+# # --   Compilation flags  -- #
+# CC			=	gcc -MMD -MP -I $(INC_DIR)
+# CFLAGS	  =   -Wall -Wextra -Werror #-fsanitize=address
+# # --  Animation Calcul %  -- #
+# T = $(words $(OBJS) 0)
+# N = 0
+# C = $(words $N)$(eval N := x $N)
+# ECHO = "[`expr $C '*' 100 / $T`%]"
+
+# # Tout ca c'est toi qui me la donner, normalement tu te rappelle comment ca marche
+
+# # --  Color   -- #
+# _CYAN  = \033[36m
+# _GREEN = \033[32m
+# _RED   = \033[31m
+# _ENDL  = \033[0m
+
+# UNAME = $(shell uname)
+# # --  Check OS for Additional Flags %  -- #
+# LDFLAGS = -L $(OBJLIB_DIR) -lobj -lSDL2
+
+# ifeq ($(UNAME), Linux)
+# LDFLAGS += -lm -lGL
+# endif
+# ifeq ($(UNAME), Darwin)
+# LDFLAGS += -framework OpenGl -framework GLUT
+# endif
+
+
+# # ici un petit bloque de compile si jamais tu as besoin de diff OS
 
 # .PHONY: all
-# all: lib 
-# 	make $(NAME)
-
-# $(NAME): $(OBJ)
-# 	@echo "$(NAME) compilation : $(_CYAN)done$(_END)"
-# 	$(CC) $(OBJ) $(FLAGS) $(ADDFLAGS) -o $(NAME) -L obj -lobj -L $(LIBFTDIR) -lft $(LDFLAGS)
-
-# %.o: %.glsl
-# 	@xxd -i $< | $(CC) -c -xc - -o $@
-
-# %.o: %.c
-# 	$(CC) $(FLAGS) $(ADDFLAGS) -I obj/inc -I $(LIBFTDIR) -c $<
-
+# all : lib
+# 	@make $(NAME) --no-print-directory
 # .PHONY: lib
 # lib:
-# 	@make -C $(LIBFTDIR)
-# 	@make -C obj/
+# 	make -C $(OBJLIB_DIR) --no-print-directory
+
+# # No print directory c'est pour ne pas afficher les deplacement de dossier entre les different Makefile
+# # ( pour mute certaine lignes )
+
+# $(NAME): $(GLSLOBJ) $(OBJS)  $(INC_OBJLIB_DIR)/*.h $(INC_DIR)/*.h $(LIBFT_A)
+# 	$(CC) $(CFLAGS) -o $(NAME) $(OBJS) $(GLSLOBJ)  $(OSFLAG) $(LDFLAGS)
+# 	echo "$(_GREEN)[100%] $(NAME) Compilation Success$(_ENDL)"
+
+# # J'ajoute en dependance les .h pour ne pas avec a faire make re quand je les change
+# # c'est pas encore super optimiser, mais cest un debut
+
+# $(OBJ_DIR)/%.o : %.c | $(OBJ_DIR)
+# 	$(CC) $(CFLAGS) -o $@ -c $< -I $(INC_DIR) -I $(INC_OBJLIB_DIR) $(CPPFLAGS)
+# 	@printf "%-65b\r" "$(_GREEN)$(ECHO)$(_CYAN) Compilation $(notdir $@)"
+
+# $(OBJ_DIR)/%.o: %.glsl | $(OBJ_DIR)
+# 	@xxd -i $< | $(CC) -c -xc - -o $@
+
+# # dependance indirecte de la regle OBJ_DIR pour que l'appelle a la regle ce fasse uniquement dans le cas ou elle n'existe pas
+
+# $(OBJ_DIR) :
+# 	mkdir -p $@
+
+# # La regle de creation du dossier OBJ_DIR
 
 # .PHONY: clean
 # clean:
-# 	@$(RM) -f $(OBJ)
-# 	@make clean -C $(LIBFTDIR)/
-# 	@echo "clean $(NAME): $(_CYAN)done$(_END)"
+# 	@rm -rf $(OBJ_DIR)
+# 	@echo "$(_RED)[100%]$(_CYAN)  $(NAME) *.o has been cleaned"
 
 # .PHONY: fclean
 # fclean: clean
-# 	@$(RM) -f $(NAME)
-# 	@make fclean -C $(LIBFTDIR)
-# 	@echo "fclean $(NAME): $(_CYAN)done$(_END)"
+# 	@make fclean -C $(OBJLIB_DIR) 
+# 	@rm -f $(NAME)
+# 	@echo "$(_RED)$(NAME) $(_CYAN)   has been cleaned"
 
 # .PHONY: re
 # re: fclean all
-
-
-
-
-
-# # # BINARY
-# # NAME = scop
-
-# # # COMPILATION FLAGS
-# # CC = gcc
-# # FLAGS = -Wall -Wextra -Werror -O3
-# # ADDFLAGS =
-
-# # # DIRECTORIES
-
-
-# # # SOURCES
-# # SRC = \
-# # 			main.c\
-
-# # OBJ = $(SRC:.c=.o)
-
-# # # FILES
-
-# # # PROGRESS BAR
-# # T = $(words $(OBJ))
-# # N = 0
-# # C = $(words $N)$(eval N := x $N)
-# # ECHO = "[`expr $C  '*' 100 / $T`%]"
-
-# # #Colors
-# # _GREY=\x1b[30m
-# # _RED=\x1b[31m
-# # _GREEN=\x1b[32m
-# # _YELLOW=\x1b[33m
-# # _BLUE=\x1b[34m
-# # _PURPLE=\x1b[35m
-# # _CYAN=\x1b[36m
-# # _WHITE=\x1b[37m
-# # _END=\x1b[0m
-
-# # all: $(NAME)
-
-# # $(NAME): $(OBJ)
-# # 	@echo "\n$(NAME) compilation : $(_CYAN)done$(_END)"
-# # 	@$(CC) $(FLAGS) $(ADDFLAGS) -o $(NAME) $(OBJ)
-
-# # %.o: %.c
-# # 	@printf "%-60b\r" "$(ECHO) $(_CYAN) Compiling $@ $(_END)"
-# # 	@$(CC) $(FLAGS) $(ADDFLAGS) -c $<
-
-# # # $(LIBFT):
-# # # 	@make -C $(LIBFT_DIR)
-
-# # # $(MLIBX):
-# # # 	@make -C $(MLIBX_DIR)
-
-# # clean:
-# # 	@$(RM) -f $(OBJ)
-# # 	@echo "clean fillit: $(_CYAN)done$(_END)"
-
-# # fclean: clean
-# # 	@$(RM) -f $(NAME)
-# # 	@echo "fclean fdf: $(_CYAN)done$(_END)"
-
-# # re: fclean all
-
-# # .PHONY: all clean fclean re

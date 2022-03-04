@@ -6,11 +6,11 @@
 /*   By: cmace <cmace@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/01 11:08:33 by cmace             #+#    #+#             */
-/*   Updated: 2022/03/01 16:43:33 by cmace            ###   ########.fr       */
+/*   Updated: 2022/03/04 17:15:46 by cmace            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "./incs/scop.h"
+#include "scop.h"
 
 //Projection Matrice
 t_mat4	initPerspective(float fov, float zNear, float zFar)
@@ -82,31 +82,35 @@ t_vec3	initAllWhl(t_objectInWorld *model, size_t size_groupe)
 	return (whltotal);
 }
 
-void	freeAll(t_env *env)
+void	freeAll(t_env *env, int ret)
 {
 	size_t	y;
 
 	y = 0;
-	while (y < env->modelData.size_groupe)
+	if (ret != FAILEDTOMALLOCMODEL)
 	{
-		if (env->modelData.vertex[y].buffer_data)
-			free(env->modelData.vertex[y].buffer_data);
-		if (env->modelData.uv[y].buffer_data)
-			free(env->modelData.uv[y].buffer_data);
-		if (env->modelData.normal[y].buffer_data)
-			free(env->modelData.normal[y].buffer_data);
-		if (env->modelData.colorTriangles[y].buffer_data)
-			free(env->modelData.colorTriangles[y].buffer_data);
-		if (env->modelData.colorFaces[y].buffer_data)
-			free(env->modelData.colorFaces[y].buffer_data);
-		if (env->modelData.vertex[y].name)
-			free(env->modelData.vertex[y].name);
-		y++;
+		while (y < env->modelData.size_groupe)
+		{
+			if (env->modelData.vertex[y].buffer_data)
+				free(env->modelData.vertex[y].buffer_data);
+			if (env->modelData.uv[y].buffer_data)
+				free(env->modelData.uv[y].buffer_data);
+			if (env->modelData.normal[y].buffer_data)
+				free(env->modelData.normal[y].buffer_data);
+			if (env->modelData.colorTriangles[y].buffer_data)
+				free(env->modelData.colorTriangles[y].buffer_data);
+			if (env->modelData.colorFaces[y].buffer_data)
+				free(env->modelData.colorFaces[y].buffer_data);
+			if (ret != MALLOCINITBUFFERFAILED)
+				if (env->modelData.vertex[y].name)
+					free(env->modelData.vertex[y].name);
+			y++;
+		}
 	}
-	if (env->bmp1.data)
-		free(env->bmp1.data);
-	if (env->bmp2.data)
-		free(env->bmp2.data);
+	if (env->bmp[0].data)
+		free(env->bmp[0].data);
+	if (env->bmp[1].data)
+		free(env->bmp[1].data);
 	if (env->model)
 		free(env->model);
 	if (env->modelData.colorTriangles)

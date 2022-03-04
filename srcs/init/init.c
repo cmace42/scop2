@@ -6,11 +6,11 @@
 /*   By: cmace <cmace@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/01 11:10:00 by cmace             #+#    #+#             */
-/*   Updated: 2022/03/01 16:43:33 by cmace            ###   ########.fr       */
+/*   Updated: 2022/03/04 17:42:33 by cmace            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "./incs/scop.h"
+#include "scop.h"
 
 extern char	vertexshader_glsl[];
 extern int	vertexshader_glsl_len;
@@ -139,7 +139,7 @@ t_action	initAction(void)
 	return (action);
 }
 
-int	init(t_env *env, char *filename)
+int				init(t_env *env, char *filename, char *textureFilename)
 {
 	int	ret;
 
@@ -149,17 +149,20 @@ int	init(t_env *env, char *filename)
 		{
 			SDL_SetRelativeMouseMode(true);
 			env->context = SDL_GL_CreateContext(env->window);
-			env->vao = initOpenGL(env->modelData);
+			if (!(env->vao = initOpenGL(env->modelData)))
+				return (FAILEDTOINITVAO);
 			if (!(env->model = initModel(env->modelData)))
 			{
 				printf("merde\n");
 				return (FAILEDTOINITMODEL);
 			}
 			env->camera = initCamera(initAllWhl(env->model, env->modelData.size_groupe));
-			loadBMP_custom("petit-poney.bmp", &env->bmp1);
-			loadBMP_custom("diffuse.bmp", &env->bmp2);
+			if (loadBMP_custom("./ressources/textures/petit-poney.bmp", &env->bmp[0]) != GET_RESULT)
+				return (FAILEDTOINITBMP);
+			if (loadBMP_custom(textureFilename != NULL ? textureFilename : "./ressources/textures/texturetest.bmp", &env->bmp[1]) != GET_RESULT)
+				return (FAILEDTOINITBMP);
 			env->programId = loadShaders(vertexshader_glsl, vertexshader_glsl_len, fragmentshader_glsl, fragmentshader_glsl_len);
-			env->texture = getTextureId(env->bmp2);
+			env->texture = getTextureId(env->bmp[1]);
 			env->action = initAction();
 			env->time.lastTime = 0;
 			env->speed = fabs(env->model[0].whl.y) / 20.0f;

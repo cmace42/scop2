@@ -6,11 +6,11 @@
 /*   By: cmace <cmace@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/01 11:09:22 by cmace             #+#    #+#             */
-/*   Updated: 2022/03/01 16:43:33 by cmace            ###   ########.fr       */
+/*   Updated: 2022/03/04 17:24:30 by cmace            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "./incs/scop.h"
+#include "scop.h"
 
 static const t_vec3	color[] = {
 	(t_vec3){2, 57, 74},
@@ -35,11 +35,13 @@ static const t_vec3	color[] = {
 	(t_vec3){8.0f, 23.0f, 180.0f},
 };
 
-bool	initBuffer(t_obj obj, t_model *model)
+int		initBuffer(t_obj obj, t_model *model)
 {
 	size_t	iGroupe;
 	size_t	z;
+	int ret;
 
+	ret = GET_RESULT;
 	iGroupe = 0;
 	z = 0;
 	if (obj.len > 1)
@@ -50,36 +52,36 @@ bool	initBuffer(t_obj obj, t_model *model)
 	else
 		model->size_groupe = obj.len;
 	if (!(model->vertex = malloc(sizeof(t_bufferData) * model->size_groupe)))
-		return (false);
+		return (FAILEDTOMALLOCMODEL);
 	if (!(model->uv = malloc(sizeof(t_bufferData) * model->size_groupe)))
-		return (false);
+		return (FAILEDTOMALLOCMODEL);
 	if (!(model->normal = malloc(sizeof(t_bufferData) * model->size_groupe)))
-		return (false);
+		return (FAILEDTOMALLOCMODEL);
 	if (!(model->colorTriangles = malloc(sizeof(t_bufferData) * model->size_groupe)))
-		return (false);
+		return (FAILEDTOMALLOCMODEL);
 	if (!(model->colorFaces = malloc(sizeof(t_bufferData) * model->size_groupe)))
-		return (false);
+		return (FAILEDTOMALLOCMODEL);
 	while (iGroupe < obj.len)
 	{
 		model->vertex[z].size_data = obj.groupe[iGroupe].faces.len * 3 * 3;
 		if (!(model->vertex[z].buffer_data = malloc(sizeof(GLfloat) * model->vertex[z].size_data)))
-			return (false);
+			ret =  (MALLOCINITBUFFERFAILED);
 		model->uv[z].size_data = obj.groupe[iGroupe].faces.len * 2 * 3;
 		if (!(model->uv[z].buffer_data = malloc(sizeof(GLfloat) * model->uv[z].size_data)))
-			return (false);
+			ret =  (MALLOCINITBUFFERFAILED);
 		model->normal[z].size_data = obj.groupe[iGroupe].faces.len * 3 * 3;
 		if (!(model->normal[z].buffer_data = malloc(sizeof(GLfloat) * model->normal[z].size_data)))
-			return (false);
+			ret =  (MALLOCINITBUFFERFAILED);
 		model->colorTriangles[z].size_data = obj.groupe[iGroupe].faces.len * 3 * 3;
 		if (!(model->colorTriangles[z].buffer_data = malloc(sizeof(GLfloat) * model->colorTriangles[z].size_data)))
-			return (false);
+			ret =  (MALLOCINITBUFFERFAILED);
 		model->colorFaces[z].size_data = obj.groupe[iGroupe].faces.len * 3 * 3;
 		if (!(model->colorFaces[z].buffer_data = malloc(sizeof(GLfloat) * model->colorFaces[z].size_data)))
-			return (false);
+			ret =  (MALLOCINITBUFFERFAILED);
 		iGroupe++;
 		z++;
 	}
-	return (true);
+	return (ret);
 }
 
 void	readVertex(t_vertex vertex, t_bufferData *buffer, size_t i)
@@ -331,7 +333,10 @@ void	freeObj(t_obj *obj)
 	if (obj->vn.this)
 		free(obj->vn.this);
 	if (obj->vt.this)
+	{
+		printf("HEEEEEEEEEEEEEEEEEEEEEEEEEEEY\n");
 		free(obj->vt.this);
+	}
 	while (i < obj->len)
 	{
 		if (obj->groupe[i].faces.triangle)
@@ -354,8 +359,12 @@ int	getModel(char *filename, t_model *model)
 
 	if ((ret = obj_read(&obj, filename, &reader)) != GET_RESULT)
 	{
+		printf("mdr\n");
 		if (ret != RIP_OPEN)
+		{
+			printf("hello\n");
 			freeObj(&obj);
+		}
 		printError(reader, ret);
 		return (ret);
 	}
@@ -368,10 +377,14 @@ int	getModel(char *filename, t_model *model)
 			return (NO_FACES);
 		i++;
 	}
-	if (!initBuffer(obj, model))
-		return (MALLOCINITBUFFERFAILED);
+	if ((ret = initBuffer(obj, model)) != GET_RESULT)
+	{
+		freeObj(&obj);
+		return (ret);
+	}
 	if (!readBuffers(obj, model))
 	{
+		freeObj(&obj);
 		return (READBUFFERFAILED);
 	}
 	freeObj(&obj);

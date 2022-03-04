@@ -6,11 +6,11 @@
 /*   By: cmace <cmace@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/01 11:10:04 by cmace             #+#    #+#             */
-/*   Updated: 2022/03/01 16:43:33 by cmace            ###   ########.fr       */
+/*   Updated: 2022/03/04 14:50:39 by cmace            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "./incs/scop.h"
+#include "scop.h"
 
 void	doRotate(t_objectInWorld **model, t_vec3 rotate, size_t size)
 {
@@ -144,9 +144,9 @@ int	event(t_env *data, float deltaTime)
 					data->action.isBmp1 = !data->action.isBmp1;
 					glDeleteTextures(1, &data->texture);
 					if (data->action.isBmp1)
-						data->texture = getTextureId(data->bmp1);
+						data->texture = getTextureId(data->bmp[0]);
 					else
-						data->texture = getTextureId(data->bmp2);
+						data->texture = getTextureId(data->bmp[1]);
 					break;
 				}
 				case SDLK_LSHIFT:

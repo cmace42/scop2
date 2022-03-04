@@ -6,7 +6,7 @@
 /*   By: cmace <cmace@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/01 11:10:35 by cmace             #+#    #+#             */
-/*   Updated: 2022/03/01 15:17:34 by cmace            ###   ########.fr       */
+/*   Updated: 2022/03/04 17:21:30 by cmace            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,6 +76,8 @@ static int	obj_get_vertex_type(t_obj *obj, t_obj_reader *reader)
 	}
 	else
 		ret = c == -1 ? RIP_READ : WRONG_CHAR;
+	if (ret != GET_RESULT)
+		return (ret);
 	if ((ret = obj_skip_nl(reader)) != GET_RESULT)
 	{
 		return (ret);

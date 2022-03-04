@@ -6,11 +6,11 @@
 /*   By: cmace <cmace@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/01 11:09:44 by cmace             #+#    #+#             */
-/*   Updated: 2022/03/01 16:43:33 by cmace            ###   ########.fr       */
+/*   Updated: 2022/03/02 17:34:22 by cmace            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "./incs/scop.h"
+#include "scop.h"
 
 void	loop(t_env data)
 {

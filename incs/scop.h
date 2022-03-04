@@ -6,7 +6,7 @@
 /*   By: cmace <cmace@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/01 11:08:49 by cmace             #+#    #+#             */
-/*   Updated: 2022/03/01 16:01:52 by cmace            ###   ########.fr       */
+/*   Updated: 2022/03/04 17:39:31 by cmace            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@
 # include <string.h>
 # include <stdlib.h>
 # include <limits.h>
-# include "obj/inc/obj.h"
+# include "obj.h"
 
 # define WIDTH 1600
 # define HEIGHT 1200
@@ -194,6 +194,7 @@ typedef struct s_env
 	t_objectInWorld	*model;
 	t_model			modelData;
 	t_vao			*vao;
+	t_bmp			bmp[3];
 	t_bmp			bmp1;
 	t_bmp			bmp2;
 	GLuint			texture;
@@ -208,7 +209,10 @@ enum {
 	READBUFFERFAILED,
 	FAILEDTOINITMODEL,
 	FAILEDTOINITWINDOW,
+	FAILEDTOMALLOCMODEL,
 	MDRCCASSER,
+	FAILEDTOINITBMP,
+	FAILEDTOINITVAO,
 };
 
 /* Init */
@@ -218,7 +222,7 @@ t_objectInWorld	initCamera(t_vec3 whl);
 t_objectInWorld	*initModel(t_model modelData);
 int				getModel(char *filename, t_model *model);
 t_action		initAction(void);
-int				init(t_env *env, char *filename);
+int				init(t_env *env, char *filename, char *textureFilename);
 
 /* main prog */
 
@@ -244,7 +248,7 @@ t_time			getDataTime(t_time last);
 GLuint			getTextureId(t_bmp bmp);
 void			doRotate(t_objectInWorld **model, t_vec3 rotate, size_t size);
 t_vec3			initAllWhl(t_objectInWorld *model, size_t size_groupe);
-void			freeAll(t_env *env);
+void			freeAll(t_env *env, int ret);
 void			printModel(t_model model, t_face_type type);
 void			mouseCamera(t_objectInWorld *camera, int *xMouse, int *yMouse, float deltaTime);
 

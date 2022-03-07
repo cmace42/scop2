@@ -6,7 +6,7 @@
 /*   By: cmace <cmace@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/01 11:09:42 by cmace             #+#    #+#             */
-/*   Updated: 2022/03/04 16:42:40 by cmace            ###   ########.fr       */
+/*   Updated: 2022/03/07 10:18:01 by cmace            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,10 +29,8 @@ int	main(int argc, char **argv)
 		printf("%s", KEYMESSAGE);
 		loop(env);
 	}
-	printf("Yo\n");
 	if (ret != WRONG_CHAR && ret != RIP_READ && ret != RIP_OPEN && ret != NO_VERTEX)
 		freeAll(&env, ret);
-	// printf("plait\n");
 	glDeleteTextures(1, &env.texture);
 	glDeleteProgram(env.programId);
 	i = 0;

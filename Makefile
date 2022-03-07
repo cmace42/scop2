@@ -146,11 +146,20 @@ clean:
 	@rm -rf $(OBJ_DIR)
 	@echo "$(_RED)[100%]$(_CYAN)  $(NAME) *.o has been cleaned"
 
+
+.PHONY: dclean
+dclean:
+	@rm -rf $(dependencies)
+	@echo "$(_RED)[100%]$(_CYAN)  $(NAME) *.d has been cleaned"
+
 .PHONY: fclean
 fclean: clean
 	@make fclean -C $(OBJLIB_DIR) 
 	@rm -f $(NAME)
 	@echo "$(_RED)$(NAME) $(_CYAN)   has been cleaned"
+
+.PHONY: remake
+remake: fclean dclean all
 
 .PHONY: re
 re: fclean all

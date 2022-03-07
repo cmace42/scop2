@@ -41,8 +41,7 @@ void main(){
 		}
 		else
 		{
-			
-			color = mix(cNoTexture * colorMode,(texture(myTextureSampler, UV ).rgb * colorMode),transition);
+			color = mix(cNoTexture * colorMode,(cTexture * colorMode),transition);
 		}
 	}
 	else

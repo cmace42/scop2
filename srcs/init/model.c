@@ -6,7 +6,7 @@
 /*   By: cmace <cmace@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/01 11:09:22 by cmace             #+#    #+#             */
-/*   Updated: 2022/03/04 17:24:30 by cmace            ###   ########.fr       */
+/*   Updated: 2022/03/07 10:17:50 by cmace            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -333,10 +333,7 @@ void	freeObj(t_obj *obj)
 	if (obj->vn.this)
 		free(obj->vn.this);
 	if (obj->vt.this)
-	{
-		printf("HEEEEEEEEEEEEEEEEEEEEEEEEEEEY\n");
 		free(obj->vt.this);
-	}
 	while (i < obj->len)
 	{
 		if (obj->groupe[i].faces.triangle)

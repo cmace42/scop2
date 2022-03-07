@@ -6,7 +6,7 @@
 /*   By: cmace <cmace@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/01 11:10:49 by cmace             #+#    #+#             */
-/*   Updated: 2022/03/01 16:03:05 by cmace            ###   ########.fr       */
+/*   Updated: 2022/03/07 15:44:22 by cmace            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -127,10 +127,8 @@ enum {
 	RIP_MALLOC = -3,
 	RIP_OPEN = -4,
 	WRONG_CHAR = -5,
-	PREVIOUS_NODE_CANT_BE_NULL = -6,
 	FACE_ID_OVERFLOW = -7,
 	FACE_ID_CANT_BE_ZERO = -8,
-	NO_DATA = -9,
 	UV_NORMAL_NOT_EQUAL_TO_VERTEX = -10,
 	WRONG_TYPE = -11,
 	WRONG_VERTEX_TYPE_IN_FACE = -12,

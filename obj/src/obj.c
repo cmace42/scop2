@@ -6,7 +6,7 @@
 /*   By: cmace <cmace@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/01 11:10:35 by cmace             #+#    #+#             */
-/*   Updated: 2022/03/04 17:21:30 by cmace            ###   ########.fr       */
+/*   Updated: 2022/03/07 15:14:28 by cmace            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,16 +40,10 @@ int	printError(t_obj_reader self, int error)
 		write(2, "Scop can't open this.\n", 23);
 	else if (error == RIP_READ)
 		write(2, "Something wrong on read.\n", 26);
-	else if (error == PREVIOUS_NODE_CANT_BE_NULL)
-		write(2, "Previous node in chained list can't be null.\n", 46);
-	else if (error == NO_DATA)
-		write(2, "Need more data on file.\n", 25);
 	else if (error == FACE_ID_OVERFLOW)
 		write(2, "Face ID can't be highter than number of vertex.\n", 48);
 	else if (error == FACE_ID_CANT_BE_ZERO)
 		write(2, "Face ID can't be equals to zero or smaller.\n", 45);
-	else if (error == UV_NORMAL_NOT_EQUAL_TO_VERTEX)
-		write(2, "Uv or Normal need to be equal to vertex.\n", 42);
 	return (error);
 }
 

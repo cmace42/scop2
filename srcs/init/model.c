@@ -6,7 +6,7 @@
 /*   By: cmace <cmace@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/01 11:09:22 by cmace             #+#    #+#             */
-/*   Updated: 2022/03/07 15:07:37 by cmace            ###   ########.fr       */
+/*   Updated: 2022/03/07 16:40:12 by cmace            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,24 +15,35 @@
 static const t_vec3	color[] = {
 	(t_vec3){2, 57, 74},
 	(t_vec3){4.0f, 53.0f, 101.0f},
-	(t_vec3){81.0f, 88.0f, 187.0f},
+	(t_vec3){242.0f, 100.0f, 25.0f},
 	(t_vec3){235.0f, 75.0f, 152.0f},
 	(t_vec3){255.0f, 136.0f, 17.0f},
 	(t_vec3){244.0f, 208.0f, 111.0f},
+	(t_vec3){242.0f, 87.0f, 87.0f},
 	(t_vec3){255.0f, 248.0f, 240.0f},
 	(t_vec3){57.0f, 47.0f, 90.0f},
 	(t_vec3){30.0f, 0.0f, 14.0f},
 	(t_vec3){130.0f, 48.0f, 56.0f},
 	(t_vec3){222.0f, 196.0f, 111.0f},
 	(t_vec3){244.0f, 247.0f, 190.0f},
-	(t_vec3){31.0f, 101.0f, 138.0f},
 	(t_vec3){134.0f, 187.0f, 2016.0f},
+	(t_vec3){250.0f, 255.0f, 0.0f},
 	(t_vec3){117.0f, 142.0f, 79.0f},
 	(t_vec3){246.0f, 174.0f, 45.0f},
-	(t_vec3){242.0f, 100.0f, 25.0f},
+	(t_vec3){31.0f, 101.0f, 138.0f},
 	(t_vec3){114.0f, 189.0f, 163.0f},
 	(t_vec3){148.0f, 232.0f, 180.0f},
 	(t_vec3){8.0f, 23.0f, 180.0f},
+	(t_vec3){130.0f, 115.0f, 92.0f},
+	(t_vec3){209.0f, 245.0f, 190.0f},
+	(t_vec3){221.0f, 28.0f, 26.0f},
+	(t_vec3){156.0f, 222.0f, 159.0f},
+	(t_vec3){85.0f, 91.0f, 110.0f},
+	(t_vec3){253.0f, 231.0f, 76.0f},
+	(t_vec3){81.0f, 88.0f, 187.0f},
+	(t_vec3){195.0f, 66.0f, 63.0f},
+	(t_vec3){64.0f, 78.0f, 77.0f},
+	(t_vec3){202.0f, 177.0f, 189.0f}
 };
 
 int		initBuffer(t_obj obj, t_model *model)
@@ -177,15 +188,15 @@ void	getTriangleColorBuffer(t_bufferData *colorBuffer)
 	z = 0;
 	while (i < colorBuffer->size_data)
 	{
-		colorBuffer->buffer_data[i] = (color[z % 20]).x / 255;
-		colorBuffer->buffer_data[i + 1] = (color[z % 20]).y / 255;
-		colorBuffer->buffer_data[i + 2] = (color[z % 20]).z / 255;
-		colorBuffer->buffer_data[i + 3] = (color[z % 20]).x / 255;
-		colorBuffer->buffer_data[i + 4] = (color[z % 20]).y / 255;
-		colorBuffer->buffer_data[i + 5] = (color[z % 20]).z / 255;
-		colorBuffer->buffer_data[i + 6] = (color[z % 20]).x / 255;
-		colorBuffer->buffer_data[i + 7] = (color[z % 20]).y / 255;
-		colorBuffer->buffer_data[i + 8] = (color[z % 20]).z / 255;
+		colorBuffer->buffer_data[i] = (color[z % 31]).x / 255;
+		colorBuffer->buffer_data[i + 1] = (color[z % 31]).y / 255;
+		colorBuffer->buffer_data[i + 2] = (color[z % 31]).z / 255;
+		colorBuffer->buffer_data[i + 3] = (color[z % 31]).x / 255;
+		colorBuffer->buffer_data[i + 4] = (color[z % 31]).y / 255;
+		colorBuffer->buffer_data[i + 5] = (color[z % 31]).z / 255;
+		colorBuffer->buffer_data[i + 6] = (color[z % 31]).x / 255;
+		colorBuffer->buffer_data[i + 7] = (color[z % 31]).y / 255;
+		colorBuffer->buffer_data[i + 8] = (color[z % 31]).z / 255;
 		i += 9;
 		z++;
 	}
@@ -205,15 +216,15 @@ void	getFacesColorBuffer(t_bufferData *colorBuffer, t_facesPerLine fpl)
 	{
 		while (z < fpl.this[y])
 		{
-			colorBuffer->buffer_data[i] = (color[c % 19]).x / 255;
-			colorBuffer->buffer_data[i + 1] = (color[c % 19]).y / 255;
-			colorBuffer->buffer_data[i + 2] = (color[c % 19]).z / 255;
-			colorBuffer->buffer_data[i + 3] = (color[c % 19]).x / 255;
-			colorBuffer->buffer_data[i + 4] = (color[c % 19]).y / 255;
-			colorBuffer->buffer_data[i + 5] = (color[c % 19]).z / 255;
-			colorBuffer->buffer_data[i + 6] = (color[c % 19]).x / 255;
-			colorBuffer->buffer_data[i + 7] = (color[c % 19]).y / 255;
-			colorBuffer->buffer_data[i + 8] = (color[c % 19]).z / 255;
+			colorBuffer->buffer_data[i] = (color[c % 31]).x / 255;
+			colorBuffer->buffer_data[i + 1] = (color[c % 31]).y / 255;
+			colorBuffer->buffer_data[i + 2] = (color[c % 31]).z / 255;
+			colorBuffer->buffer_data[i + 3] = (color[c % 31]).x / 255;
+			colorBuffer->buffer_data[i + 4] = (color[c % 31]).y / 255;
+			colorBuffer->buffer_data[i + 5] = (color[c % 31]).z / 255;
+			colorBuffer->buffer_data[i + 6] = (color[c % 31]).x / 255;
+			colorBuffer->buffer_data[i + 7] = (color[c % 31]).y / 255;
+			colorBuffer->buffer_data[i + 8] = (color[c % 31]).z / 255;
 			i += 9;
 			z++;
 		}

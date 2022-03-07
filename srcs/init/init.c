@@ -6,7 +6,7 @@
 /*   By: cmace <cmace@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/01 11:10:00 by cmace             #+#    #+#             */
-/*   Updated: 2022/03/07 16:56:34 by cmace            ###   ########.fr       */
+/*   Updated: 2022/03/07 17:20:14 by cmace            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -137,6 +137,7 @@ t_action	initAction(void)
 	action.glcullface = false;
 	action.colorInc = (t_vec3){0.0000f, 0.0000f, 0.0000f};
 	action.colorBackMode = false;
+	action.speedColor = 1.5f;
 	return (action);
 }
 

@@ -6,7 +6,7 @@
 /*   By: cmace <cmace@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/01 11:09:56 by cmace             #+#    #+#             */
-/*   Updated: 2022/03/07 17:02:27 by cmace            ###   ########.fr       */
+/*   Updated: 2022/03/07 17:16:54 by cmace            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,9 +28,9 @@ t_action	interact(t_env data)
 		.z = data.action.colorInc.z / M_PI * 3,
 	};
 	data.action.colorBackground = (t_vec3){
-		.x = (cosf(tmp * 1.5f * 2) + 1) / 2.0f,
-		.y = (cosf(tmp * 1.5f * 3) + 1) / 2.0f,
-		.z = (cosf(tmp * 1.5f * 4) + 1) / 2.0f
+		.x = (cosf(tmp * data.action.speedColor * 2) + 1) / 2.0f,
+		.y = (cosf(tmp * data.action.speedColor * 3) + 1) / 2.0f,
+		.z = (cosf(tmp * data.action.speedColor * 4) + 1) / 2.0f
 	};
 	data.action.ShowTextureLoc = glGetUniformLocation(data.programId, "showTexture");
 	glUniform1i(data.action.ShowTextureLoc, data.action.showTexture);

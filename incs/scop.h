@@ -6,7 +6,7 @@
 /*   By: cmace <cmace@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/01 11:08:49 by cmace             #+#    #+#             */
-/*   Updated: 2022/03/04 17:39:31 by cmace            ###   ########.fr       */
+/*   Updated: 2022/03/07 13:46:01 by cmace            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,6 +57,8 @@
 | delete        | Affiche sommets/trait intersommet/faces                           |\n\
 +---------------+-------------------------------------------------------------------+\n"
 
+# define USAGE "Usage : ./scop [obj file]\n\
+\t./scop [obj file] [bmp file]"
 typedef struct s_vec2
 {
 	float	x;

@@ -6,7 +6,7 @@
 /*   By: cmace <cmace@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/01 11:09:42 by cmace             #+#    #+#             */
-/*   Updated: 2022/03/07 13:39:15 by cmace            ###   ########.fr       */
+/*   Updated: 2022/03/07 13:46:18 by cmace            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ int	main(int argc, char **argv)
 
 	if (argc < 2)
 	{
-		printf("fais l'usage\n");
+		printf("%s\n",USAGE);
 		return (0);
 	}
 	if ((ret = init(&env, argv[1], argc == 3 ? argv[2] : NULL)) == GET_RESULT)

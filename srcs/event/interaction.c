@@ -6,7 +6,7 @@
 /*   By: cmace <cmace@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/01 11:09:56 by cmace             #+#    #+#             */
-/*   Updated: 2022/03/07 16:27:13 by cmace            ###   ########.fr       */
+/*   Updated: 2022/03/07 17:02:27 by cmace            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,11 @@ t_action	interact(t_env data)
 		.y = data.action.colorInc.y / M_PI * 3,
 		.z = data.action.colorInc.z / M_PI * 3,
 	};
+	data.action.colorBackground = (t_vec3){
+		.x = (cosf(tmp * 1.5f * 2) + 1) / 2.0f,
+		.y = (cosf(tmp * 1.5f * 3) + 1) / 2.0f,
+		.z = (cosf(tmp * 1.5f * 4) + 1) / 2.0f
+	};
 	data.action.ShowTextureLoc = glGetUniformLocation(data.programId, "showTexture");
 	glUniform1i(data.action.ShowTextureLoc, data.action.showTexture);
 	data.action.autoColorLoc = glGetUniformLocation(data.programId, "autoColorMode");
@@ -38,7 +43,7 @@ t_action	interact(t_env data)
 	data.action.colorLoc = glGetUniformLocation(data.programId, "colorMode");
 	data.action.color.x = (cosf(colorInc.x * 2) + 1) / 2.0f;
 	data.action.color.y = (cosf(colorInc.y * 3) + 1) / 2.0f;
-	data.action.color.z = (cos(colorInc.z * 5) + 1) / 2.0f;
+	data.action.color.z = (cosf(colorInc.z * 5) + 1) / 2.0f;
 	glUniform3f(data.action.colorLoc, data.action.color.x, data.action.color.y, data.action.color.z);
 	data.action.greymodeLoc = glGetUniformLocation(data.programId, "greymode");
 	glUniform1i(data.action.greymodeLoc, data.action.greymode);

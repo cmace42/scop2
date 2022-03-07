@@ -6,7 +6,7 @@
 /*   By: cmace <cmace@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/01 11:10:04 by cmace             #+#    #+#             */
-/*   Updated: 2022/03/07 16:24:10 by cmace            ###   ########.fr       */
+/*   Updated: 2022/03/07 17:09:57 by cmace            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -222,6 +222,11 @@ int	event(t_env *data, float deltaTime)
 				case SDLK_t:
 				{
 					data->action.colorInc = (t_vec3){0.0f, 0.0f, 0.0f};
+					break;
+				}
+				case SDLK_b:
+				{
+					data->action.colorBackMode = !data->action.colorBackMode;
 					break;
 				}
 			}

@@ -6,7 +6,7 @@
 /*   By: cmace <cmace@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/01 11:08:49 by cmace             #+#    #+#             */
-/*   Updated: 2022/03/07 16:15:05 by cmace            ###   ########.fr       */
+/*   Updated: 2022/03/07 16:56:50 by cmace            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -155,6 +155,8 @@ typedef struct s_action
 	bool	glcullface;
 	GLuint	glcullfaceLoc;
 	t_vec3	colorInc;
+	bool	colorBackMode;
+	t_vec3	colorBackground;
 }				t_action;
 
 typedef struct s_bmp

@@ -6,7 +6,7 @@
 /*   By: cmace <cmace@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/01 11:09:22 by cmace             #+#    #+#             */
-/*   Updated: 2022/03/07 10:17:50 by cmace            ###   ########.fr       */
+/*   Updated: 2022/03/07 13:37:22 by cmace            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -356,12 +356,8 @@ int	getModel(char *filename, t_model *model)
 
 	if ((ret = obj_read(&obj, filename, &reader)) != GET_RESULT)
 	{
-		printf("mdr\n");
 		if (ret != RIP_OPEN)
-		{
-			printf("hello\n");
 			freeObj(&obj);
-		}
 		printError(reader, ret);
 		return (ret);
 	}
@@ -371,19 +367,18 @@ int	getModel(char *filename, t_model *model)
 	while (i < obj.len)
 	{
 		if (obj.groupe[i].faces.len < 1)
+		{
+			freeObj(&obj);
+			printError(reader, ret);
 			return (NO_FACES);
+		}
 		i++;
 	}
-	if ((ret = initBuffer(obj, model)) != GET_RESULT)
+	if ((ret = initBuffer(obj, model)) == GET_RESULT)
 	{
-		freeObj(&obj);
-		return (ret);
-	}
-	if (!readBuffers(obj, model))
-	{
-		freeObj(&obj);
-		return (READBUFFERFAILED);
+		if (!readBuffers(obj, model))
+			ret = READBUFFERFAILED;
 	}
 	freeObj(&obj);
-	return (GET_RESULT);
+	return (ret);
 }

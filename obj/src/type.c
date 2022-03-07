@@ -6,7 +6,7 @@
 /*   By: cmace <cmace@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/01 11:10:19 by cmace             #+#    #+#             */
-/*   Updated: 2022/03/01 14:39:34 by cmace            ###   ########.fr       */
+/*   Updated: 2022/03/07 15:06:19 by cmace            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,6 +39,8 @@ int	obj_vertex_type(size_t *vertex, t_face_type *type, t_obj_reader *reader)
 	}
 	ret = obj_read_part_int(&res, reader, &unusedSign);
 	*vertex = (size_t)res - 1;
+	if (*vertex < 0)
+		return(FACE_ID_CANT_BE_ZERO);
 	c = obj_reader_peek(reader);
 	if ((c) == ' ' || c == '\t' || c == '\r' || c == '\n' || c == 0)
 	{
@@ -74,6 +76,8 @@ int	obj_uv_type(size_t *uv, t_face_type *type, t_obj_reader *reader, bool *haveN
 		if ((ret = obj_read_part_int(&res, reader, &unusedSign)) != GET_RESULT)
 			return (ret);
 		*uv = (size_t)res - 1;
+		if (*uv < 0)
+			return(FACE_ID_CANT_BE_ZERO);
 	}
 	c = obj_reader_peek(reader);
 	if ((c) == ' ' || c == '\t' || c == '\r' || c == '\n' || c == 0)
@@ -101,6 +105,8 @@ int	obj_normal_type(size_t *normal, t_face_type *type, t_obj_reader *reader, boo
 		return (c <= -1 ? RIP_READ : WRONG_CHAR);
 	ret = obj_read_part_int(&res, reader, &unusedSign);
 	*normal = (size_t)res - 1;
+	if (*normal < 0)
+			return(FACE_ID_CANT_BE_ZERO);
 	if (!*haveNormal)
 	{
 		if ((ret = control_type(type, Obj_Vertex_Texture_Normal_Type)) != GET_RESULT)

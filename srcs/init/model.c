@@ -6,7 +6,7 @@
 /*   By: cmace <cmace@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/01 11:09:22 by cmace             #+#    #+#             */
-/*   Updated: 2022/03/07 13:37:22 by cmace            ###   ########.fr       */
+/*   Updated: 2022/03/07 15:07:37 by cmace            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -223,7 +223,7 @@ void	getFacesColorBuffer(t_bufferData *colorBuffer, t_facesPerLine fpl)
 	}
 }
 
-bool	readBuffers(t_obj obj, t_model *model)
+int		readBuffers(t_obj obj, t_model *model)
 {
 	size_t	i;
 	size_t	y;
@@ -241,7 +241,7 @@ bool	readBuffers(t_obj obj, t_model *model)
 		if (obj.groupe[i].name)
 		{
 			if (!(model->vertex[z].name = malloc(sizeof(char) * (strlen(obj.groupe[i].name) + 1))))
-				return (false);
+				return (RIP_MALLOC);
 			model->vertex[z].name = strcpy(model->vertex[z].name, obj.groupe[i].name);
 		}
 		else
@@ -249,16 +249,16 @@ bool	readBuffers(t_obj obj, t_model *model)
 		while (y < obj.groupe[i].faces.len)
 		{
 			if (!getVerticesBuffer(obj.groupe[i].faces.triangle[y], obj.vertex, &(model->vertex[z]), y * 9))
-				return (false);
+				return (FACE_ID_OVERFLOW);
 			if (obj.type == Obj_Vertex_Texture_Normal_Type || obj.type == Obj_Normal_Type)
 			{
 				if (!getNormalBuffer(obj.groupe[i].faces.triangle[y], obj.vn, &(model->normal[z]), y * 9))
-					return (false);
+					return (FACE_ID_OVERFLOW);
 			}
 			if (obj.type == Obj_Vertex_Texture_Normal_Type || obj.type == Obj_Texture_Type)
 			{
 				if (!getUvBuffer(obj.groupe[i].faces.triangle[y], obj.vt, &(model->uv[z]), y * 6))
-					return (false);
+					return (FACE_ID_OVERFLOW);
 			}
 			y++;
 			t++;
@@ -272,7 +272,7 @@ bool	readBuffers(t_obj obj, t_model *model)
 		z++;
 		i++;
 	}
-	return (true);
+	return (GET_RESULT);
 }
 
 void	printModel(t_model model, t_face_type type)
@@ -375,10 +375,9 @@ int	getModel(char *filename, t_model *model)
 		i++;
 	}
 	if ((ret = initBuffer(obj, model)) == GET_RESULT)
-	{
-		if (!readBuffers(obj, model))
-			ret = READBUFFERFAILED;
-	}
+		ret = readBuffers(obj, model);
+	if (ret != GET_RESULT)
+		printError(reader, ret);
 	freeObj(&obj);
 	return (ret);
 }

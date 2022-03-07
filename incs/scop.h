@@ -6,7 +6,7 @@
 /*   By: cmace <cmace@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/01 11:08:49 by cmace             #+#    #+#             */
-/*   Updated: 2022/03/07 13:46:01 by cmace            ###   ########.fr       */
+/*   Updated: 2022/03/07 16:15:05 by cmace            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -126,30 +126,6 @@ typedef struct s_model
 	t_bufferData	*colorTriangles;
 }				t_model;
 
-typedef struct s_listParsing
-{
-	GLfloat					number;
-	struct s_listParsing	*next;
-	struct s_listParsing	*prev;
-}				t_listParsing;
-
-/*vUv = Vertex Uv*/
-typedef struct s_listData
-{
-	t_listParsing	*vertices;
-	t_listParsing	*vUv;
-	t_listParsing	*vNormal;
-	t_listParsing	*facesV;
-	t_listParsing	*facesUv;
-	t_listParsing	*facesNormal;
-	int				nVertices;
-	int				nUv;
-	int				nNormal;
-	int				nFacesV;
-	int				nFacesUv;
-	int				nFacesNormal;
-}				t_listData;
-
 typedef struct s_time
 {
 	float	currentTime;
@@ -243,9 +219,6 @@ t_mat4			initPerspective(float fov, float zNear, float zFar);
 t_mat4			lookAt(t_vec3 cameraPosition, t_vec3 cameraTarget, t_vec3 upVector);
 t_mat4			initModelMatrice(t_vec3 angle, t_vec3 whl, t_vec3 pos);
 int				loadBMP_custom(const char *imagepath, t_bmp *bmp);
-// t_obj_rea	der	obj_create_reader(int fd, char *buffer, size_t buffer_size);
-// int16_t			obj_reader_peek(t_obj_reader *self);
-// int				obj_reader_next(t_obj_reader *self);
 t_time			getDataTime(t_time last);
 GLuint			getTextureId(t_bmp bmp);
 void			doRotate(t_objectInWorld **model, t_vec3 rotate, size_t size);
@@ -253,14 +226,6 @@ t_vec3			initAllWhl(t_objectInWorld *model, size_t size_groupe);
 void			freeAll(t_env *env, int ret);
 void			printModel(t_model model, t_face_type type);
 void			mouseCamera(t_objectInWorld *camera, int *xMouse, int *yMouse, float deltaTime);
-
-/* Tools Parsing */
-void			printList(t_listParsing *node);
-void			printListR(t_listParsing *node);
-int				append(t_listParsing **head_ref, GLfloat new_data);
-int				insertAfter(t_listParsing *prev_node, GLfloat new_data);
-int				push(t_listParsing **head_ref, GLfloat new_data);
-void			freeList(t_listParsing **head_ref);
 
 /* Math */
 

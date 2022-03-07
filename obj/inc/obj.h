@@ -6,7 +6,7 @@
 /*   By: cmace <cmace@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/01 11:10:49 by cmace             #+#    #+#             */
-/*   Updated: 2022/03/07 15:44:22 by cmace            ###   ########.fr       */
+/*   Updated: 2022/03/07 16:20:07 by cmace            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -216,7 +216,11 @@ int				obj_append_uv(t_uv_array *uv_array, t_uv uv);
 *	retourne un entier erreur;
 */
 int				obj_read(t_obj *obj, char *filepath, t_obj_reader *reader);
-
+/*
+*	int obj_skip_whitespace(t_obj_reader *self)
+*	*self : pointe sur le reader
+*	retourn un int en fonction de l'erreur
+*/
 int				obj_skip_whitespace(t_obj_reader *self);
 
 /*
@@ -225,11 +229,6 @@ int				obj_skip_whitespace(t_obj_reader *self);
 *	print les arrays
 */
 void			printobj(t_obj obj);
-
-/*
-*	int obj_get_triangles_index(t_faces_array *faces, t_obj_reader *reader)
-*	
-*/
 int				obj_get_triangles_index(t_faces_array *faces, t_face_type *type, t_obj_reader *reader);
 int				obj_read_part_int(float *value, t_obj_reader *reader, int *sign);
 int				obj_vertex_type(size_t *vertex, t_face_type *type, t_obj_reader *reader);

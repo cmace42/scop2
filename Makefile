@@ -71,7 +71,7 @@ OBJ_DIR	 =   ./objs
 ##############################
 CC			=	gcc
 DEPFLAGS		=	-MT $@ -MMD -MP -MF $(DEP_DIR)/$*.d -I $(INC_DIR)/ -I $(INC_OBJLIB_DIR)
-CFLAGS	  =   -Wall -Wextra -Werror -fsanitize=address
+CFLAGS	  =   -Wall -Wextra -Werror #-fsanitize=address
 UNAME = $(shell uname)
 LDFLAGS = -L $(OBJLIB_DIR) -lobj -lSDL2
 ifeq ($(UNAME), Linux)

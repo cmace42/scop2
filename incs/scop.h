@@ -6,7 +6,7 @@
 /*   By: cmace <cmace@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/01 11:08:49 by cmace             #+#    #+#             */
-/*   Updated: 2022/03/07 16:56:50 by cmace            ###   ########.fr       */
+/*   Updated: 2022/03/07 17:11:47 by cmace            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,12 +47,13 @@
 | WASD          | Déplacement de la caméra                                          |\n\
 | Numpad 824679 | fais tourner ou déplacer l'objet en fonction du mode              |\n\
 | L             | Change le mode(Rotation/Translation) du model                     |\n\
-| zxc           | Change la couleur sur un R, G ou B                                |\n\
-| o             | Change la couleur constamment                                     |\n\
-| u             | Active/Desactive le mode gris                                     |\n\
-| p             | Transition entre mode texture/sans texture                        |\n\
-| i             | Change le type d'affectation de couleur(Par face ou par triangle) |\n\
-| k             | Active/Desactive le GL_CULL_FACE                                  |\n\
+| ZXC           | Change la couleur sur un R, G ou B                                |\n\
+| O             | Change la couleur constamment                                     |\n\
+| B             | Change la couleur du fond constamment                             |\n\
+| U             | Active/Desactive le mode gris                                     |\n\
+| P             | Transition entre mode texture/sans texture                        |\n\
+| I             | Change le type d'affectation de couleur(Par face ou par triangle) |\n\
+| K             | Active/Desactive le GL_CULL_FACE                                  |\n\
 | pageUp        | Active/Desactive le GL_DEPTH_TEST                                 |\n\
 | delete        | Affiche sommets/trait intersommet/faces                           |\n\
 +---------------+-------------------------------------------------------------------+\n"

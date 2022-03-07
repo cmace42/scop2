@@ -6,7 +6,7 @@
 /*   By: cmace <cmace@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/01 11:10:04 by cmace             #+#    #+#             */
-/*   Updated: 2022/03/04 14:50:39 by cmace            ###   ########.fr       */
+/*   Updated: 2022/03/07 16:24:10 by cmace            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,7 @@ int	event(t_env *data, float deltaTime)
 					if (data->action.rotateKeyboardMode)
 						doRotate(&data->model, (t_vec3){.y = 0.1f}, data->modelData.size_groupe);
 					else
-						doTranslate(&data->model, (t_vec3){.x = 0.1f}, data->modelData.size_groupe);
+						doTranslate(&data->model, (t_vec3){.x = -0.1f - data->speed}, data->modelData.size_groupe);
 					break;
 				}
 				case SDLK_KP_6:
@@ -64,7 +64,7 @@ int	event(t_env *data, float deltaTime)
 					if (data->action.rotateKeyboardMode)
 						doRotate(&data->model, (t_vec3){.y = -0.1f}, data->modelData.size_groupe);
 					else
-						doTranslate(&data->model, (t_vec3){.x = -0.1f}, data->modelData.size_groupe);
+						doTranslate(&data->model, (t_vec3){.x = 0.1f + data->speed}, data->modelData.size_groupe);
 					break;
 				}
 				case SDLK_KP_8:
@@ -72,7 +72,7 @@ int	event(t_env *data, float deltaTime)
 					if (data->action.rotateKeyboardMode)
 						doRotate(&data->model, (t_vec3){.x = -0.1f}, data->modelData.size_groupe);
 					else
-						doTranslate(&data->model, (t_vec3){.y = 0.1f}, data->modelData.size_groupe);
+						doTranslate(&data->model, (t_vec3){.y = 0.1f + data->speed}, data->modelData.size_groupe);
 					break;
 				}
 				case SDLK_KP_2:
@@ -80,7 +80,7 @@ int	event(t_env *data, float deltaTime)
 					if (data->action.rotateKeyboardMode)
 						doRotate(&data->model, (t_vec3){.x = 0.1f}, data->modelData.size_groupe);
 					else
-						doTranslate(&data->model, (t_vec3){.y = -0.1f}, data->modelData.size_groupe);
+						doTranslate(&data->model, (t_vec3){.y = -0.1f - data->speed}, data->modelData.size_groupe);
 					break;
 				}
 				case SDLK_KP_7:
@@ -88,7 +88,7 @@ int	event(t_env *data, float deltaTime)
 					if (data->action.rotateKeyboardMode)
 						doRotate(&data->model, (t_vec3){.z = 0.1f}, data->modelData.size_groupe);
 					else
-						doTranslate(&data->model, (t_vec3){.z = 0.1f}, data->modelData.size_groupe);
+						doTranslate(&data->model, (t_vec3){.z = 0.1f + data->speed}, data->modelData.size_groupe);
 					break;
 				}
 				case SDLK_KP_9:
@@ -96,7 +96,7 @@ int	event(t_env *data, float deltaTime)
 					if (data->action.rotateKeyboardMode)
 						doRotate(&data->model, (t_vec3){.z = -0.1f}, data->modelData.size_groupe);
 					else
-						doTranslate(&data->model, (t_vec3){.z = -0.1f}, data->modelData.size_groupe);
+						doTranslate(&data->model, (t_vec3){.z = -0.1f - data->speed}, data->modelData.size_groupe);
 					break;
 				}
 				case SDLK_ESCAPE:

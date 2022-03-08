@@ -6,7 +6,7 @@
 #    By: cmace <cmace@student.42.fr>                +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2018/02/16 18:35:57 by cmace             #+#    #+#              #
-#    Updated: 2022/03/08 11:25:25 by cmace            ###   ########.fr        #
+#    Updated: 2022/03/08 14:19:46 by cmace            ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -70,7 +70,7 @@ clean:
 
 .PHONY: dclean
 dclean:
-	@rm -rf $(dependencies)
+	@rm -rf $(DEP_DIR)
 	@echo "$(_RED)[100%]$(_CYAN)  $(NAME) *.d has been cleaned"
 
 .PHONY: fclean

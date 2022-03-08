@@ -108,10 +108,13 @@ $(OBJ_DIR) :
 .PHONY: clean
 clean:
 	@rm -rf $(OBJ_DIR)
+	make clean -C $(OBJLIB_DIR)
+	@rm 
 	@echo "$(_RED)[100%]$(_CYAN)  $(NAME) *.o has been cleaned"
 
 .PHONY: dclean
 dclean:
+	make dclean -C $(OBJLIB_DIR)
 	@rm -rf $(dependencies)
 	@echo "$(_RED)[100%]$(_CYAN)  $(NAME) *.d has been cleaned"
 

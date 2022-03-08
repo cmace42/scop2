@@ -6,7 +6,7 @@
 /*   By: cmace <cmace@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/01 11:09:42 by cmace             #+#    #+#             */
-/*   Updated: 2022/03/08 13:37:13 by cmace            ###   ########.fr       */
+/*   Updated: 2022/03/08 14:10:49 by cmace            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ int	main(int argc, char **argv)
 	size_t	i;
 	int		ret;
 
-	if (argc < 2)
+	if (argc < 2 || argc > 3)
 	{
 		printf("%s\n",USAGE);
 		return (0);
@@ -28,10 +28,10 @@ int	main(int argc, char **argv)
 		printf("%s", KEYMESSAGE);
 		loop(env);
 	}
-	if (ret != WRONG_CHAR && ret != RIP_READ && ret != RIP_OPEN && ret != NO_VERTEX && ret != WRONG_NORMAL_TYPE_IN_FACE && ret != WRONG_VERTEX_TYPE_IN_FACE)
-	{
+	if (ret != WRONG_CHAR && ret != RIP_READ && ret != RIP_OPEN
+		&& ret != NO_VERTEX && ret != WRONG_NORMAL_TYPE_IN_FACE
+		&& ret != WRONG_VERTEX_TYPE_IN_FACE)
 		freeAll(&env, ret);
-	}
 	glDeleteTextures(1, &env.texture);
 	glDeleteProgram(env.programId);
 	i = 0;

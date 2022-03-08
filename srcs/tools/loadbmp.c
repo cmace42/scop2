@@ -6,7 +6,7 @@
 /*   By: cmace <cmace@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/01 11:09:53 by cmace             #+#    #+#             */
-/*   Updated: 2022/03/02 13:21:39 by cmace            ###   ########.fr       */
+/*   Updated: 2022/03/08 14:00:43 by cmace            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,6 @@ int	loadBMP_custom(const char *imagepath, t_bmp *bmp)
 	unsigned char	header[54]; // Chaque fichier BMP débute par un en-tête de 54 octets
 	unsigned int	dataPos; // Position dans le fichier où les données débutent
 	unsigned int	imageSize; // = bmp.width*bmp.height*3
-	// Ouverture du fichier
 	FILE			*file;
 
 	file = fopen(imagepath, "rb");
@@ -60,19 +59,13 @@ int	loadBMP_custom(const char *imagepath, t_bmp *bmp)
 
 GLuint	getTextureId(t_bmp bmp)
 {
-	// Crée une texture OpenGL
 	GLuint	textureID;
 
 	glGenTextures(1, &textureID);
-	// "Lie" la nouvelle texture : toutes les fonctions agissant sur les textures suivantes vont modifier cette texture
 	glBindTexture(GL_TEXTURE_2D, textureID);
-	// Donne l'image à OpenGL
 	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, bmp.width, bmp.height, 0, GL_BGR, GL_UNSIGNED_BYTE, bmp.data);
-	// Lorsque l'on agrandit l'image (aucune MIP map plus grande n'est disponible), utiliser le filtrage LINÉAIRE
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-	// Lorsque l'on rétrécit l'image, utiliser un fondu linéaire entre deux MIP maps, chacune étant aussi filtrée linéairement
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
-	// Générer les MIP maps.
 	glGenerateMipmap(GL_TEXTURE_2D);
 	return (textureID);
 }

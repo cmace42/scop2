@@ -6,7 +6,7 @@
 /*   By: cmace <cmace@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/01 11:08:49 by cmace             #+#    #+#             */
-/*   Updated: 2022/03/07 17:16:38 by cmace            ###   ########.fr       */
+/*   Updated: 2022/03/08 14:05:48 by cmace            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,6 +54,7 @@
 | P             | Transition entre mode texture/sans texture                        |\n\
 | I             | Change le type d'affectation de couleur(Par face ou par triangle) |\n\
 | K             | Active/Desactive le GL_CULL_FACE                                  |\n\
+| + -           | Change la vitesse du changement de couleur du fond                |\n\
 | pageUp        | Active/Desactive le GL_DEPTH_TEST                                 |\n\
 | delete        | Affiche sommets/trait intersommet/faces                           |\n\
 +---------------+-------------------------------------------------------------------+\n"

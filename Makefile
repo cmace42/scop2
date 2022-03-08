@@ -15,6 +15,7 @@ vpath				%.d $(DEP_DIR)
 ##############################
 OBJLIB_DIR		= ./obj
 INC_OBJLIB_DIR		= ./obj/inc
+OBJ_LIB_A			= $(OBJLIB_DIR)/libobj.a
 
 ##############################
 ###         SOURCES        ###
@@ -88,7 +89,7 @@ all : lib
 lib:
 	make -C $(OBJLIB_DIR) --no-print-directory
 
-$(NAME): $(GLSLOBJ) $(OBJS)  $(INC_OBJLIB_DIR)/*.h $(INC_DIR)/*.h $(LIBFT_A)
+$(NAME): $(GLSLOBJ) $(OBJS)  $(INC_OBJLIB_DIR)/*.h $(INC_DIR)/*.h $(OBJ_LIB_A)
 	$(CC) $(CFLAGS) -o $(NAME) $(OBJS) $(GLSLOBJ)  $(OSFLAG) $(LDFLAGS)
 
 $(OBJ_DIR)/%.o : %.c | $(OBJ_DIR) $(DEP_DIR)

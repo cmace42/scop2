@@ -109,7 +109,6 @@ $(OBJ_DIR) :
 clean:
 	@rm -rf $(OBJ_DIR)
 	make clean -C $(OBJLIB_DIR)
-	@rm 
 	@echo "$(_RED)[100%]$(_CYAN)  $(NAME) *.o has been cleaned"
 
 .PHONY: dclean
